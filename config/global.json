@@ -3,6 +3,9 @@
     "parseVersion": "1.4.2"
   },
   "applications": {
+    "Simon": {
+      "link": "Task Mate Simon"
+    },
     "Task Mate Development Test": {
       "applicationId": "iftbUpZVs31XijSKB7e9mfPLlI5Z5FrJdR2eU19O",
       "masterKey": "Lo2SSxjdnefaOJsSUp7nYbbrmYgCbyb5nLCS3c6z"
@@ -10,6 +13,10 @@
     "Task Mate Production": {
       "applicationId": "eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63",
       "masterKey": "4MIFiNhm7ozTMSSQa3th4WspBMYynXQf0Dl36mt8"
+    },
+    "Task Mate Simon": {
+      "applicationId": "QjXPXme3VpSyKdvZKMDRXY5TmdOP7L6fxvysfdXq",
+      "masterKey": "MsYyZ8TcUTbkVIupq6VDci61xY4i3KLwDVEfKC2D"
     },
     "_default": {
       "link": "Task Mate Production"

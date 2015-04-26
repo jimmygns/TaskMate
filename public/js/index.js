@@ -3,14 +3,16 @@
 Parse.initialize("QjXPXme3VpSyKdvZKMDRXY5TmdOP7L6fxvysfdXq",
  "FB03u9unUQsaHY6PDpt1rxVIlzBfIPkubtssIKSz");
 
+
 //create a new user
 var user = new Parse.User();
-user.set("username", "my name");
-user.set("password", "my pass");
-user.set("email", "email@example.com");
+user.set("username", "test_email@example.com");
+user.set("password", "test_pass");
+user.set("email", "test_email@example.com");
   
 // other fields can be set just like with Parse.Object
-user.set("phone", "650-555-0000");
+user.set("firstName", "test_firstName");
+user.set("lastName", "test_lastName")
   
 user.signUp(null, {
   success: function(user) {
@@ -21,6 +23,8 @@ user.signUp(null, {
     alert("Error: " + error.code + " " + error.message);
   }
 });
+
+
 
 
 //for user to log in

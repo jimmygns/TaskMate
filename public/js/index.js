@@ -12,7 +12,7 @@ user.set("email", "test_email@example.com");
   
 // other fields can be set just like with Parse.Object
 user.set("firstName", "test_firstName");
-user.set("lastName", "test_lastName")
+user.set("lastName", "test_lastName");
   
 user.signUp(null, {
   success: function(user) {
@@ -25,44 +25,33 @@ user.signUp(null, {
 });  
 
 
-/*
-var user = new Parse.User();
 
-
-var name = prompt("Enter the username: ");
-var pass = prompt("Enter the password: ");
-var test_email= prompt("Enter the email: ");  
-
-var name = "kkk";
-var pass = "wwwww";
-var test_email = "test ejifeiofje";
-
-user.set("username", name);
-user.set("password", pass);
-user.set("email", test_email);
-
-
-user.signUp(null, {
-  success: function(user){
-
-  },
-  error: function(user, error){
-    alert("Create a new user failed");
-  }
-}) 
-*/
 
 
 
 var logIn = angular.module("logIn", []);
 
-logIn.controller("loginCtrl", ["$scope", function loginCtrl($scope){
+logIn.controller("loginCtrl", [function loginCtrl($scope){
   $scope.submit = function(){
     $scope.email = $scope.email;
     $scope.password = $scope.password;
-  }
-}]) 
 
+
+    Parse.User.logIn($scope.email, $scope.password, {
+  success: function(user) {
+    // Do stuff after successful login.
+  },
+  error: function(user, error) {
+    // The login failed. Check error to see why.
+  }
+});  
+
+
+  }
+}])
+
+
+/*
 //for user to log in
 Parse.User.logIn($scope.email, $scope.password, {
   success: function(user) {
@@ -71,7 +60,7 @@ Parse.User.logIn($scope.email, $scope.password, {
   error: function(user, error) {
     // The login failed. Check error to see why.
   }
-}); 
+});   */
 
 
 

@@ -11,14 +11,14 @@ logIn.controller("loginCtrl", ["$scope", function loginCtrl($scope){
   $scope.submit = function(){
 
     Parse.User.logIn($scope.email, $scope.password, {
-  success: function(user) {
-    // Do stuff after successful login.
-    window.location.replace("../newsfeed.html");
-  },
-  error: function(user, error) {
+      success: function(user) {
+      // Do stuff after successful login.
+      window.location.replace("../newsfeed.html");
+      },
+      error: function(user, error) {
     // The login failed. Check error to see why.
-  }
-});  
+      }
+  });  
 
 
   }

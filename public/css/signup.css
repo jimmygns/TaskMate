@@ -1,0 +1,17 @@
+h1 {
+	margin-top: 150px;
+	margin-bottom: 50px;
+    text-align: center;
+}
+
+.signup-info{
+	display: block;
+	margin: 0 auto; 
+	width: 60%;
+}
+
+.signup-button{
+	position: fixed;
+	left: 400px;
+	right: 400px;
+}

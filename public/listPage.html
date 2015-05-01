@@ -1,10 +1,58 @@
-<!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<head>
+<meta charset="utf-8">
+<script src="http://www.parsecdn.com/js/parse-1.3.5.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<script src="js/showList.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<style type="text/css">
+	li {}
+</style>
+<title>Display Contents of List</title>
 </head>
 <body>
+      <script>
+        //var name = prompt("Enter the name of your list: "); 
+        var name = "TestList";
+        localStorage.setItem('name', name);
+	document.write(name);
+      </script>
+
+      <br/>
+      <a href="#" onclick="addGoal();return false;" class="btn btn-success btn-lg"> 
+	      <span class="glyphicon glyphicon-plus"></span> Add Goal</a>
+      <br/>
+      <br/>
+
+      <div ng-app ng-controller="GoalController">
+        <label>IN PROGRESS</label>
+        <hr>
+        <h1 ng-repeat="IncompleteGoal in IncompleteGoals">
+
+	  <ul class="list-inline">
+		  <li> {{IncompleteGoal.name}} </li>
+      <li><font color="red">due: {{IncompleteGoal.dueDate}}</font></li>
+		  <li><a href "#" onclick="completeButton({{$index}});return false;" class="list-group-item">
+			  <span class="glyphicon glyphicon-ok"></span> Complete </a></li>
+		  <li> <a href "#" onclick="deleteGoal({{$index}});return false;" class="list-group-item">
+				  <span class="glyphicon glyphicon-remove"></span> Delete</a></li>
+          </ul>
+	  </h1>
+
+        <br/>
+        <br/>
+	<label>COMPLETE</label>
+        <hr>
+        <h1 ng-repeat="CompletedGoal in CompletedGoals">
+          {{CompletedGoal.name}}
+
+	  </span>
+        </h1>
+      </div>
 
 </body>
 </html>
+
+

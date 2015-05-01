@@ -10,8 +10,10 @@ h1 {
 	width: 60%;
 }
 
-.signup-button{
+.btn{
 	position: fixed;
-	left: 400px;
-	right: 400px;
-}
+	left: 660px;
+	right: 660px;
+	margin-top: 15px;
+	width: 120px;
+}  

@@ -7,7 +7,9 @@ Parse.initialize("ZLDPnL5t8AzKUzPF2OJfLcP7GGS5584iJSMGXkRS", "3VWB7w2Gri9KbRTmzK
 //var List = Parse.Object.extend("List");
 var query = new Parse.Query(Parse.User);
 var name = document.getElementById("keywords").value;
-
+if(name===""){
+  return;
+}
 query.contains("username",name);
 
 query.find({
@@ -15,6 +17,7 @@ query.find({
     //alert("Successfully retrieved " + results.length + " scores.");
     // Do something with the returned Parse.Object values
     var ul = document.getElementById("results");
+    ul.innerHTML='';
     for (var i = 0; i < 10; i++) { 
       var object = results[i];
       /*

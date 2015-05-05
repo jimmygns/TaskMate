@@ -8,6 +8,7 @@ Parse.initialize("ZLDPnL5t8AzKUzPF2OJfLcP7GGS5584iJSMGXkRS", "3VWB7w2Gri9KbRTmzK
 var query = new Parse.Query(Parse.User);
 var name = document.getElementById("keywords").value;
 if(name===""){
+  alert("username cannot be empty!");
   return;
 }
 query.contains("username",name);
@@ -18,6 +19,10 @@ query.find({
     // Do something with the returned Parse.Object values
     var ul = document.getElementById("results");
     ul.innerHTML='';
+    if(results.length==0){
+      alert("no user found!");
+      return;
+    }
     for (var i = 0; i < 10; i++) { 
       var object = results[i];
       /*

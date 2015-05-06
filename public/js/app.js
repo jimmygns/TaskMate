@@ -8,13 +8,13 @@ function ListController($scope){
 
 	query.find({
 		success: function(results) {
-			alert("Successfully retrieved " + results.length + " lists.");
+			//alert("Successfully retrieved " + results.length + " lists.");
     // Do something with the returned Parse.Object values
     for (var i = 0; i < results.length; i++) { 
     	var object = results[i];
     	var json='{"id":' + object.id +',' + '"name":' +object.get('Name') + '}';
     	array.push(json);
-    	alert(object.id + ' - ' + object.get('Name'));
+    	//alert(object.id + ' - ' + object.get('Name'));
     }
     $scope.toDoLists=[];
     for(var i = 0; i < array.length;i++){

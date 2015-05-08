@@ -1,5 +1,5 @@
-Parse.initialize("u1Ja8cb4WbMF4LfhXc4DDxVumfE8mCuCZRTFOHSl", 
-	             "2YToN08vDrAA31y4031ihdFqdLxTmpJcBoL4TlDB");
+Parse.initialize("QjXPXme3VpSyKdvZKMDRXY5TmdOP7L6fxvysfdXq",
+ "FB03u9unUQsaHY6PDpt1rxVIlzBfIPkubtssIKSz");
 
 var currentEmail = Parse.User.current().email();
 alert(currentEmail);

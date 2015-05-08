@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang = "en" ng-app = "picApp">
+	<head lang="en">
+    	<meta charset="UTF-8">
+
+    	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.js"></script>
+
+    	<script src="//www.parsecdn.com/js/parse-1.3.5.min.js"></script>
+
+    	<script src="js/picture.js"></script>
+
+    	<title>profile photo upload</title>
+	</head>
+
+	<body>
+		<div ng-controller = "picCtrl">
+			<input type="file" id="profilePhotoFileUpload">
+			<br>
+			<button ng-click="upload()">upload</button>
+			<br>
+
+			<img ng-src={{picUrl}} alt="Profile Picture (Small)" style="width:50px;height:50px">
+			<br>
+			
+			<img ng-src={{picUrl}} alt="Profile Picture (Large)" style="width:260px;height:260px">
+			<br>
+
+			<div class="pic-circular">
+				<img ng-src={{picUrl}} alt="Profile Picture (Circular)" style="width:50px;height:50px;background-size: cover;border-radius: 100em;-webkit-border-radius: 25px;-moz-border-radius: 25px;">
+			</div>
+		</div>
+	</body>
+</html>

@@ -71,24 +71,5 @@ error: function(error) {
 
 
 });
-	//query.find({
-		//success: function(results) {
-    //for (var i = 0; i < results.length; i++) {
-    	//var object = results[i];
-    	/*alert("s");
-    	//var numOfLikes = object.get('numLikes');
-    	alert("get");
-    	//change the button text
-		if(el.innerText == "Like"){
-			el.innerText = "Liked";
-			//numOfLikes = numOfLikes + 1;
-		//}
-		else{
-			el.innerText = "Like";
-			//numOfLikes = numOfLikes - 1;
-		}
-
-    //}*/
-
 
 }

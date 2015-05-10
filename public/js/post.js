@@ -14,7 +14,7 @@ function NewsfeedController($scope){
     	var object = results[i];
     	postsToDisplay.push(object.get('message'));
     }
-    
+
     $scope.posts = [];
     for(var i=0; i<postsToDisplay.length; i++){
     	$scope.posts.push({message: postsToDisplay[i]});
@@ -32,4 +32,20 @@ error: function(error) {
     
 
 	
+}
+
+//number of likes
+var counter = 0;
+function like(button_id){
+	//counter = counter + 1;
+	//document.getElementById("likes").innerHTML = counter;
+
+	//change the button text
+	var el = document.getElementById(button_id);
+	if(el.innerText == "Like"){
+		document.getElementById(button_id).innerText = "Liked";
+	}
+	else{
+		document.getElementById(button_id).innerText = "Like";
+	}
 }

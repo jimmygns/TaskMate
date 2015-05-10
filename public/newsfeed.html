@@ -1,5 +1,3 @@
-Parse.initialize("QjXPXme3VpSyKdvZKMDRXY5TmdOP7L6fxvysfdXq",
- "FB03u9unUQsaHY6PDpt1rxVIlzBfIPkubtssIKSz");
 
 <!DOCTYPE html>
 <html>
@@ -62,16 +60,15 @@ alert("currentEmail");</script>
            <span class="badge">2</span></a>
 		    </li>
        
-
         <!--search-->
       	<li>
       		<form class="navbar-form navbar-left" role="search">
   				<div class="row">
   				<div class="col-lg-12">
     				<div class="input-group">
-      					<input type="text" class="form-control" placeholder="Search for...">
+      					<input id="searchInput"type="text" class="form-control" placeholder="Search for...">
       				<span class="input-group-btn">
-        				<button class="btn btn-default" type="button">
+        				<button onclick="redirect()" class="btn btn-default" type="button" id = "search">
         					Go!
         				</button>
       				</span>
@@ -82,7 +79,7 @@ alert("currentEmail");</script>
     </li>
 
       <!--my profile-->
-       <li><a href="http://taskmatesimon.parseapp.com/profile.html">
+       <li><a onclick = "goToProfile()">
        	<img src = "img/glyphicons-4-user.png">My Profile</a></li>
 
       <!--write a goal-->

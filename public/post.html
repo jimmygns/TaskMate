@@ -8,10 +8,12 @@
 </head>
 <body>
 	<div ng-app ng-controller="NewsfeedController">
-	<div id="user">
-	</div>
+		<div id="user">	</div>
+		<textarea class="form-control" rows="5" id="comment" readonly ng-repeat="post in posts"> 
+			{{post.message}} 
+		</textarea>
 
-		<textarea class="form-control" rows="5" id="comment" readonly>  </textarea>
+
 		<div class="btn-group btn-group-justified" role="group" aria-label="...">
 			<div class="btn-group" role="group">
 				<button type="button" class="btn btn-default">Like</button>

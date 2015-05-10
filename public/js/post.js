@@ -34,18 +34,61 @@ error: function(error) {
 	
 }
 
-//number of likes
-var counter = 0;
-function like(button_id){
-	//counter = counter + 1;
-	//document.getElementById("likes").innerHTML = counter;
 
-	//change the button text
-	var el = document.getElementById(button_id);
-	if(el.innerText == "Like"){
-		document.getElementById(button_id).innerText = "Liked";
-	}
-	else{
-		document.getElementById(button_id).innerText = "Like";
-	}
+function like(button_id){
+	var id = "YqBoUQyWYs";
+	var Newsfeed = Parse.Object.extend("Newsfeed");
+	var query = new Parse.Query(Newsfeed);
+    query.equalTo("objectId",id);
+
+    var el = document.getElementById(button_id);
+
+	query.find({
+		success: function(results) {
+    for (var i = 0; i < results.length; i++) {
+    	var object = results[i];
+    	var numOfLikes = object.get('numLikes');
+    	//change the button text
+		if(el.innerText == "Like"){
+			el.innerText = "Liked";
+			numOfLikes = numOfLikes + 1;
+			object.set("numLikes", numOfLikes);
+			object.save();
+		}
+		else{
+			el.innerText = "Like";
+			numOfLikes = numOfLikes - 1;
+			object.set("numLikes", numOfLikes);
+			object.save();
+		}
+    }
+
+},
+error: function(error) {
+	alert("alert");
+	alert("Error: " + error.code + " " + error.message);
+}
+
+
+});
+	//query.find({
+		//success: function(results) {
+    //for (var i = 0; i < results.length; i++) {
+    	//var object = results[i];
+    	/*alert("s");
+    	//var numOfLikes = object.get('numLikes');
+    	alert("get");
+    	//change the button text
+		if(el.innerText == "Like"){
+			el.innerText = "Liked";
+			//numOfLikes = numOfLikes + 1;
+		//}
+		else{
+			el.innerText = "Like";
+			//numOfLikes = numOfLikes - 1;
+		}
+
+    //}*/
+
+
 }

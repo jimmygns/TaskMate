@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en" ng-app = "logIn">
   <head>
       <meta charset="utf-8">
@@ -12,33 +13,153 @@
 
       <script src="js/index.js"></script>
       <title>Landing page</title>
+
+    <style>
+		#custom-bootstrap-menu.navbar-default .navbar-brand {
+		    color: rgba(255, 255, 255, 1);
+		    font-size: 25px;
+		}
+		#custom-bootstrap-menu.navbar-default {
+		    font-size: 15px;
+		    background-color: rgba(78, 147, 212, 1);
+		    border-width: 1px;
+		    border-radius: 4px;
+		}
+		#custom-bootstrap-menu.navbar-default .navbar-nav>li>a {
+		    color: rgba(255, 255, 255, 1);
+		    background-color: rgba(248, 248, 248, 0);
+		}
+		#custom-bootstrap-menu.navbar-default .navbar-nav>li>a:hover,
+		#custom-bootstrap-menu.navbar-default .navbar-nav>li>a:focus {
+		    color: rgba(196, 196, 196, 1);
+		    background-color: rgba(248, 248, 248, 0);
+		}
+		#custom-bootstrap-menu.navbar-default .navbar-nav>.active>a,
+		#custom-bootstrap-menu.navbar-default .navbar-nav>.active>a:hover,
+		#custom-bootstrap-menu.navbar-default .navbar-nav>.active>a:focus {
+		    color: rgba(85, 85, 85, 1);
+		    background-color: rgba(231, 231, 231, 1);
+		}
+		#custom-bootstrap-menu.navbar-default .navbar-toggle {
+		    border-color: #ddd;
+		}
+		#custom-bootstrap-menu.navbar-default .navbar-toggle:hover,
+		#custom-bootstrap-menu.navbar-default .navbar-toggle:focus {
+		    background-color: #ddd;
+		}
+		#custom-bootstrap-menu.navbar-default .navbar-toggle .icon-bar {
+		    background-color: #888;
+		}
+		#custom-bootstrap-menu.navbar-default .navbar-toggle:hover .icon-bar,
+		#custom-bootstrap-menu.navbar-default .navbar-toggle:focus .icon-bar {
+		    background-color: #4e93d4;
+		}
+
+		.nav-header{
+			position:relative;
+			width: 100%;
+			height: 100;
+		}
+
+		.sign-in{
+			font-size: 30px;
+			color: rgba(78, 147, 212, 1);
+		}
+	</style>
+
+	<style>
+		html {
+		  background-image: url('img/landingPageBG.png');
+		  background-position: top;
+		  background-repeat: no-repeat;
+
+		}
+	</style>
+
+	<style>
+		.login-info{
+			width:40%;
+			padding-left: 10px;
+			padding-bottom: 50px;
+			padding-top: 50px;
+			padding-right: 10px;
+			background-image: url("img/formBG.png");
+			background-position: center;
+			background-size: 100%;
+			background-repeat: no-repeat;
+		}
+		.form-control{
+			width:80%;
+			height:80%;
+		}
+
+	</style>
   </head>
+
+<div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+     <ul class="nav navbar-nav navbar-left">
+     	<li><a href="#">
+     		<div class="nav-header">
+       			<img src = "img/tempLogo.png" class="img-responsive" alt="Logo" width="24" height="24">
+       		</div>
+       		</a></li>
+       <li>
+     	<a class="navbar-brand" href="#">Taskmate</a>
+      	
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+      	<li><a href="/">Sign Up</a>
+                </li>
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+
+</div>
 
   <body>
 
-
-    <h1>Taskmate</h1>
+  	<div class ="info">
+  	</div>
 
     <form class="form-horizontal">
-
     <div class = "login-info">
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <label>Already have an account? Sign in now!</label>
+          <label>
+          	<div class="sign-in">
+          	Sign in now!
+          	</div></label>
         </div>
       </div>
 
      <div ng-controller="loginCtrl">
       <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-          <div class="col-sm-10">
-            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" ng-model = "email">
+        <label for="inputEmail3" class="col-sm-2 control-label"></label>
+          <div class="col-md-10">
+            <input type="email" class="form-control" id="inputEmail3" placeholder="Enter Email" ng-model = "email">
           </div>
       </div>
 
       <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-          <div class="col-sm-10" ng>
+        <label for="inputPassword3" class="col-sm-2 control-label"></label>
+          <div class="col-md-10" ng>
             <input type="password" class="form-control" id="inputPassword3" placeholder="Password" ng-model = "password">
           </div>
       </div>

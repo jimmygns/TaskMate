@@ -11,3 +11,12 @@ Parse.Cloud.run('test', {}, {
         alert("Error1");
     }
 });
+
+Parse.Cloud.run('test2', {color: "blue"}, {
+    success: function(result) {
+        alert(result);
+    },
+    error: function(error) {
+        alert("Error2");
+    }
+});

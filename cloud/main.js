@@ -1,3 +1,9 @@
+require('cloud/index_cloud.js');
+require('cloud/List_cloud.js');
+require('cloud/Profile_cloud.js');
+require('cloud/search_cloud.js');
+require('cloud/showList_cloud.js');
+require('cloud/signup_cloud.js');
 
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
@@ -8,8 +14,6 @@ Parse.Cloud.define("hello", function(request, response) {
 Parse.Cloud.define("test", function(request, response) {
     var list = Parse.Object.extend("List");
     var query = new Parse.Query(list);
-
-
 
     query.find({
         success: function(results) {

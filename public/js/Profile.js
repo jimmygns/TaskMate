@@ -1,14 +1,13 @@
-/**
- * Created by yuezhao on 4/24/15.
- */
 var profile_app = angular.module("profileApp", []);
 profile_app.controller('profileCtrl', function($scope, $http) {
     Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
-    var email = prompt("Enter the email: ");
+
+    var fullString = location.search;
+    var ID = fullString.slice(1);
 
     var User = Parse.Object.extend("User");
     var query = new Parse.Query(User);
-    query.equalTo("email", email);
+    query.equalTo("objectId",ID);
     var firstName;
     var lastName;
 

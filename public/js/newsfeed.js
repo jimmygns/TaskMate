@@ -1,5 +1,5 @@
-Parse.initialize("QjXPXme3VpSyKdvZKMDRXY5TmdOP7L6fxvysfdXq",
- "FB03u9unUQsaHY6PDpt1rxVIlzBfIPkubtssIKSz");
+Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63",
+    "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
 function redirect(){
 	var text = document.getElementById("searchInput").value;

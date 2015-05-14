@@ -1,12 +1,10 @@
-
-Parse.initialize("QjXPXme3VpSyKdvZKMDRXY5TmdOP7L6fxvysfdXq",
- "FB03u9unUQsaHY6PDpt1rxVIlzBfIPkubtssIKSz");
-
 //create a new user
 var signUpApp = angular.module("signUpApp", []);
 
 signUpApp.controller("signUpCtrl", ["$scope", function signUpCtrl($scope){
-	$scope.submit1 = function(){
+    Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
+
+    $scope.submit1 = function(){
 
 	var user = new Parse.User();
 	user.set("username", $scope.newemail);

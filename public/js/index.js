@@ -1,14 +1,10 @@
-
-
-Parse.initialize("QjXPXme3VpSyKdvZKMDRXY5TmdOP7L6fxvysfdXq",
- "FB03u9unUQsaHY6PDpt1rxVIlzBfIPkubtssIKSz");
-
-
-
 var logIn = angular.module("logIn", []);
 
 logIn.controller("loginCtrl", ["$scope", function loginCtrl($scope){
-  $scope.submit = function(){
+
+    $scope.submit = function(){
+
+        Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
     Parse.User.logIn($scope.email, $scope.password, {
       success: function(user) {

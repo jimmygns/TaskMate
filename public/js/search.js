@@ -1,3 +1,10 @@
+function input(){
+  var id=location.search;
+  var name = id.substring(2,id.length);
+  document.getElementById("keywords").value=name;
+  search();
+}
+
 
 function search(){
 
@@ -6,6 +13,8 @@ Parse.initialize("ZLDPnL5t8AzKUzPF2OJfLcP7GGS5584iJSMGXkRS", "3VWB7w2Gri9KbRTmzK
 //var List = Parse.Object.extend("List");
 var query = new Parse.Query(Parse.User);
 var name = document.getElementById("keywords").value;
+var ul = document.getElementById("results");
+ul.innerHTML='';
 if(name===""){
   alert("username cannot be empty!");
   return;
@@ -16,8 +25,7 @@ query.find({
   success: function(results) {
     //alert("Successfully retrieved " + results.length + " scores.");
     // Do something with the returned Parse.Object values
-    var ul = document.getElementById("results");
-    ul.innerHTML='';
+    
     if(results.length==0){
       alert("no user found!");
       return;

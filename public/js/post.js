@@ -4,15 +4,19 @@ function NewsfeedController($scope){
 	Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 	var Newsfeed = Parse.Object.extend("Newsfeed");
 	var query = new Parse.Query(Newsfeed);
-	var id = "YqBoUQyWYs";
+	var id = "QHfBPd4FpQ";
     query.equalTo("objectId",id);
     var postsToDisplay = [];
+    var owner="";
 
 	query.find({
 		success: function(results) {
+
     for (var i = 0; i < results.length; i++) {
     	var object = results[i];
     	postsToDisplay.push(object.get('message'));
+    	owner=object.get('owner');
+    	
     }
 
     $scope.posts = [];
@@ -28,9 +32,33 @@ error: function(error) {
 
 
 });
+	
+	
+/*
+    var user = Parse.Object.extend("User");
+	var query1 = new Parse.Query(User);
+	query1.equalTo("objectId",owner);
 
-    
+	query1.find({
+		success: function(results) {
+    for (var i = 0; i < results.length; i++) {
+    	var object = results[i];
+    	postsToDisplay.push(object.get('message'));
+    	owner=object.get('owner');
+    	 $scope.path = "src";
+    }
 
+   
+    $scope.$digest();
+},
+error: function(error) {
+	alert("alert");
+	alert("Error: " + error.code + " " + error.message);
+}
+
+
+});
+*/
 	
 }
 

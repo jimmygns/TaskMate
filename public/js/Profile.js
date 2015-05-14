@@ -10,6 +10,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     query.equalTo("objectId",ID);
     var firstName;
     var lastName;
+    var picURL;
 
 
     query.find({
@@ -19,6 +20,16 @@ profile_app.controller('profileCtrl', function($scope, $http) {
                 var object = results[i];
                 var List = Parse.Object.extend("List");
 
+                var pic = object.get('profilePicture');
+                if (pic == undefined)
+                {
+                    picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
+                }
+                else
+                {
+                    picURL = pic.url();
+                }
+                $scope.picURL = picURL;
                 $scope.firstName = object.get('firstName');
                 $scope.lastName = object.get('lastName');
 
@@ -49,4 +60,38 @@ profile_app.controller('profileCtrl', function($scope, $http) {
             alert("Error: " + error.code + " " + error.message);
         }
     });
+
+    $scope.upload = function(){
+
+        var fileUploadControl = document.getElementById("profilePhotoFileUpload");
+
+        if (fileUploadControl.files.length > 0) {
+            var file = fileUploadControl.files[0];
+            var name = "profilePic.jpg";
+
+            var parseFile = new Parse.File(name, file);
+
+
+            parseFile.save().then(function() {
+                // The file has been saved to Parse.
+
+                //associate the profile photo with the user, need to get the current user
+                //var User = Parse.Object.extend("User");
+                //var pic1 = new Pic();
+                var currentUser = Parse.User.current();
+                currentUser.set("profilePicture", parseFile);
+                currentUser.save();
+
+                alert("The picture has been successfully uploaded.");
+
+                $scope.picURL = parseFile.url();
+                $scope.$digest();
+
+
+            }, function(error) {
+                // The file either could not be read, or could not be saved to Parse.
+                alert("The picture cannot be uploaded, please try again.");
+            });
+        }
+    };
 });

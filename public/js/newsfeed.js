@@ -1,6 +1,10 @@
 Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63",
     "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
+function goHome() {
+    window.location.href = "../newsfeed.html";
+}
+
 function redirect(){
 	var text = document.getElementById("searchInput").value;
 	window.location.href = "../search.html?" + text;

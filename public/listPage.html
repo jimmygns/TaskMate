@@ -3,56 +3,170 @@
 <meta charset="utf-8">
 <script src="http://www.parsecdn.com/js/parse-1.3.5.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 <script src="js/showList.js"></script>
+
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <style type="text/css">
-	li {}
+.desc {
+	text-align:center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 40em;
+}
+.boxed {
+	margin: 20px;
+	padding:5px;
+	background-color: #F8F8FF;
+}
+.list-group {
+	overflow: hidden;
+	border-left: 1px solid rgb(221, 221, 221);
+	border-right: 1px solid rgb(221, 221, 221);
+}
+.list-group-item:first-child, .list-group-item:last-child {
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	overflow: hidden;
+}
+.list-group-item {
+	border-left: 0px solid rgb(221, 221, 221);
+	border-right: 0px solid rgb(221, 221, 221);
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+.list-group-item > .show-menu {
+	position: absolute;
+	height: 100%; width:24px;
+	top: 0px; right: 0px;
+	background-color: rgba(51, 51, 51, 0.2);
+	cursor: pointer;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+.list-group-item > .show-menu > span {
+	position: absolute;
+	top: 50%;
+	margin-top: -7px;
+	padding: 0px 5px;
+}
+.list-group-submenu {
+	position: absolute;
+	top: 0px;
+	right: -88px;
+	white-space: nowrap;
+	list-style: none;
+	padding-left: 0px;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+.list-group-submenu .list-group-submenu-item {
+	float: right;
+	white-space: nowrap;
+	display: block;
+	padding: 10px 15px;
+	margin-bottom: -1px;
+	background-color: rgb(51, 51, 51);
+	color: rgb(235, 235, 235);
+}
+.list-group-item.open {
+	margin-left: -88px;
+}
+.list-group-item.open > .show-menu {
+	right: 88px;
+}
+.list-group-item.open .list-group-submenu{
+	right: 0px;
+}
+.list-group-submenu .list-group-submenu-item.primary {
+	color: rgb(255, 255, 255);
+	background-color: rgb(50, 118, 177);
+}
+.list-group-submenu .list-group-submenu-item.success {
+	color: rgb(255, 255, 255);
+	background-color: rgb(92, 184, 92);
+}
+.list-group-submenu .list-group-submenu-item.danger {
+	color: rgb(255, 255, 255);
+	background-color: rgb(217, 83, 79);
+}
 </style>
 <title>Display Contents of List</title>
 </head>
-<body>
-      <script>
+<body><br/><br/>
+<center>
+      <div style="font-size:75px;">
+	      <script>
         //var name = prompt("Enter the name of your list: "); 
-        var name = "TestList";
+        /* var name = "TestList";
         localStorage.setItem('name', name);
-	document.write(name);
+	document.write(name); */
+	      getName()
       </script>
-
-      <br/>
-      <a href="#" onclick="addGoal();return false;" class="btn btn-success btn-lg"> 
-	      <span class="glyphicon glyphicon-plus"></span> Add Goal</a>
-      <br/>
-      <br/>
+      </div>
+      </center>
 
       <div ng-app ng-controller="GoalController">
-        <label>IN PROGRESS</label>
-        <hr>
-        <h1 ng-repeat="IncompleteGoal in IncompleteGoals">
+        <div ng-repeat="Description in Descriptions">
+		<div class="desc"> {{Description.name}}</div></div>
+	<br/>
 
-	  <ul class="list-inline">
-		  <li> {{IncompleteGoal.name}} </li>
-      <li><font color="red">due: {{IncompleteGoal.dueDate}}</font></li>
-		  <li><a href "#" onclick="completeButton({{$index}});return false;" class="list-group-item">
-			  <span class="glyphicon glyphicon-ok"></span> Complete </a></li>
-		  <li> <a href "#" onclick="deleteGoal({{$index}});return false;" class="list-group-item">
-				  <span class="glyphicon glyphicon-remove"></span> Delete</a></li>
-          </ul>
-	  </h1>
+      <center><button class="btn dropdown-toggle" type="button" onclick="showInProgress()">IN PROGRESS <span class="caret"></span></button></center>
+<div class="boxed" id="InProgress">
+	<br/>
+	<div class="row" ng-repeat="IncompleteGoal in IncompleteGoals">
+		<div class="col-sm-offset-4 col-sm-4">
+		<ul class="list-group">
+		  <li class="list-group-item" id="{{$index}}"> {{IncompleteGoal.name}} <font color="red"> {{IncompleteGoal.dueDate}}</font>
+	                <span class="show-menu" onclick="showMenu({{$index}})">
+		  <span class="glyphicon glyphicon-chevron-right"></span></span>
+	  <ul class="list-group-submenu">
+		  <li class="list-group-submenu-item success" type="button" onclick="completeGoal({{$index}})"><span class="glyphicon glyphicon-ok"></span></li>
+		  <li class="list-group-submenu-item danger" type="button" onclick="deleteGoal({{$index}})"><span class="glyphicon glyphicon-remove"></span></li>
+    	</ul>
+          </li>
+  </ul>
+  </div>
+  </div>
+  </div>
 
         <br/>
-        <br/>
-	<label>COMPLETE</label>
-        <hr>
-        <h1 ng-repeat="CompletedGoal in CompletedGoals">
-          {{CompletedGoal.name}}
-
-	  </span>
-        </h1>
+	      <div class="dropdown">
+		      <center> <button class="btn dropdown-toggle" type="button" onclick="showComplete()">COMPLETE <span class="caret"></span></button></center>
+		<div class="boxed" id="Complete">
+			</br>
+	<div class="row" ng-repeat="CompletedGoal in CompletedGoals">
+		<div class="col-sm-offset-4 col-sm-4">
+			<ul class="list-group">
+				<li class="list-group-item"> {{CompletedGoal.name}} 
+				</li>
+				</ul>
+	  </div>
       </div>
-
+</div></div>
+<br/>
+<br/>
+<center><button type="button" ng-click="addGoal()" class="btn btn-lg"> Create Goal</button></center><br/><br/>
+</div>
 </body>
+<script> setDisplay() </script>
 </html>
 
 

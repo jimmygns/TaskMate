@@ -5,57 +5,57 @@ var Goal = Parse.Object.extend("Goal");
 var Newsfeed = Parse.Object.extend("Newsfeed");
 var incompleteGoal = [];
 var name;
-//var ListId = location.search;
-//ListId = ListId.slice(1);
-var listID = "7nGeenqDWO";
+var ListId = location.search;
+ListId = ListId.slice(1);
 var ownerID;
-
-function getName() {
-	this.name = "TestList";
-	document.write(name);
-}
 
 function GoalController($scope) {
      var lists = new Parse.Query(List);
 
-     lists.equalTo("name", name);
+     lists.equalTo("objectId", ListId);
 
      var description;
 
      lists.find({
        success: function(results) {
          for (var i = 0; i < results.length; i++) {
-	   description = results[i].get("description");
-           ownerID = results[i].get('owner');
-         }
-	 console.log(description);
+             description = results[i].get("description");
+             ownerID = results[i].get('owner');
+             name = results[i].get("name");
 
+         }
 
          var goals = new Parse.Query(Goal);
-         goals.equalTo("owner", listID);
+         goals.equalTo("owner", ListId);
          var completedGoalName = [];
          var incompleteGoalName = [];
          var incompleteGoalDueDate = [];
 
          goals.find({
            success: function(results) {
-             for (var i = 0; i < results.length; i++) {
+             for (var i = 0; i < results.length; i++)
+             {
 
                if (results[i].get('completed') === true){
                 completedGoalName.push(results[i].get('name'));
                }
-               else {
+               else
+               {
                	incompleteGoalName.push(results[i].get('name'));
                 incompleteGoal.push(results[i]);
-		if (results[i].get('dueDate')===null) {
+		if (results[i].get('dueDate')===null)
+        {
 			incompleteGoalDueDate.push("");
-		} else {
+		} else
+        {
                 incompleteGoalDueDate.push(results[i].get('dueDate').toDateString());
 		}		}
              }
              $scope.Descriptions=[];
              $scope.CompletedGoals=[];
              $scope.IncompleteGoals=[];
+               $scope.Name = name;
+
 
 	     $scope.Descriptions.push({name: description});
 
@@ -82,7 +82,6 @@ function GoalController($scope) {
      });
 
 $scope.addGoal = function() {
-  	console.log("add goal");
   	var goalName = prompt("Enter the name: ");
   	var stringDate = prompt("Enter the due date in format MONTH DAY, YEAR: ");
    
@@ -94,7 +93,7 @@ $scope.addGoal = function() {
 
         goal.set("name", goalName);
 
-        goal.set("owner", listID);
+        goal.set("owner", ListId);
       
 		if (stringDate.length > 0) {
            goal.set("dueDate", new Date(stringDate));
@@ -108,7 +107,7 @@ $scope.addGoal = function() {
 			    newsfeed.set('goal', goal.id);
 			    console.log("Goal ID:");
 				console.log(goal.id);
-				newsfeed.set('list', listID);
+				newsfeed.set('list', ListId);
 				newsfeed.set('owner', ownerID);
 				newsfeed.set('message', "User has created goal!");
 				newsfeed.set('numLikes', 0);
@@ -132,7 +131,7 @@ $scope.addGoal = function() {
   }
   else {
     alert("Cannot read the name!");
-    addGoal();
+    //addGoal();
   }
 
 }
@@ -147,7 +146,7 @@ function completeGoal(index) {
   var newsfeed = new Newsfeed();
   
   newsfeed.set('goal', goal.id);
-  newsfeed.set('list', listID);
+  newsfeed.set('list', ListId);
   newsfeed.set('owner', ownerID);
   newsfeed.set('message', "User has completed goal!"),
   newsfeed.set('numLikes', 0);

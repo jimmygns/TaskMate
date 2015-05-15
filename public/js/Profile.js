@@ -11,7 +11,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     var firstName;
     var lastName;
     var picURL;
-
+    var currentUser = Parse.User.current();
 
     query.find({
         success: function(results) {
@@ -78,7 +78,6 @@ profile_app.controller('profileCtrl', function($scope, $http) {
                 //associate the profile photo with the user, need to get the current user
                 //var User = Parse.Object.extend("User");
                 //var pic1 = new Pic();
-                var currentUser = Parse.User.current();
                 currentUser.set("profilePicture", parseFile);
                 currentUser.save();
 
@@ -93,5 +92,29 @@ profile_app.controller('profileCtrl', function($scope, $http) {
                 alert("The picture cannot be uploaded, please try again.");
             });
         }
+    };
+
+    $scope.makeList = function() {
+        var name = document.getElementById('listName').value;
+        var description = document.getElementById('listDescription').value
+
+        var List = Parse.Object.extend("List");
+        var list = new List;
+        list.set("owner", currentUser.id);
+        list.set("name", name);
+        list.set("description", description);
+        list.save(null, {
+            success: function(list) {
+                window.location.href = "../listPage.html?" + list.id;
+
+            },
+            error: function(list, error) {
+                alert('Failed to create new object, with error code: ' + error.message);
+            }
+        });
+    };
+
+    $scope.goToList = function() {
+        window.location.href = "../listPage.html?" + list.id;
     };
 });

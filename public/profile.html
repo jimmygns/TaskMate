@@ -93,7 +93,7 @@
                     <div class ="col1">
                         <div class="container">
                             <div class = "scrolling_new_list">
-                                <a href="http://www.runescape.com/"><button class="btn2 New_List_Button" rel="6">+</button> Create New List</a>
+                                <p></p>
                             </div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                     <div ng-controller="profileCtrl">
 
                     <div class = "col2">
-                        <a href ="http://runescape.com"> <h1> {{firstName}} {{lastName}} </h1> </a>
+                        <h1> {{firstName}} {{lastName}} </h1>
                         <script type="text/javascript" src="js/Profile.js"></script>
 
 
@@ -121,16 +121,31 @@
 
                         <div class = "create_new_goal">
 
-                            <img src = "http://www.lastrose.com/media/iconmonstr-edit-10-icon-300x300.png" alt = submit>
-
-                            <input id="new_goal_text" type="text" value="Enter Goal Here" onfocus="watermark('new_goal_text','Create New List');" onblur="watermark('new_goal_text','Create New List');" />
+                            <button id="createNewListButton" type="button" class="btn btn-success btn-lg">Create New List</button>
+                            <div style="display:none" id="createListArea">
+                                <p>List Name: </p>
+                                <input type="text" class="form-control" id="listName">
+                                <p>List Description (Optional): </p>
+                                <textarea class="form-control" rows="5" id="listDescription"></textarea>
+                                <br>
+                                <button type="button" class="btn btn-success btn-lg" ng-click="makeList()">Create!</button>
+                                <button type="button" id="cancelCreateList" class="btn btn-danger btn-lg">Cancel</button>
+                            </div>
 
                         </div>
 
+                        <script>
+                        $("#createNewListButton").click(function() {
+                        $("#createListArea").show("slow");
+                        });
+                        $("#cancelCreateList").click(function() {
+                        $("#createListArea").hide("slow");
+                        });
+                        </script>
 
                         <div class = "list_of_lists">
                             <ul ng-repeat="toDoList in toDoLists">
-                                <a href = "listPage.html?=asdf"><li>{{toDoList.name}}</li></a>
+                                <li><button type="button" class="btn btn-success btn-lg" ng-click="goToList()">{{toDoList.name}}</button></li>
                             </ul>
                         </div>
 

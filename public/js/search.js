@@ -1,6 +1,6 @@
 function input(){
   var id=location.search;
-  var name = id.substring(2,id.length);
+  var name = id.substring(1,id.length);
   document.getElementById("keywords").value=name;
   search();
 }

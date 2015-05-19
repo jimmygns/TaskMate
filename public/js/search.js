@@ -42,12 +42,15 @@ query.find({
 
       li.style.textAlign="justify";
       li.style.textIndent="10px";
-      li.appendChild(text);
       li.className="list-group-item";
       li.style.fontSize="x-large";
       li.style.margin="10px 14px 10px 14px";
       li.style.padding="25px";
 
+
+        var link = document.createElement('a'); // create the link
+        link.setAttribute('href', '/profile.html?' + object.id);
+        link.appendChild(text);
 
       //adding a button
       var button = document.createElement("button");
@@ -66,7 +69,7 @@ query.find({
 
         //loading profile pic
         var pic = object.get('profilePicture');
-        if (pic == undefined)
+        if (pic == null)
         {
             picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
         }
@@ -80,7 +83,13 @@ query.find({
         img.style.float="left";
         img.height="50";
         img.width="50";
-        li.appendChild(img);
+
+        var link2 = document.createElement('a'); // create the link
+        link2.setAttribute('href', '/profile.html?' + object.id);
+        link2.appendChild(img);
+
+        li.appendChild(link);
+        li.appendChild(link2);
         li.appendChild(button);
         ul.appendChild(li);
         //document.getElementById("results").innerHTML+=object.get('username')+'\r\n';

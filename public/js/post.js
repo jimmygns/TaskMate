@@ -16,50 +16,71 @@ var NewsfeedController =function ($scope){
     
     var messageStr = result.get('message');
     var likes = result.get('numLikes');
+    var arrayOfUsers = result.get('liked');
+    var flag=true;
+
+
     owner=result.get('owner');
     //alert(likes);
+
     $scope.message = messageStr;
-    $scope.Like = "Like"+likes;
-    $scope.$digest();
-    
+    if(arrayOfUsers!=null){
+    	for(var i=0; i<arrayOfUsers.length; i++){
+    	//Parse.User.current().id
+    	if(arrayOfUsers[i]=='8EWpEXknMZ'){
+    		flag=false;
+    		$scope.Like = "Unlike"+likes;
+    		break;
+    	}
+    }    
+}
+if(flag){
+	$scope.Like = "Like"+likes;
+}
+$scope.$digest();
+
 
 
     //retrieving the user object
     var User = Parse.Object.extend("User");
-	var query1 = new Parse.Query(User);
-	
-	query1.get(owner, {
-		success: function(result) {
-			var name=result.get('username');
-			var image=result.get('profilePic');
-			if (image == undefined)
-			{
-				var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
-			}
-			else
-			{
-				var picURL = pic.url();
-			}
-			$scope.username = name;
-			$scope.profilePicture=picURL;
-			$scope.profilePage="../profile.html?" + owner;
-			$scope.$digest();
+    var query1 = new Parse.Query(User);
 
-		},
-		error: function(error) {
-			alert("alert");
-			alert("Error: " + error.code + " " + error.message);
-		}
+    query1.get(owner, {
+    	success: function(result) {
+    		var name=result.get('username');
+    		var image=result.get('profilePic');
+    		if (image == undefined)
+    		{
+    			var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
+    		}
+    		else
+    		{
+    			var picURL = pic.url();
+    		}
+    		$scope.username = name;
+    		$scope.profilePicture=picURL;
+    		$scope.profilePage="../profile.html?" + owner;
+    		$scope.$digest();
+
+    	},
+    	error: function(error) {
+    		alert("alert");
+    		alert("Error: " + error.code + " " + error.message);
+    	}
 
 
-	});
+    });
 
 	//displaying comment to-do
-	/*
-
+	
+	
 	var Comment = Parse.Object.extend("Comment");
 	var query2 = new Parse.Query(Comment);
 	query2.equalTo('owner',id);
+	$scope.Comments=[];
+	var index=0;
+	//var array1=[];
+	//var array2=[];
 
 	query2.find({
 		success: function(results) {
@@ -67,15 +88,59 @@ var NewsfeedController =function ($scope){
     // Do something with the returned Parse.Object values
     for (var i = 0; i < results.length; i++) { 
     	var object = results[i];
-    	var json='{"id":' + object.id +',' + '"name":' +object.get('Name') + '}';
-    	array.push(json);
-    	//alert(object.id + ' - ' + object.get('Name'));
-    }
-    $scope.toDoLists=[];
-    for(var i = 0; i < array.length;i++){
-		$scope.toDoLists.push({name: array[i]});
-    }
-	$scope.$digest();
+    	$scope.Comments.push({content: object.get('content'), 
+    		username: "", 
+    		commenterProfilePage: "",
+    		commenterProfilePicture: "", 
+    	});
+    	var commenterId=object.get('user');
+
+    	var User = Parse.Object.extend('User');
+    	var query3 = new Parse.Query(User);
+    	query3.get(commenterId, {
+    		success: function(result) {
+    			var name=result.get('username');
+    			var image=result.get('profilePic');
+    			if (image == undefined)
+    			{
+    				var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
+    			}
+    			else
+    			{
+    				var picURL = pic.url();
+    			}
+    			$scope.Comments[index].username=name;
+    			$scope.Comments[index].commenterProfilePicture=picURL;
+    			$scope.Comments[index].commenterProfilePage="../profile.html?" + commenterId;
+    			index++;
+    			$scope.$digest();
+
+    		},
+    		error: function(error) {
+    			alert("alert");
+    			alert("Error: " + error.code + " " + error.message);
+    		}
+
+
+    	});
+    	
+
+
+
+    	//var commenter=object.get('commenter');
+    	/*
+    	commenter.fetch({
+    		success: function(commenter) {
+    			alert("success");
+    			var name = commenter.get("username");
+    			$scope.Comments.push({username: name, content: object.get('content')});
+    		}
+    	});
+*/
+
+}
+
+$scope.$digest();
 },
 error: function(error) {
 	alert("alert");
@@ -84,7 +149,7 @@ error: function(error) {
 
 
 });
-*/
+
 
 
 
@@ -98,22 +163,35 @@ error: function(object, error) {
 }
 });
 
-	
+
 $scope.like = function(){
 	
 	var status=document.getElementById('likeThePost').innerText;
 	query.get(id, {
 		success: function(result) {
 			var temp=result.get('numLikes');
+			var arrayOfUsers=result.get('liked');
 
 			if(status.charAt(0)=="L"){
 				
 				result.set('numLikes',temp+1);
+				//Parse.User.current().id
+				result.add('liked',"8EWpEXknMZ");
 				$scope.Like="Unlike"+result.get('numLikes');
 				result.save();
 			}
 			else{
 				result.set('numLikes',temp-1);
+				var index=0;
+				for(var i=0; i<arrayOfUsers.length; i++){
+					//Parse.User.current().id
+					if(arrayOfUsers[i]=="8EWpEXknMZ"){
+						index=i;
+						break;
+					}
+				}
+				arrayOfUsers.splice(index,1);
+				result.set('liked',arrayOfUsers);
 				$scope.Like="Like"+result.get('numLikes');
 				result.save();
 			}
@@ -131,16 +209,12 @@ $scope.like = function(){
 $scope.addComment=function(){
 
 	var Comment=Parse.Object.extend("Comment");
-
-	var User=Parse.Object.extend("User");
 	var comment=new Comment();
-	var user=new User();
-	var relation = comment.relation("commenter");
+	
 	//user.id=Parse.User.current().id;
 	user.id="8EWpEXknMZ";
 	
 	comment.set('owner',id);
-	relation.add(user);
 	comment.set('user',"8EWpEXknMZ");
 	var input=document.getElementById("commentInput").value;
 	comment.set('content',input);
@@ -149,99 +223,6 @@ $scope.addComment=function(){
 
 }
 
-
-
-
-/*
-
-
-	query.find({
-		success: function(results) {
-
-    for (var i = 0; i < results.length; i++) {
-    	var object = results[i];
-    	postsToDisplay.push(object.get('message'));
-    	owner=object.get('owner');
-    	
-    }
-
-    $scope.posts = [];
-    for(var i=0; i<postsToDisplay.length; i++){
-    	$scope.posts.push({message: postsToDisplay[i]});
-    }
-    $scope.$digest();
-},
-error: function(error) {
-	alert("alert");
-	alert("Error: " + error.code + " " + error.message);
-}
-});
-*/	
-	
-/*
-    var user = Parse.Object.extend("User");
-	var query1 = new Parse.Query(User);
-	query1.equalTo("objectId",owner);
-
-	query1.find({
-		success: function(results) {
-    for (var i = 0; i < results.length; i++) {
-    	var object = results[i];
-    	postsToDisplay.push(object.get('message'));
-    	owner=object.get('owner');
-    	 $scope.path = "src";
-    }
-
-   
-    $scope.$digest();
-},
-error: function(error) {
-	alert("alert");
-	alert("Error: " + error.code + " " + error.message);
 }
 
 
-});
-*/
-	
-}
-
-
-function like(button_id){
-	var id = "OS9PJA9yxX";
-	var Newsfeed = Parse.Object.extend("Newsfeed");
-	var query = new Parse.Query(Newsfeed);
-    query.equalTo("objectId",id);
-
-    var el = document.getElementById(button_id);
-
-	query.find({
-		success: function(results) {
-    for (var i = 0; i < results.length; i++) {
-    	var object = results[i];
-    	var numOfLikes = object.get('numLikes');
-    	//change the button text
-		if(el.innerText == "Like"){
-			el.innerText = "Liked";
-			numOfLikes = numOfLikes + 1;
-			object.set("numLikes", numOfLikes);
-			object.save();
-		}
-		else{
-			el.innerText = "Like";
-			numOfLikes = numOfLikes - 1;
-			object.set("numLikes", numOfLikes);
-			object.save();
-		}
-    }
-
-},
-error: function(error) {
-	alert("alert");
-	alert("Error: " + error.code + " " + error.message);
-}
-
-
-});
-
-}

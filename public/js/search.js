@@ -9,7 +9,7 @@ function input(){
 function search(){
 
 
-Parse.initialize("ZLDPnL5t8AzKUzPF2OJfLcP7GGS5584iJSMGXkRS", "3VWB7w2Gri9KbRTmzKp8Lr6hInyAYaiSVjig87uB");
+    Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 //var List = Parse.Object.extend("List");
 var query = new Parse.Query(Parse.User);
 var name = document.getElementById("keywords").value;
@@ -63,21 +63,29 @@ query.find({
           this.innerText="Follow";
         }
       };
-      
 
+        //loading profile pic
+        var pic = object.get('profilePicture');
+        if (pic == undefined)
+        {
+            picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
+        }
+        else
+        {
+            picURL = pic.url();
+        }
+        var img=document.createElement("img");
+        img.src=picURL;
+        img.className="img-circle";
+        img.style.float="left";
+        img.height="50";
+        img.width="50";
+        li.appendChild(img);
+        li.appendChild(button);
+        ul.appendChild(li);
+        //document.getElementById("results").innerHTML+=object.get('username')+'\r\n';
+        //alert(object.id + ' - ' + object.get('username'));
 
-      //loading profile pic
-      var img=document.createElement("img");
-      img.src="http://coolstatus.co/wp-content/uploads/2014/09/357201-how-to-lock-down-your-facebook-profile.jpg";
-      img.className="img-circle";
-      img.style.float="left";
-      img.height="50";
-      img.width="50";
-      li.appendChild(img);
-      li.appendChild(button);
-      ul.appendChild(li);
-      //document.getElementById("results").innerHTML+=object.get('username')+'\r\n';
-      //alert(object.id + ' - ' + object.get('username'));
     }
 
    

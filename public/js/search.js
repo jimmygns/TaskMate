@@ -13,13 +13,14 @@ function search(){
 //var List = Parse.Object.extend("List");
 var query = new Parse.Query(Parse.User);
 var name = document.getElementById("keywords").value;
+    name = name.toLowerCase();
 var ul = document.getElementById("results");
 ul.innerHTML='';
 if(name===""){
   alert("username cannot be empty!");
   return;
 }
-query.contains("username",name);
+query.contains("fullName",name);
 
 query.find({
   success: function(results) {
@@ -38,7 +39,7 @@ query.find({
       }
       */
       var li = document.createElement("li");
-      var text=document.createTextNode(object.get('username'));
+      var text=document.createTextNode(object.get('firstName') + " " + object.get('lastName'));
 
       li.style.textAlign="justify";
       li.style.textIndent="10px";

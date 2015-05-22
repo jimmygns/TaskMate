@@ -12,6 +12,8 @@ var ListId = location.search;
 ListId = ListId.slice(1);
 var ownerID;
 var owner;
+var ownerName;
+var goalName;
 
 function GoalController($scope) {
      var lists = new Parse.Query(List);
@@ -32,6 +34,7 @@ function GoalController($scope) {
                  success: function(results) {
                      for (var i = 0; i < results.length; i++) {
                          owner = results[i];
+                         ownerName = owner.get("firstName") + " " + owner.get("lastName");
                      }
                  },
                  error: function(error) {
@@ -98,7 +101,7 @@ function GoalController($scope) {
      });
 
 $scope.addGoal = function() {
-  	var goalName = prompt("Enter the name: ");
+  	goalName = prompt("Enter the name: ");
   	var stringDate = prompt("Enter the due date in format MONTH DAY, YEAR: ");
    
   	if (goalName.length > 0) {
@@ -125,7 +128,7 @@ $scope.addGoal = function() {
 				console.log(goal.id);
 				newsfeed.set('list', ListId);
 				newsfeed.set('owner', owner);
-				newsfeed.set('message', "User has created goal!");
+				newsfeed.set('message', ownerName + " has created goal " + goalName);
 				newsfeed.set('numLikes', 0);
 				newsfeed.set('numComments', 0);
 				newsfeed.save(null, {
@@ -158,13 +161,14 @@ $scope.addGoal = function() {
 function completeGoal(index) {  
   var goal = incompleteGoal[index];
 
+    goalName = goal.get("name");
   goal.set('completed', true);
   var newsfeed = new Newsfeed();
   
   newsfeed.set('goal', goal.id);
   newsfeed.set('list', ListId);
   newsfeed.set('owner', owner);
-  newsfeed.set('message', "User has completed goal!"),
+  newsfeed.set('message', ownerName + " has completed goal " + goalName);
   newsfeed.set('numLikes', 0);
   newsfeed.set('numComments', 0);
 /* 

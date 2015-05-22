@@ -48,7 +48,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
                             var object = results[i];
                             var listNameCur = object.get('name');
 
-                            $scope.toDoLists.push({name: listNameCur});
+                            $scope.toDoLists.push({name: listNameCur, link: "/listPage.html?" + object.id});
                         }
                         $scope.$digest();
                     },

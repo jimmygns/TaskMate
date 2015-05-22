@@ -145,7 +145,11 @@
 
                         <div class = "list_of_lists">
                             <ul ng-repeat="toDoList in toDoLists">
-                                <li><button type="button" class="btn btn-success btn-lg" ng-click="goToList()">{{toDoList.name}}</button></li>
+                                <li>
+                                    <a href = {{toDoList.link}}>
+                                    <button type="button" class="btn btn-success btn-lg" ng-click="goToList()">{{toDoList.name}}</button>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
 

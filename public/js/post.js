@@ -5,6 +5,8 @@ var NewsfeedController =function ($scope){
 	Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 	var Newsfeed = Parse.Object.extend("Newsfeed");
 	var query = new Parse.Query(Newsfeed);
+    //var address=location.search;
+    //var id=address.substring(1,address.length);
 	var id = "OS9PJA9yxX";
 	var owner="";
 	
@@ -26,7 +28,7 @@ var NewsfeedController =function ($scope){
     $scope.message = messageStr;
     if(arrayOfUsers!=null){
     	for(var i=0; i<arrayOfUsers.length; i++){
-    	//Parse.User.current().id
+    	//var current_Id = Parse.User.current().id;
     	if(arrayOfUsers[i]=='8EWpEXknMZ'){
     		flag=false;
     		$scope.Like = "Unlike"+likes;
@@ -211,15 +213,45 @@ $scope.addComment=function(){
 	var Comment=Parse.Object.extend("Comment");
 	var comment=new Comment();
 	
-	//user.id=Parse.User.current().id;
-	user.id="8EWpEXknMZ";
+	//var current_Id=Parse.User.current().id;
+	//user.id="8EWpEXknMZ";
 	
 	comment.set('owner',id);
 	comment.set('user',"8EWpEXknMZ");
 	var input=document.getElementById("commentInput").value;
 	comment.set('content',input);
 	comment.save();
-	location.reload();
+
+    //Notification object initialized 
+    var Notification = Parse.Object.extend("Notification");
+    var notification = new Notification();
+
+    var User = Parse.Object.extend("User");
+    var query4 = new Parse.Query(User);
+    query4.get(current_Id, {
+      success: function(result) {
+    // The object was retrieved successfully.
+    notification.set("owner",owner);
+    notification.set("outgoing",id);
+    notification.set("user",current_Id);
+    notification.set("type","comment");
+    var notifiContent=result.get('username')+" commented on your post.";
+    notification.set("content",notifiContent);
+    notification.save();
+    location.reload();
+},
+error: function(object, error) {
+    // The object was not retrieved successfully.
+    // error is a Parse.Error with an error code and message.
+}
+});
+
+    
+
+
+
+
+	
 
 }
 

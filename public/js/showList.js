@@ -11,6 +11,7 @@ var name;
 var ListId = location.search;
 ListId = ListId.slice(1);
 var ownerID;
+var owner;
 
 function GoalController($scope) {
      var lists = new Parse.Query(List);
@@ -24,8 +25,20 @@ function GoalController($scope) {
          for (var i = 0; i < results.length; i++) {
              description = results[i].get("description");
              ownerID = results[i].get('owner');
+             var User = Parse.Object.extend("User");
+             var query = new Parse.Query(User);
+             query.equalTo("objectId", ownerID);
+             query.find({
+                 success: function(results) {
+                     for (var i = 0; i < results.length; i++) {
+                         owner = results[i];
+                     }
+                 },
+                 error: function(error) {
+                     alert("Error: " + error.code + " " + error.message);
+                 }
+             });
              name = results[i].get("name");
-
          }
 
          var goals = new Parse.Query(Goal);
@@ -111,7 +124,7 @@ $scope.addGoal = function() {
 			    console.log("Goal ID:");
 				console.log(goal.id);
 				newsfeed.set('list', ListId);
-				newsfeed.set('owner', ownerID);
+				newsfeed.set('owner', owner);
 				newsfeed.set('message', "User has created goal!");
 				newsfeed.set('numLikes', 0);
 				newsfeed.set('numComments', 0);
@@ -150,7 +163,7 @@ function completeGoal(index) {
   
   newsfeed.set('goal', goal.id);
   newsfeed.set('list', ListId);
-  newsfeed.set('owner', ownerID);
+  newsfeed.set('owner', owner);
   newsfeed.set('message', "User has completed goal!"),
   newsfeed.set('numLikes', 0);
   newsfeed.set('numComments', 0);

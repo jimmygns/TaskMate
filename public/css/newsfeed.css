@@ -1,7 +1,10 @@
 .well{
 	letter-spacing: 1px;
-	margin-left: 40px;
+}
 
+.well:hover {
+	background-color: #D0D0D0;
+	letter-spacing: 1px;
 }
 
 .padding {
@@ -32,5 +35,28 @@
 	color: black;
 	font-size: 14px;
 	position: relative;
-	bottom: 7px;
+	bottom: 10px;
+}
+
+.view{
+	position: relative;
+	float: right;
+	font-family: Arial, Helvetica, sans-serif;
+	color: black;
+	font-size: 14px;
+	bottom: 100px;
+	left: 50px;
+	text-decoration: underline;
+}
+
+.view:hover {
+	position: relative;
+	float: right;
+	font-family: Arial, Helvetica, sans-serif;
+	color: black;
+	font-size: 14px;
+	bottom: 100px;
+	left: 50px;
+	text-decoration: underline;
+	cursor: pointer;
 }

@@ -12,19 +12,49 @@ function redirect(){
 
 function goToProfile(){
 	var text = Parse.User.current().id;
-	//alert(text);
 	window.location.href = "../profile.html?" + text;
 };
 
 function logOut(){
 	Parse.User.logOut(); 
-    window.location.href = "../index.html";
+  window.location.href = "../index.html";
 };
+
 
 var newsfeedApp = angular.module("newsfeedApp", []);
 
 newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
     Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
+
+
+  $scope.goToPost = function(index){
+    window.location.href = "../post.html?" + $scope.posts[index].objectId;
+  };
+
+
+  //increment numLikes
+  $scope.plusOne = function(index) {
+
+    var query = new Parse.Query('Newsfeed');
+    query.get($scope.posts[index].objectId, {
+      success: function(newsfeed){
+        newsfeed.increment('numLikes');
+        newsfeed.save();
+        $scope.posts[index].numLikes = newsfeed.get('numLikes');
+        $scope.$digest();
+      },
+      error: function(object, error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
+    });
+
+ 
+  };
+
+
+
+
+
 
 	var query = new Parse.Query("Newsfeed");
 
@@ -95,8 +125,8 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
     		$scope.posts[i].message = newsfeed.get('message');
     		$scope.posts[i].numLikes = newsfeed.get('numLikes');
     		$scope.posts[i].numComments = newsfeed.get('numComments');
+        $scope.posts[i].objectId = newsfeed.id;
         $scope.$digest();
-
 
 
 
@@ -107,7 +137,7 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
   	},
 
   	error: function(error) {
-    	//alert("Error: " + error.code + " " + error.message);
+    	alert("Error: " + error.code + " " + error.message);
   	}
 	});
 

@@ -112,8 +112,12 @@
           <p>{{post.numLikes}}Likes &nbsp; {{post.numComments}}Comments</p>
         </div>
 
-        <div class ="button">
+        <div class ="button" ng-click="plusOne($index)">
           <button type="button" class="btn btn-default">Like</button>
+        </div>
+
+        <div class="view" ng-click="goToPost($index)">
+          <p>View details</p>
         </div>
 
       </div>

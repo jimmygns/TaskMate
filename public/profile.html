@@ -147,7 +147,7 @@
                             <ul ng-repeat="toDoList in toDoLists">
                                 <li>
                                     <a href = {{toDoList.link}}>
-                                    <button type="button" class="btn btn-success btn-lg" ng-click="goToList()">{{toDoList.name}}</button>
+                                    <button type="button" class="btn btn-success btn-lg">{{toDoList.name}}</button>
                                     </a>
                                 </li>
                             </ul>
@@ -168,18 +168,14 @@
                             </ul>
 
                             <div class="container">
-                                <button class="btn followButton" rel="6">Follow</button>
+                                <div ng-controller="profileCtrl">
+                                    <button class="btn followButton" rel="6" ng-click="follow()">Follow</button>
+                                    <button class="btn unfollowButton" rel="6" ng-click="unfollow()">Unfollow</button>
+                                </div>
                             </div>
 
                         </div>
                     </div>
-
-                    <div class="container">
-                        <button class="btn followButton" rel="6">Follow</button>
-                    </div>
-
-
-
                 </div>
             </div>
         </div>

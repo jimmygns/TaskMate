@@ -13,6 +13,8 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     var picURL;
     var currentUser = Parse.User.current();
 
+    
+
     query.find({
         success: function(results) {
             // Do something with the returned Parse.Object values

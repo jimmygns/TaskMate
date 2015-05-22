@@ -1,4 +1,7 @@
+
 Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
+
+
 
 var List = Parse.Object.extend("List");
 var Goal = Parse.Object.extend("Goal");
@@ -214,3 +217,4 @@ function setDisplay() {
    document.getElementById('InProgress').style.display = "";
    document.getElementById('Complete').style.display = "none";
 }
+

@@ -20,13 +20,14 @@ function logOut(){
   window.location.href = "../index.html";
 };
 
-function changeText(){
-  var el = document.getElementById('likeBtn');
-  if (el.innerText === 'Like')
-    el.innerText = 'Unlike';
-  else
-    el.innerText = 'Like';
-}
+function goToAboutUs(){
+  window.location.href = "../aboutus.html";
+};
+
+function goToNotification(){
+  window.location.href = "../notifications.html";
+};
+
 
 
 var newsfeedApp = angular.module("newsfeedApp", []);
@@ -52,7 +53,18 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
         var likedArray = newsfeed.get('liked');
         var result = $.inArray(currentId, likedArray);
 
+        //user like a post
         if (result === -1){
+          var Notification = Parse.Object.extend("Notification");
+          var notif = new Notification();
+          var owner = newsfeed.get('owner').id;
+          notif.set("owner", owner);
+          var content = Parse.User.current().get('firstName') + " " + Parse.User.current().get('lastName') + " liked your post.";
+          notif.set("content", content);
+          notif.set("type", "like");
+          notif.set("user", Parse.User.current());
+          notif.set("outgoing", newsfeed.id);
+          notif.save();
 
           newsfeed.increment('numLikes');
           newsfeed.add('liked', currentId);
@@ -62,6 +74,7 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
           $scope.$digest();
         }
 
+        //user unlike a post
         else {
           newsfeed.set('numLikes', newsfeed.get('numLikes') - 1);
           newsfeed.get('liked').splice(result, 1);

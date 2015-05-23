@@ -119,4 +119,28 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     $scope.goToList = function() {
         window.location.href = "../listPage.html?" + list.id;
     };
+
+    $scope.follow = function() {
+        currentUser.addUnique("following", ID);
+        currentUser.save(null, {
+            success: function(object) {
+                alert("Now following this user!");
+            },
+            error: function(object, error) {
+                alert('Failed to follow, with error code: ' + error.message);
+            }
+        });
+    };
+
+    $scope.unfollow = function() {
+        currentUser.remove("following", ID);
+        currentUser.save(null, {
+            success: function(object) {
+                alert("No longer following this user!");
+            },
+            error: function(object, error) {
+                alert('Failed to follow, with error code: ' + error.message);
+            }
+        });
+    }
 });

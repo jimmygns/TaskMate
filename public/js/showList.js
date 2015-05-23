@@ -11,6 +11,9 @@ var name;
 var ListId = location.search;
 ListId = ListId.slice(1);
 var ownerID;
+var owner;
+var ownerName;
+var goalName;
 
 function GoalController($scope) {
      var lists = new Parse.Query(List);
@@ -24,8 +27,21 @@ function GoalController($scope) {
          for (var i = 0; i < results.length; i++) {
              description = results[i].get("description");
              ownerID = results[i].get('owner');
+             var User = Parse.Object.extend("User");
+             var query = new Parse.Query(User);
+             query.equalTo("objectId", ownerID);
+             query.find({
+                 success: function(results) {
+                     for (var i = 0; i < results.length; i++) {
+                         owner = results[i];
+                         ownerName = owner.get("firstName") + " " + owner.get("lastName");
+                     }
+                 },
+                 error: function(error) {
+                     alert("Error: " + error.code + " " + error.message);
+                 }
+             });
              name = results[i].get("name");
-
          }
 
          var goals = new Parse.Query(Goal);
@@ -85,7 +101,7 @@ function GoalController($scope) {
      });
 
 $scope.addGoal = function() {
-  	var goalName = prompt("Enter the name: ");
+  	goalName = prompt("Enter the name: ");
   	var stringDate = prompt("Enter the due date in format MONTH DAY, YEAR: ");
    
   	if (goalName.length > 0) {
@@ -111,8 +127,8 @@ $scope.addGoal = function() {
 			    console.log("Goal ID:");
 				console.log(goal.id);
 				newsfeed.set('list', ListId);
-				newsfeed.set('owner', ownerID);
-				newsfeed.set('message', "User has created goal!");
+				newsfeed.set('owner', owner);
+				newsfeed.set('message', ownerName + " has created goal " + goalName);
 				newsfeed.set('numLikes', 0);
 				newsfeed.set('numComments', 0);
 				newsfeed.save(null, {
@@ -145,13 +161,14 @@ $scope.addGoal = function() {
 function completeGoal(index) {  
   var goal = incompleteGoal[index];
 
+    goalName = goal.get("name");
   goal.set('completed', true);
   var newsfeed = new Newsfeed();
   
   newsfeed.set('goal', goal.id);
   newsfeed.set('list', ListId);
-  newsfeed.set('owner', ownerID);
-  newsfeed.set('message', "User has completed goal!"),
+  newsfeed.set('owner', owner);
+  newsfeed.set('message', ownerName + " has completed goal " + goalName);
   newsfeed.set('numLikes', 0);
   newsfeed.set('numComments', 0);
 /* 

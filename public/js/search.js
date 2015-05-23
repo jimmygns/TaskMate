@@ -1,6 +1,6 @@
 function input(){
   var id=location.search;
-  var name = id.substring(2,id.length);
+  var name = id.substring(1,id.length);
   document.getElementById("keywords").value=name;
   search();
 }
@@ -9,17 +9,18 @@ function input(){
 function search(){
 
 
-Parse.initialize("ZLDPnL5t8AzKUzPF2OJfLcP7GGS5584iJSMGXkRS", "3VWB7w2Gri9KbRTmzKp8Lr6hInyAYaiSVjig87uB");
+    Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 //var List = Parse.Object.extend("List");
 var query = new Parse.Query(Parse.User);
 var name = document.getElementById("keywords").value;
+    name = name.toLowerCase();
 var ul = document.getElementById("results");
 ul.innerHTML='';
 if(name===""){
   alert("username cannot be empty!");
   return;
 }
-query.contains("username",name);
+query.contains("fullName",name);
 
 query.find({
   success: function(results) {
@@ -38,16 +39,19 @@ query.find({
       }
       */
       var li = document.createElement("li");
-      var text=document.createTextNode(object.get('username'));
+      var text=document.createTextNode(object.get('firstName') + " " + object.get('lastName'));
 
       li.style.textAlign="justify";
       li.style.textIndent="10px";
-      li.appendChild(text);
       li.className="list-group-item";
       li.style.fontSize="x-large";
       li.style.margin="10px 14px 10px 14px";
       li.style.padding="25px";
 
+
+        var link = document.createElement('a'); // create the link
+        link.setAttribute('href', '/profile.html?' + object.id);
+        link.appendChild(text);
 
       //adding a button
       var button = document.createElement("button");
@@ -63,21 +67,35 @@ query.find({
           this.innerText="Follow";
         }
       };
-      
 
+        //loading profile pic
+        var pic = object.get('profilePicture');
+        if (pic == null)
+        {
+            picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
+        }
+        else
+        {
+            picURL = pic.url();
+        }
+        var img=document.createElement("img");
+        img.src=picURL;
+        img.className="img-circle";
+        img.style.float="left";
+        img.height="50";
+        img.width="50";
 
-      //loading profile pic
-      var img=document.createElement("img");
-      img.src="http://coolstatus.co/wp-content/uploads/2014/09/357201-how-to-lock-down-your-facebook-profile.jpg";
-      img.className="img-circle";
-      img.style.float="left";
-      img.height="50";
-      img.width="50";
-      li.appendChild(img);
-      li.appendChild(button);
-      ul.appendChild(li);
-      //document.getElementById("results").innerHTML+=object.get('username')+'\r\n';
-      //alert(object.id + ' - ' + object.get('username'));
+        var link2 = document.createElement('a'); // create the link
+        link2.setAttribute('href', '/profile.html?' + object.id);
+        link2.appendChild(img);
+
+        li.appendChild(link);
+        li.appendChild(link2);
+        li.appendChild(button);
+        ul.appendChild(li);
+        //document.getElementById("results").innerHTML+=object.get('username')+'\r\n';
+        //alert(object.id + ' - ' + object.get('username'));
+
     }
 
    

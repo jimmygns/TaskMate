@@ -14,7 +14,12 @@ signUpApp.controller("signUpCtrl", ["$scope", function signUpCtrl($scope){
 	// other fields can be set just like with Parse.Object
 	user.set("firstName", $scope.firstName);
 	user.set("lastName", $scope.lastName);
-  
+
+        var fullNameStr = ($scope.firstName + " " + $scope.lastName);
+        fullNameStr = fullNameStr.toLowerCase();
+
+        user.set("fullName", fullNameStr);
+
 	user.signUp(null, {
   		success: function(user) {
     	// Hooray! Let them use the app now.

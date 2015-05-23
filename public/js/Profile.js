@@ -11,7 +11,9 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     var firstName;
     var lastName;
     var picURL;
+    var currentUser = Parse.User.current();
 
+    
 
     query.find({
         success: function(results) {
@@ -46,7 +48,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
                             var object = results[i];
                             var listNameCur = object.get('name');
 
-                            $scope.toDoLists.push({name: listNameCur});
+                            $scope.toDoLists.push({name: listNameCur, link: "/listPage.html?" + object.id});
                         }
                         $scope.$digest();
                     },
@@ -78,7 +80,6 @@ profile_app.controller('profileCtrl', function($scope, $http) {
                 //associate the profile photo with the user, need to get the current user
                 //var User = Parse.Object.extend("User");
                 //var pic1 = new Pic();
-                var currentUser = Parse.User.current();
                 currentUser.set("profilePicture", parseFile);
                 currentUser.save();
 
@@ -94,4 +95,52 @@ profile_app.controller('profileCtrl', function($scope, $http) {
             });
         }
     };
+
+    $scope.makeList = function() {
+        var name = document.getElementById('listName').value;
+        var description = document.getElementById('listDescription').value
+
+        var List = Parse.Object.extend("List");
+        var list = new List;
+        list.set("owner", currentUser.id);
+        list.set("name", name);
+        list.set("description", description);
+        list.save(null, {
+            success: function(list) {
+                window.location.href = "../listPage.html?" + list.id;
+
+            },
+            error: function(list, error) {
+                alert('Failed to create new object, with error code: ' + error.message);
+            }
+        });
+    };
+
+    $scope.goToList = function() {
+        window.location.href = "../listPage.html?" + list.id;
+    };
+
+    $scope.follow = function() {
+        currentUser.addUnique("following", ID);
+        currentUser.save(null, {
+            success: function(object) {
+                alert("Now following this user!");
+            },
+            error: function(object, error) {
+                alert('Failed to follow, with error code: ' + error.message);
+            }
+        });
+    };
+
+    $scope.unfollow = function() {
+        currentUser.remove("following", ID);
+        currentUser.save(null, {
+            success: function(object) {
+                alert("No longer following this user!");
+            },
+            error: function(object, error) {
+                alert('Failed to follow, with error code: ' + error.message);
+            }
+        });
+    }
 });

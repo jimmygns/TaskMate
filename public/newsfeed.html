@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html ng-app = "newsfeedApp">
+<html>
 <head lang="en">
     <meta charset="UTF-8">
 
@@ -17,11 +17,28 @@
     <script src = "js/newsfeed.js"></script>
     <link rel="stylesheet" type="text/css" href="css/newsfeed.css"/>
     <title></title>
+
+
+    <style>
+      html {
+        background-image: url("../img/landingPageBG.png");
+        background-repeat: no-repeat;
+        background-position: top;
+        background-size: cover;
+      }
+
+      body {
+        background-image: url("../img/landingPageBG.png");
+        background-repeat: no-repeat;
+        background-position: top;
+        background-size: cover;
+      }
+    </style>
 </head>
 
 
 
-<body>
+<body ng-app = "newsfeedApp">
 
 
 <nav class="navbar navbar-default">
@@ -103,6 +120,16 @@
   <div ng-repeat="post in posts">
     <div class="padding">
       <div class="well well-lg">
+        
+        <div class="userInfo">
+          <img ng-src={{post.picURL}} alt="Profile Picture" style="width:60px;height:60px;-webkit-border-radius: 30px;-moz-border-radius: 30px;">
+
+          <p>{{post.firstName}} {{post.lastName}}</p>
+
+          <div class="view" ng-click="goToPost($index)">
+            <p>View details</p>
+          </div>
+        </div>
 
         <div class="message">
           <p>{{post.message}}</p>
@@ -113,12 +140,9 @@
         </div>
 
         <div class ="button" ng-click="plusOne($index)">
-          <button type="button" class="btn btn-default">Like</button>
+          <button type="button" class="btn btn-default">{{post.btnText}}</button>
         </div>
 
-        <div class="view" ng-click="goToPost($index)">
-          <p>View details</p>
-        </div>
 
       </div>
     </div>

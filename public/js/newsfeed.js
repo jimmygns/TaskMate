@@ -20,6 +20,14 @@ function logOut(){
   window.location.href = "../index.html";
 };
 
+function changeText(){
+  var el = document.getElementById('likeBtn');
+  if (el.innerText === 'Like')
+    el.innerText = 'Unlike';
+  else
+    el.innerText = 'Like';
+}
+
 
 var newsfeedApp = angular.module("newsfeedApp", []);
 
@@ -35,13 +43,34 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
   //increment numLikes
   $scope.plusOne = function(index) {
 
+
     var query = new Parse.Query('Newsfeed');
     query.get($scope.posts[index].objectId, {
       success: function(newsfeed){
-        newsfeed.increment('numLikes');
-        newsfeed.save();
-        $scope.posts[index].numLikes = newsfeed.get('numLikes');
-        $scope.$digest();
+
+        var currentId = Parse.User.current().id; 
+        var likedArray = newsfeed.get('liked');
+        var result = $.inArray(currentId, likedArray);
+
+        if (result === -1){
+
+          newsfeed.increment('numLikes');
+          newsfeed.add('liked', currentId);
+          newsfeed.save();
+          $scope.posts[index].numLikes = newsfeed.get('numLikes');
+          $scope.posts[index].btnText = 'Unlike';
+          $scope.$digest();
+        }
+
+        else {
+          newsfeed.set('numLikes', newsfeed.get('numLikes') - 1);
+          newsfeed.get('liked').splice(result, 1);
+          newsfeed.save();
+          $scope.posts[index].numLikes = newsfeed.get('numLikes');
+          $scope.posts[index].btnText = 'Like';
+          $scope.$digest();
+        }
+
       },
       error: function(object, error) {
         alert("Error: " + error.code + " " + error.message);
@@ -57,75 +86,32 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
 
 
 	var query = new Parse.Query("Newsfeed");
-
+  query.ascending("createdAt");
+  query.include("owner");
 
 	query.find({ 
   	success: function(newsfeeds) {
     	// newsfeeds now contains an array of newsfeed object retrieved from Parse
-    	alert("Successfully retrieved " + newsfeeds.length + " Newsfeed objects.");
-
+    	//alert("Successfully retrieved " + newsfeeds.length + " Newsfeed objects.");
 
       $scope.posts = []; //array for Newsfeed
 
 
     	for (var i = 0; i < newsfeeds.length; i++){
-    		var newsfeed = newsfeeds[i];
-
-        
-/*      $scope.user_objectId = newsfeed.get('owner');
-    		var userQuery = new Parse.Query("User");
-    		userQuery.get($scope.user_objectId, {
-    			success: function(user) {
-    				//The object was retrieved successfully.
-            $scope.posts1.push(user.get('username'));
-    				//$scope.posts1[i].username = user.get('username');
-            $scope.$digest();
-    			},
-    			error: function(object, error){
-    				//The object was not retrieved successfully
-    				alert("Error: " + error.code + " " + error.message);
-    			} 
-    		});
+    		var newsfeed = newsfeeds[newsfeeds.length - i - 1];
   				    				
-
-        
-        $scope.goal_objectId = newsfeed.get('goal');
-   			var goalQuery = new Parse.Query("Goal");
-    		goalQuery.get($scope.goal_objectId, {
-  				success: function(goal) {
-    				// The object was retrieved successfully.
-            $scope.posts2[i] = {};
-    				$scope.posts2[i].goal_name = goal.get('name');
-    				$scope.posts2[i].goal_dueDate = goal.get('dueDate');
-            $scope.$digest();
-  				},
-  				error: function(object, error) {
-    				// The object was not retrieved successfully.
-    				alert("Error: " + error.code + " " + error.message);
-  				}
-			  });
-
-        //no need to do that
-    		$scope.list_objectId = newsfeed.get('list');
-    		var listQuery = new Parse.Query("List");
-    		listQuery.get($scope.list_objectId, {
-  				success: function(list) {
-    				// The object was retrieved successfully.
-            $scope.posts3[i] = {};
-    				$scope.posts3[i].list_name = list.get('name');
-            $scope.$digest();
-  				},
-  				error: function(object, error) {
-    				// The object was not retrieved successfully.
-    				alert("Error: " + error.code + " " + error.message);
-  				}
-			  });    */
-
+ 
         $scope.posts[i] = {};
     		$scope.posts[i].message = newsfeed.get('message');
     		$scope.posts[i].numLikes = newsfeed.get('numLikes');
     		$scope.posts[i].numComments = newsfeed.get('numComments');
         $scope.posts[i].objectId = newsfeed.id;
+        $scope.posts[i].btnText = 'Like';
+        if (newsfeed.get('owner') !== undefined) {
+          $scope.posts[i].firstName = newsfeed.get('owner').get('firstName');
+          $scope.posts[i].lastName = newsfeed.get('owner').get('lastName');
+          $scope.posts[i].picURL = newsfeed.get('owner').get('profilePicture').url();
+        }
         $scope.$digest();
 
 

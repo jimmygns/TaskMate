@@ -9,19 +9,16 @@ var NewsfeedController =function ($scope){
     //var id=address.substring(1,address.length);
 	var id = "WTnORQ1jaV";
 	var owner;
-    var ownerId;
 	query.include("owner");
 
 	query.get(id, {
 		success: function(result) {
     // The object was retrieved successfully.
-    
-    
+        
     var messageStr = result.get('message');
     var likes = result.get('numLikes');
     var arrayOfUsers = result.get('liked');
     var flag=true;
-
 
     owner=result.get('owner').id;
     
@@ -188,9 +185,32 @@ $scope.like = function(){
 			if(status.charAt(0)=="L"){
 				
 				result.set('numLikes',temp+1);
-				//Parse.User.current().id
+				//TODO: Parse.User.current().id
 				result.add('liked',"8EWpEXknMZ");
 				$scope.Like="Unlike"+result.get('numLikes');
+
+                //creating a notification when pressing like button
+                var Notification = Parse.Object.extend("Notification");
+                var notif = new Notification();
+
+                var User = Parse.Object.extend("User");
+                var user_query = new Parse.Query(User);
+                //TODO: Parse.User.current().id
+                user_query.get("8EWpEXknMZ", {
+                    success: function(result) {
+                    // The object was retrieved successfully.
+                    notif.set("owner",owner);
+                    notif.set("outgoing",id);
+                    notif.set("user", result);                   
+                    notif.set("type","like");
+                    var notif_content=result.get('fullName')+" liked your post.";
+                    notif.set("content",notif_content);
+                    notif.save();
+                },
+                    error: function(object, error) {
+                    }
+                });
+
 				result.save();
 			}
 			else{
@@ -217,6 +237,8 @@ $scope.like = function(){
 
 
 	});
+
+
 }
 
 $scope.addComment=function(){
@@ -238,8 +260,30 @@ $scope.addComment=function(){
 	var input=document.getElementById("commentInput").value;
 	comment.set('content',input);
 	comment.save();
-    location.reload();
 
+
+    //creating a notification when pressing like button
+    var Notification = Parse.Object.extend("Notification");
+    var notif = new Notification();
+
+    var User = Parse.Object.extend("User");
+    var user_query = new Parse.Query(User);
+    //TODO: Parse.User.current().id
+    user_query.get("8EWpEXknMZ", {
+        success: function(result) {
+        // The object was retrieved successfully.
+        notif.set("owner",owner);
+        notif.set("outgoing",id);
+        notif.set("user", result);                   
+        notif.set("type","comment");
+        var notif_content=result.get('fullName')+" commented on your post.";
+        notif.set("content",notif_content);
+        notif.save();
+        location.reload();
+    },
+    error: function(object, error) {
+    }
+});
     /*
     //Notification object initialized 
     var Notification = Parse.Object.extend("Notification");

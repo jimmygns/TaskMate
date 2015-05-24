@@ -97,15 +97,18 @@
 
 <br/><br/>
 
-<div id="container">
+<div id="container" ng-app>
 <div>
-  <div class="leftContent-top"><br/><br/><br/><br/><br/><br/>
-  	
+  <div class="leftContent-top" ng-controller = "infoCtrl">
+    <br/>
+  	<center><img ng-src={{picUrl}} alt="Profile Picture (Circular)" style="width:120px;height:120px;-webkit-border-radius: 60px;-moz-border-radius: 60px;"></center>
+    <center><h4>{{firstName}} {{lastName}}</h4></center>
+    <br><br/><br/>
   </div>
 </div>
 
   <div class="centerContent">
-<div ng-app ng-controller="GoalController">
+<div ng-controller="GoalController">
 
 <center>
       <div style="font-size:75px;">
@@ -152,7 +155,7 @@
 </div></div>
 <br/>
 <br/>
-<center><button type="button" ng-click="addGoal()" class="btn btn-lg"> Create Goal</button></center><br/><br/>
+<center><button type="button" ng-click="addGoal()" class="btn btn-lg"> <img src = "img/glyphicons-31-pencil.png"> Create Goal</button></center><br/><br/>
 </div>
 </div>
 <div class="rightContent"><p>Your followers:<br/></p>

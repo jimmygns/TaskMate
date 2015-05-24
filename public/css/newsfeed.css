@@ -45,11 +45,11 @@
 	float: right;
 	font-family: Arial, Helvetica, sans-serif;
 	color: black;
-	font-size: 14px;
+	font-size: 15px;
 	bottom: 100px;
-	left: 420px;
-	top: 5px;
+	top: 6px;
 	text-decoration: underline;
+	z-index: 10;
 }
 
 .view:hover {
@@ -57,12 +57,12 @@
 	float: right;
 	font-family: Arial, Helvetica, sans-serif;
 	color: black;
-	font-size: 14px;
+	font-size: 15px;
 	bottom: 100px;
-	left: 420px;
-	top: 5px;
+	top: 6px;
 	text-decoration: underline;
 	cursor: pointer;
+	z-index: 10;
 }
 
 .userInfo p {

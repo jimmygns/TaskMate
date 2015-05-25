@@ -5,9 +5,10 @@ var NewsfeedController =function ($scope){
 	Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 	var Newsfeed = Parse.Object.extend("Newsfeed");
 	var query = new Parse.Query(Newsfeed);
-    //var address=location.search;
-    //var id=address.substring(1,address.length);
-	var id = "WTnORQ1jaV";
+    var address=location.search;
+    var id=address.substring(1,address.length);
+    var current_Id = Parse.User.current().id;
+	//var id = "WTnORQ1jaV";
 	var owner;
 	query.include("owner");
 
@@ -27,7 +28,7 @@ var NewsfeedController =function ($scope){
     if(arrayOfUsers!=null){
     	for(var i=0; i<arrayOfUsers.length; i++){
     	//var current_Id = Parse.User.current().id;
-    	if(arrayOfUsers[i]=='8EWpEXknMZ'){
+    	if(arrayOfUsers[i]==current_Id){
     		flag=false;
     		$scope.Like = "Unlike"+likes;
     		break;
@@ -47,7 +48,7 @@ $scope.$digest();
 
     query1.get(owner, {
     	success: function(result) {
-    		var name=result.get('username');
+    		var name=result.get('fullName');
     		var image=result.get('profilePicture');
             
     		if (image == undefined)
@@ -104,7 +105,7 @@ $scope.$digest();
             var picURL = image.url();
         }
         $scope.Comments.push({content: object.get('content'), 
-          username: person.get('username'), 
+          username: person.get('fullName'), 
           commenterProfilePage: profilePage,
           commenterProfilePicture: picURL, 
       });
@@ -186,7 +187,7 @@ $scope.like = function(){
 				
 				result.set('numLikes',temp+1);
 				//TODO: Parse.User.current().id
-				result.add('liked',"8EWpEXknMZ");
+				result.add('liked',current_Id);
 				$scope.Like="Unlike"+result.get('numLikes');
 
                 //creating a notification when pressing like button
@@ -196,7 +197,7 @@ $scope.like = function(){
                 var User = Parse.Object.extend("User");
                 var user_query = new Parse.Query(User);
                 //TODO: Parse.User.current().id
-                user_query.get("8EWpEXknMZ", {
+                user_query.get(current_Id, {
                     success: function(result) {
                     // The object was retrieved successfully.
                     notif.set("owner",owner);
@@ -247,13 +248,13 @@ $scope.addComment=function(){
 	var comment=new Comment();
     var User = Parse.Object.extend("User");
     var user = new User();
-    user.id = "8EWpEXknMZ";
+    user.id = current_Id;
 	
 	//var current_Id=Parse.User.current().id;
 	//user.id="8EWpEXknMZ";
 	
 	comment.set('owner',id);
-	comment.set('user',"8EWpEXknMZ");
+	comment.set('user',current_Id);
     
     comment.set('userPointer',user);
     //alert("comment");
@@ -269,7 +270,7 @@ $scope.addComment=function(){
     var User = Parse.Object.extend("User");
     var user_query = new Parse.Query(User);
     //TODO: Parse.User.current().id
-    user_query.get("8EWpEXknMZ", {
+    user_query.get(current_Id, {
         success: function(result) {
         // The object was retrieved successfully.
         notif.set("owner",owner);
@@ -284,40 +285,38 @@ $scope.addComment=function(){
     error: function(object, error) {
     }
 });
-    /*
-    //Notification object initialized 
-    var Notification = Parse.Object.extend("Notification");
-    var notification = new Notification();
-
-    var User = Parse.Object.extend("User");
-    var query4 = new Parse.Query(User);
-    query4.get(current_Id, {
-      success: function(result) {
-    // The object was retrieved successfully.
-    notification.set("owner",owner);
-    notification.set("outgoing",id);
-    notification.set("user",current_Id);
-    notification.set("type","comment");
-    var notifiContent=result.get('username')+" commented on your post.";
-    notification.set("content",notifiContent);
-    notification.save();
-
     
-},
-error: function(object, error) {
-    // The object was not retrieved successfully.
-    // error is a Parse.Error with an error code and message.
 }
-});
-*/
-    
 
+    $scope.profilePictureURL = "img/glyphicons-4-user.png";
 
+    /*picture = Parse.User.current().get("profilePicture");
+    if (picture != undefined) {
+        $scope.profilePictureURL = picture.url();
+    }*/
 
+    $scope.numberOfNotification = 7;
 
-	
+    $scope.goHome = function() {
+        window.location.href = "./newsfeed.html";
+    }
 
-}
+    $scope.goNotification = function() {
+        window.location.href = "./notifications.html";
+    }
+
+    $scope.search = function(){
+        window.location.href = "./search.html?" + $scope.searchInput;
+    };
+
+    $scope.goProfile = function(){
+        window.location.href = "./profile.html?" + Parse.User.current().id;
+    };
+
+    $scope.logOut = function(){
+        Parse.User.logOut();
+        window.location.href = "./index.html";
+    };
 
 }
 

@@ -84,102 +84,82 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class = "threecol">
-    <div class = "colmask">
-        <div class = "colmid">
-            <div class = "colleft">
-                <div class = "colright">
+<div id="container" ng-controller="profileCtrl">
 
-                    <div class ="col1">
-                        <div class="container">
-                            <div class = "scrolling_new_list">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
+    <div class="leftContent">
+        <br/>
+        <img ng-src={{picUrl}} style="width:120px;height:120px;-webkit-border-radius: 60px;-moz-border-radius: 60px;"/>
 
-                    <div ng-controller="profileCtrl">
+        <h4>Hi, {{firstName1}} {{lastName1}}</h4>
+        <br/><br/><br/>
+    </div>
 
-                    <div class = "col2">
-                        <h1> {{firstName}} {{lastName}} </h1>
-                        <script type="text/javascript" src="js/Profile.js"></script>
+<div class = "centerContent">
+<div>
 
+        <script type="text/javascript" src="js/Profile.js"></script>
 
-                        <div class = "about_me">
-                            <textarea rows="7" cols="40" placeholder="Tell us about yourself!"></textarea>
-                            <br><br>
-                            <input type="file" id="profilePhotoFileUpload">
-                            <br>
-                            <button ng-click="upload()">Change Profile Picture</button>
-                            <br>
-                        </div>
+    <div class = "profile_picture">
+        <img id = "profilePic" ng-src= {{picURL}} style="width:250px;height:250px;background-size: cover;border-radius: 100em;-webkit-border-radius: 125px;-moz-border-radius: 125px;"/>
+    </div>
 
-                        <div class = "profile_picture">
-                            <img ng-src= {{picURL}} style="width:250px;height:250px;background-size: cover;border-radius: 100em;-webkit-border-radius: 125px;-moz-border-radius: 125px;"/>
-                        </div>
+    <h1 id = "name"> {{firstName}} {{lastName}} </h1>
+
+    <div class = "uploadPicture">
+            <input type="file" id="profilePhotoFileUpload">
+            <br>
+            <button class="btn btn-default" type="submit" ng-click="upload()">Submit Profile Picture</button>
+            <br>
+    </div>
 
 
-                        <div class = "create_new_goal">
-
-                            <button id="createNewListButton" type="button" class="btn btn-success btn-lg">Create New List</button>
-                            <div style="display:none" id="createListArea">
-                                <p>List Name: </p>
-                                <input type="text" class="form-control" id="listName">
-                                <p>List Description (Optional): </p>
-                                <textarea class="form-control" rows="5" id="listDescription"></textarea>
-                                <br>
-                                <button type="button" class="btn btn-success btn-lg" ng-click="makeList()">Create!</button>
-                                <button type="button" id="cancelCreateList" class="btn btn-danger btn-lg">Cancel</button>
-                            </div>
-
-                        </div>
-
-                        <script>
-                        $("#createNewListButton").click(function() {
-                        $("#createListArea").show("slow");
-                        });
-                        $("#cancelCreateList").click(function() {
-                        $("#createListArea").hide("slow");
-                        });
-                        </script>
-
-                        <div class = "list_of_lists">
-                            <ul ng-repeat="toDoList in toDoLists">
-                                <li>
-                                    <a href = {{toDoList.link}}>
-                                    <button type="button" class="btn btn-success btn-lg">{{toDoList.name}}</button>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-
-                    </div>
-                    </div>
-
-
-                    <div class = "col3">
-                        <div class = "friends_tabs">
-
-                            <ul class="nav nav-tabs">
-                                <li role="presentation" class="active"><a href="#">Top</a></li>
-                                <li role="presentation"><a href="#">Following</a></li>
-                                <li role="presentation"><a href="#">Followers</a></li>
-                            </ul>
-
-                            <div class="container">
-                                <div ng-controller="profileCtrl">
-                                    <button class="btn followButton" rel="6" ng-click="follow()">Follow</button>
-                                    <button class="btn unfollowButton" rel="6" ng-click="unfollow()">Unfollow</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+    
+    <center>
+    <div class = "list_of_lists">
+        <h3>{{firstName}} {{lastName}}'s Lists </h3><br/>
+        <div ng-repeat="toDoList in toDoLists">
+                <a href = {{toDoList.link}}>
+                    <button type="button" class="btn btn-default btn-lg btn-block">{{toDoList.name}}</button>
+                    
+                </a>
         </div>
     </div>
+
+    <br/><br/>
+
+    <div class = "create_new_goal">
+        <button id="createNewListButton" type="button" class="btn btn-success btn-lg">Create New List</button>
+            <div style="display:none" id="createListArea">
+                <p>List Name: </p>
+                <input type="text" class="form-control" id="listName">
+                <p>List Description (Optional): </p>
+                <textarea class="form-control" rows="5" id="listDescription"></textarea>
+                <br>
+                <button type="button" class="btn btn-success btn-lg" ng-click="makeList()">Create!</button>
+                <button type="button" id="cancelCreateList" class="btn btn-danger btn-lg">Cancel</button>
+            </div>
+    </div>
+
+    <script>
+        $("#createNewListButton").click(function() {
+        $("#createListArea").show("slow");
+        });
+        $("#cancelCreateList").click(function() {
+        $("#createListArea").hide("slow");
+        });
+    </script>
+    <br/><br/><br/>
+</center>
+
 </div>
+</div><!end of center block>
+
+<div class="rightContent"><p>Your followers:<br/></p>
+    <p><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></p>
+</div>
+
+</div><!end of container class>
+
+                
 </body>
 </html>

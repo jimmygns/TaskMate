@@ -13,7 +13,15 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     var picURL;
     var currentUser = Parse.User.current();
 
-    $scope.picUrl = currentUser.get('profilePicture').url();
+    var picture = currentUser.get('profilePicture');
+    if (picture != null)
+    {
+        $scope.picUrl = picture.url();
+    }
+    else
+    {
+        $scope.picUrl = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
+    }
     $scope.firstName1 = currentUser.get("firstName");
     $scope.lastName1 = currentUser.get('lastName');
 
@@ -29,7 +37,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
                 var pic = object.get('profilePicture');
                 if (pic == undefined)
                 {
-                    picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
+                    picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
                 }
                 else
                 {

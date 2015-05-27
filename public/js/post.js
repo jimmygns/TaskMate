@@ -42,19 +42,20 @@ $scope.$digest();
 
 
 
+
     //retrieving the user object, owner of the post
     var User = Parse.Object.extend("User");
     var query1 = new Parse.Query(User);
 
     query1.get(owner, {
     	success: function(result) {
-    		var name=result.get('fullName');
+    		var name=result.get('firstName')+" "+result.get('lastName');
     		var image=result.get('profilePicture');
             
     		if (image == undefined)
     		{
                 
-    			var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
+    			var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
     		}
     		else
     		{
@@ -104,8 +105,9 @@ $scope.$digest();
         {
             var picURL = image.url();
         }
+        var fullName=person.get('firstName')+" "+person.get('lastName');
         $scope.Comments.push({content: object.get('content'), 
-          username: person.get('fullName'), 
+          username: fullName, 
           commenterProfilePage: profilePage,
           commenterProfilePicture: picURL, 
       });
@@ -249,7 +251,21 @@ $scope.addComment=function(){
     var User = Parse.Object.extend("User");
     var user = new User();
     user.id = current_Id;
-	
+    //alert(id);
+
+    
+    query.get(id, {
+        success: function(result) {
+            result.set('numComments',result.get('numComments')+1);
+            result.save();
+        },
+        error: function(error) {
+            alert("alert");
+            alert("Error: " + error.code + " " + error.message);
+        }
+    });
+
+
 	//var current_Id=Parse.User.current().id;
 	//user.id="8EWpEXknMZ";
 	

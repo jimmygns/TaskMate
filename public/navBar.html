@@ -21,9 +21,7 @@
 
 <body>
 
-<div ng-app ng-controller="NavigationBarController">
-
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" ng-app ng-controller="NavigationBarController">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -84,7 +82,7 @@
 
       <!--my profile-->
        <li><a href="#" ng-click = "goProfile()">
-       	<img ng-src = "{{profilePictureURL}}" height = "22"> My Profile</a></li>
+       	<img ng-src = "{{profilePictureURL}}" class = "img-circle" height = "22" width = "23"> My Profile</a></li>
 
       <!--write a goal-->
        <li>
@@ -99,8 +97,6 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
-</div>
 
 </body>	
 

@@ -114,33 +114,31 @@ $scope.addGoal = function() {
 
         goal.set("owner", ListId);
       
-		if (stringDate.length > 0) {
+		    if (stringDate.length > 0) {
            goal.set("dueDate", new Date(stringDate));
         } else {
            goal.set("dueDate", null);
-		}
+		    }
         goal.set("completed", false);
 
 		goal.save(null, {
 		    success: function(goal) {
 			    newsfeed.set('goal', goal.id);
-			    console.log("Goal ID:");
-				console.log(goal.id);
-				newsfeed.set('list', ListId);
-				newsfeed.set('owner', owner);
-				newsfeed.set('message', ownerName + " has created goal " + goalName);
-				newsfeed.set('numLikes', 0);
-				newsfeed.set('numComments', 0);
-				newsfeed.save(null, {
-					success: function(newsfeed) {
-						console.log("Saved newsfeed");
-					},
-					error: function(newsfeed, error) {
-						console.log("error in saving");
-					}
-				});
-				incompleteGoal.push(goal);
-		   		$scope.IncompleteGoals.push({name: goal.get("name"), dueDate: goal.get("dueDate")});
+  				newsfeed.set('list', ListId);
+	   			newsfeed.set('owner', owner);
+		  		newsfeed.set('message', ownerName + " has created goal " + goalName);
+			   	newsfeed.set('numLikes', 0);
+				  newsfeed.set('numComments', 0);
+				  newsfeed.save(null, {
+					  success: function(newsfeed) {
+						  console.log("Saved newsfeed");
+					  },
+				    error: function(newsfeed, error) {
+						  console.log("error in saving");
+				    }
+				  });
+				  incompleteGoal.push(goal);
+		   		$scope.IncompleteGoals.push({name: goal.get("name"), dueDate: goal.get("dueDate").toDateString()});
 		   		$scope.$digest();
 		   },
 		   error: function(goal, error) {

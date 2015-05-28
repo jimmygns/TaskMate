@@ -121,7 +121,7 @@
     <div class="padding">
       <div class="well well-lg">
         
-        <div class="userInfo">
+        <div class="userInfo" ng-click="redirectToProfile($index)">
           <img ng-src={{post.picURL}} alt="Profile Picture" style="width:60px;height:60px;-webkit-border-radius: 30px;-moz-border-radius: 30px;">
 
           <p>{{post.firstName}} {{post.lastName}}</p>

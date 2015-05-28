@@ -94,6 +94,23 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
   };
 
 
+  $scope.redirectToProfile = function(index)  {
+    var query = new Parse.Query("Newsfeed");
+    query.include("owner");
+    query.get($scope.posts[index].objectId, {
+      success: function(newsfeed){
+        var profileId = newsfeed.get('owner').id;
+        window.location.href = "../profile.html?" + profileId;
+
+      },
+
+      error: function(object, error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
+    });
+
+  }
+
 
 
 

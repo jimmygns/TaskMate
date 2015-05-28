@@ -108,6 +108,29 @@ function GoalController($scope) {
        }
      });
 
+$scope.isCurrentUser = function(){
+  var currentUserId = Parse.User.current().id;
+  var query = new Parse.Query("List");
+  query.get(ListId, {
+    success: function(list){
+      var listOwnerId = list.get('owner');
+      if(currentUserId === listOwnerId){
+        console.log("isCurrentUser is true");
+        return true;
+      }
+      else{
+        console.log("isCurrentUser is false");
+        return false;
+      }
+    },
+
+    error: function(error) {
+      alert("Error: " + error.code + " " + error.message);
+    }
+  })
+
+}
+
 $scope.addGoal = function() {
   	goalName = prompt("Enter the name: ");
   	var stringDate = prompt("Enter the due date in format MONTH DAY, YEAR: ");
@@ -158,7 +181,6 @@ $scope.addGoal = function() {
   }
   else {
     alert("Cannot read the name!");
-    //addGoal();
   }
 
 }
@@ -166,52 +188,80 @@ $scope.addGoal = function() {
 
 }
 
-function completeGoal(index) {  
+function completeGoal(index) {
+
   var goal = incompleteGoal[index];
-
-    goalName = goal.get("name");
-  goal.set('completed', true);
-  var newsfeed = new Newsfeed();
+  var listID = goal.get('owner');
+  var query = new Parse.Query('List');
+  query.get(listID, {
+    success: function(list){
+      var listOwner = list.get('owner');
+      if(Parse.User.current().id !== listOwner){
+        alert("You can only complete your own goals!");
+      } 
+      else {
+        goalName = goal.get("name");
+        goal.set('completed', true);
+        var newsfeed = new Newsfeed();
   
-  newsfeed.set('goal', goal.id);
-  newsfeed.set('list', ListId);
-  newsfeed.set('owner', owner);
-  newsfeed.set('message', ownerName + " has completed goal " + goalName);
-  newsfeed.set('numLikes', 0);
-  newsfeed.set('numComments', 0);
-/* 
-  Parse.Cloud.beforeSave("Newsfeed", function(request, response) {
-       var likes = request.object.get('numLikes');
-       if (likes < 0) {
-          response.error("invalid number of likes");
-       }
-       var comments = request.object.get('numComments');
-       if (comments < 0) {
-          response.error("invalid number of comments");
-        }
-       response.success();
-   }); */
+        newsfeed.set('goal', goal.id);
+        newsfeed.set('list', ListId);
+        newsfeed.set('owner', owner);
+        newsfeed.set('message', ownerName + " has completed goal " + goalName);
+        newsfeed.set('numLikes', 0);
+        newsfeed.set('numComments', 0);
  
-  var array = [];
-  array.push(goal);
-  array.push(newsfeed); 
-  Parse.Object.saveAll(array, {
-   success: console.log("success"),
-   error: function(error) {}});
+        var array = [];
+        array.push(goal);
+        array.push(newsfeed); 
+        Parse.Object.saveAll(array, {
+          success: function(array){
+            console.log("success");
+          },
+          error: function(error) {
 
-  location.reload();
+          }
+        });
+
+        location.reload();
+      }
+    },
+
+    error: function(object, error) {
+        alert("Error: " + error.code + " " + error.message);
+    }
+  });
+
 }
 
 function deleteGoal(index) {
   var goal = incompleteGoal[index];
-  goal.destroy({
-	  success: function(goal) {
-  	},
-      error: function(goal, error) {
+  var listID = goal.get('owner');
+  var query = new Parse.Query('List');
+  query.get(listID, {
+    success: function(list){
+      var listOwner = list.get('owner');
+      if(Parse.User.current().id !== listOwner){
+        alert("You can only delete your own goals!");
+      } 
+      else{
+        goal.destroy({
+          success: function(goal) {
+          },
+
+          error: function(goal, error) {
+          }
+        });
+
+        location.reload();
+      }
+    },
+
+    error: function(object, error) {
+        alert("Error: " + error.code + " " + error.message);
     }
   });
 
-  location.reload();
 }
 
 function showMenu(index){

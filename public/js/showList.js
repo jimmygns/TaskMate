@@ -108,7 +108,7 @@ function GoalController($scope) {
        }
      });
 
-$scope.isCurrentUser = function(){
+  //check whether to display "Create Goal" button on listPage 
   var currentUserId = Parse.User.current().id;
   var query = new Parse.Query("List");
   query.get(ListId, {
@@ -116,20 +116,20 @@ $scope.isCurrentUser = function(){
       var listOwnerId = list.get('owner');
       if(currentUserId === listOwnerId){
         console.log("isCurrentUser is true");
-        return true;
+        document.getElementById("newGoalBtn").style.visibility = "visible";
       }
       else{
         console.log("isCurrentUser is false");
-        return false;
+        document.getElementById("newGoalBtn").style.display = "none";
       }
+
     },
 
     error: function(error) {
       alert("Error: " + error.code + " " + error.message);
     }
-  })
+  });
 
-}
 
 $scope.addGoal = function() {
   	goalName = prompt("Enter the name: ");
@@ -171,7 +171,7 @@ $scope.addGoal = function() {
 					}
 				});
 				incompleteGoal.push(goal);
-		   		$scope.IncompleteGoals.push({name: goal.get("name"), dueDate: goal.get("dueDate")});
+		   		$scope.IncompleteGoals.push({name: goal.get("name"), dueDate: goal.get("dueDate").toDateString()});
 		   		$scope.$digest();
 		   },
 		   error: function(goal, error) {

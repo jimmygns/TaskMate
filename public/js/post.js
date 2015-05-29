@@ -5,29 +5,30 @@ var NewsfeedController =function ($scope){
 	Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 	var Newsfeed = Parse.Object.extend("Newsfeed");
 	var query = new Parse.Query(Newsfeed);
-	var id = "OS9PJA9yxX";
-	var owner="";
-	
+    var address=location.search;
+    var id=address.substring(1,address.length);
+    var current_Id = Parse.User.current().id;
+	//var id = "WTnORQ1jaV";
+	var owner;
+	query.include("owner");
 
 	query.get(id, {
 		success: function(result) {
     // The object was retrieved successfully.
-    
-    
+        
     var messageStr = result.get('message');
     var likes = result.get('numLikes');
     var arrayOfUsers = result.get('liked');
     var flag=true;
 
-
-    owner=result.get('owner');
-    //alert(likes);
+    owner=result.get('owner').id;
+    
 
     $scope.message = messageStr;
     if(arrayOfUsers!=null){
     	for(var i=0; i<arrayOfUsers.length; i++){
-    	//Parse.User.current().id
-    	if(arrayOfUsers[i]=='8EWpEXknMZ'){
+    	//var current_Id = Parse.User.current().id;
+    	if(arrayOfUsers[i]==current_Id){
     		flag=false;
     		$scope.Like = "Unlike"+likes;
     		break;
@@ -41,21 +42,25 @@ $scope.$digest();
 
 
 
-    //retrieving the user object
+
+    //retrieving the user object, owner of the post
     var User = Parse.Object.extend("User");
     var query1 = new Parse.Query(User);
 
     query1.get(owner, {
     	success: function(result) {
-    		var name=result.get('username');
-    		var image=result.get('profilePic');
+    		var name=result.get('firstName')+" "+result.get('lastName');
+    		var image=result.get('profilePicture');
+            
     		if (image == undefined)
     		{
-    			var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
+                
+    			var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
     		}
     		else
     		{
-    			var picURL = pic.url();
+                
+    			var picURL = image.url();
     		}
     		$scope.username = name;
     		$scope.profilePicture=picURL;
@@ -77,6 +82,7 @@ $scope.$digest();
 	var Comment = Parse.Object.extend("Comment");
 	var query2 = new Parse.Query(Comment);
 	query2.equalTo('owner',id);
+    query2.include('userPointer');
 	$scope.Comments=[];
 	var index=0;
 	//var array1=[];
@@ -88,62 +94,69 @@ $scope.$digest();
     // Do something with the returned Parse.Object values
     for (var i = 0; i < results.length; i++) { 
     	var object = results[i];
-    	$scope.Comments.push({content: object.get('content'), 
-    		username: "", 
-    		commenterProfilePage: "",
-    		commenterProfilePicture: "", 
-    	});
+        var person = object.get("userPointer");
+        var profilePage="../profile.html?" + person.id;
+        var image=person.get('profilePicture');
+        if (image == undefined)
+        {
+            var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
+        }
+        else
+        {
+            var picURL = image.url();
+        }
+        var fullName=person.get('firstName')+" "+person.get('lastName');
+        $scope.Comments.push({content: object.get('content'), 
+          username: fullName, 
+          commenterProfilePage: profilePage,
+          commenterProfilePicture: picURL, 
+      });
+
+
+        $scope.$digest();
+        /*
     	var commenterId=object.get('user');
 
     	var User = Parse.Object.extend('User');
     	var query3 = new Parse.Query(User);
-    	query3.get(commenterId, {
-    		success: function(result) {
+        var successful = new Parse.Promise();
+
+    	query3.get(commenterId,{
+            success: function(result) {
     			var name=result.get('username');
-    			var image=result.get('profilePic');
+    			var image=result.get('profilePicture');
     			if (image == undefined)
     			{
     				var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png'
     			}
     			else
     			{
-    				var picURL = pic.url();
+    				var picURL = image.url();
     			}
     			$scope.Comments[index].username=name;
     			$scope.Comments[index].commenterProfilePicture=picURL;
     			$scope.Comments[index].commenterProfilePage="../profile.html?" + commenterId;
     			index++;
+                successful.resolve("The good result.");
     			$scope.$digest();
 
     		},
     		error: function(error) {
-    			alert("alert");
+    			alert("commennt user alert");
     			alert("Error: " + error.code + " " + error.message);
     		}
 
 
     	});
-    	
-
-
-
-    	//var commenter=object.get('commenter');
-    	/*
-    	commenter.fetch({
-    		success: function(commenter) {
-    			alert("success");
-    			var name = commenter.get("username");
-    			$scope.Comments.push({username: name, content: object.get('content')});
-    		}
-    	});
+        $scope.$digest();
 */
 
-}
+    }
 
-$scope.$digest();
+
 },
 error: function(error) {
-	alert("alert");
+	alert("comments alert");
 	alert("Error: " + error.code + " " + error.message);
 }
 
@@ -158,7 +171,7 @@ error: function(error) {
 error: function(object, error) {
     // The object was not retrieved successfully.
     // error is a Parse.Error with an error code and message.
-    alert("alert");
+    alert("owner alert");
     alert("Error: " + error.code + " " + error.message);
 }
 });
@@ -175,9 +188,32 @@ $scope.like = function(){
 			if(status.charAt(0)=="L"){
 				
 				result.set('numLikes',temp+1);
-				//Parse.User.current().id
-				result.add('liked',"8EWpEXknMZ");
+				//TODO: Parse.User.current().id
+				result.add('liked',current_Id);
 				$scope.Like="Unlike"+result.get('numLikes');
+
+                //creating a notification when pressing like button
+                var Notification = Parse.Object.extend("Notification");
+                var notif = new Notification();
+
+                var User = Parse.Object.extend("User");
+                var user_query = new Parse.Query(User);
+                //TODO: Parse.User.current().id
+                user_query.get(current_Id, {
+                    success: function(result) {
+                    // The object was retrieved successfully.
+                    notif.set("owner",owner);
+                    notif.set("outgoing",id);
+                    notif.set("user", result);                   
+                    notif.set("type","like");
+                    var notif_content=result.get('fullName')+" liked your post.";
+                    notif.set("content",notif_content);
+                    notif.save();
+                },
+                    error: function(object, error) {
+                    }
+                });
+
 				result.save();
 			}
 			else{
@@ -204,24 +240,99 @@ $scope.like = function(){
 
 
 	});
+
+
 }
 
 $scope.addComment=function(){
 
 	var Comment=Parse.Object.extend("Comment");
 	var comment=new Comment();
-	
-	//user.id=Parse.User.current().id;
-	user.id="8EWpEXknMZ";
+    var User = Parse.Object.extend("User");
+    var user = new User();
+    user.id = current_Id;
+    //alert(id);
+
+    
+    query.get(id, {
+        success: function(result) {
+            result.set('numComments',result.get('numComments')+1);
+            result.save();
+        },
+        error: function(error) {
+            alert("alert");
+            alert("Error: " + error.code + " " + error.message);
+        }
+    });
+
+
+	//var current_Id=Parse.User.current().id;
+	//user.id="8EWpEXknMZ";
 	
 	comment.set('owner',id);
-	comment.set('user',"8EWpEXknMZ");
+	comment.set('user',current_Id);
+    
+    comment.set('userPointer',user);
+    //alert("comment");
 	var input=document.getElementById("commentInput").value;
 	comment.set('content',input);
 	comment.save();
-	location.reload();
 
+
+    //creating a notification when pressing like button
+    var Notification = Parse.Object.extend("Notification");
+    var notif = new Notification();
+
+    var User = Parse.Object.extend("User");
+    var user_query = new Parse.Query(User);
+    //TODO: Parse.User.current().id
+    user_query.get(current_Id, {
+        success: function(result) {
+        // The object was retrieved successfully.
+        notif.set("owner",owner);
+        notif.set("outgoing",id);
+        notif.set("user", result);                   
+        notif.set("type","comment");
+        var notif_content=result.get('fullName')+" commented on your post.";
+        notif.set("content",notif_content);
+        notif.save();
+        location.reload();
+    },
+    error: function(object, error) {
+    }
+});
+    
 }
+
+    $scope.profilePictureURL = "img/glyphicons-4-user.png";
+
+    /*picture = Parse.User.current().get("profilePicture");
+    if (picture != undefined) {
+        $scope.profilePictureURL = picture.url();
+    }*/
+
+    $scope.numberOfNotification = 7;
+
+    $scope.goHome = function() {
+        window.location.href = "./newsfeed.html";
+    }
+
+    $scope.goNotification = function() {
+        window.location.href = "./notifications.html";
+    }
+
+    $scope.search = function(){
+        window.location.href = "./search.html?" + $scope.searchInput;
+    };
+
+    $scope.goProfile = function(){
+        window.location.href = "./profile.html?" + Parse.User.current().id;
+    };
+
+    $scope.logOut = function(){
+        Parse.User.logOut();
+        window.location.href = "./index.html";
+    };
 
 }
 

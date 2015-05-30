@@ -1,4 +1,3 @@
-
 Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
 
@@ -68,15 +67,15 @@ function GoalController($scope) {
                }
                else
                {
-               	incompleteGoalName.push(results[i].get('name'));
+                incompleteGoalName.push(results[i].get('name'));
                 incompleteGoal.push(results[i]);
-		if (results[i].get('dueDate')===null)
+    if (results[i].get('dueDate')===null)
         {
-			incompleteGoalDueDate.push("");
-		} else
+      incompleteGoalDueDate.push("");
+    } else
         {
                 incompleteGoalDueDate.push(results[i].get('dueDate').toDateString());
-		}		}
+    }   }
              }
              $scope.Descriptions=[];
              $scope.CompletedGoals=[];
@@ -84,7 +83,7 @@ function GoalController($scope) {
                $scope.Name = name;
 
 
-	     $scope.Descriptions.push({name: description});
+       $scope.Descriptions.push({name: description});
 
              for(var i = 0; i < completedGoalName.length; i++) {
                $scope.CompletedGoals.push({name: completedGoalName[i]});
@@ -132,52 +131,52 @@ function GoalController($scope) {
 
 
 $scope.addGoal = function() {
-  	goalName = prompt("Enter the name: ");
-  	var stringDate = prompt("Enter the due date in format MONTH DAY, YEAR: ");
+    goalName = prompt("Enter the name: ");
+    var stringDate = prompt("Enter the due date in format MONTH DAY, YEAR: ");
    
-  	if (goalName.length > 0) {
+    if (goalName.length > 0) {
 
         var goal = new Goal();
-	
+  
         var newsfeed = new Newsfeed();
 
         goal.set("name", goalName);
 
         goal.set("owner", ListId);
       
-		if (stringDate.length > 0) {
+    if (stringDate.length > 0) {
            goal.set("dueDate", new Date(stringDate));
         } else {
            goal.set("dueDate", null);
-		}
+    }
         goal.set("completed", false);
 
-		goal.save(null, {
-		    success: function(goal) {
-			    newsfeed.set('goal', goal.id);
-			    console.log("Goal ID:");
-				console.log(goal.id);
-				newsfeed.set('list', ListId);
-				newsfeed.set('owner', owner);
-				newsfeed.set('message', ownerName + " has created goal " + goalName);
-				newsfeed.set('numLikes', 0);
-				newsfeed.set('numComments', 0);
-				newsfeed.save(null, {
-					success: function(newsfeed) {
-						console.log("Saved newsfeed");
-					},
-					error: function(newsfeed, error) {
-						console.log("error in saving");
-					}
-				});
-				incompleteGoal.push(goal);
-		   		$scope.IncompleteGoals.push({name: goal.get("name"), dueDate: goal.get("dueDate").toDateString()});
-		   		$scope.$digest();
-		   },
-		   error: function(goal, error) {
-			   console.log(error);
-		   }
-	   });
+    goal.save(null, {
+        success: function(goal) {
+          newsfeed.set('goal', goal.id);
+          console.log("Goal ID:");
+        console.log(goal.id);
+        newsfeed.set('list', ListId);
+        newsfeed.set('owner', owner);
+        newsfeed.set('message', ownerName + " has created goal " + goalName);
+        newsfeed.set('numLikes', 0);
+        newsfeed.set('numComments', 0);
+        newsfeed.save(null, {
+          success: function(newsfeed) {
+            console.log("Saved newsfeed");
+          },
+          error: function(newsfeed, error) {
+            console.log("error in saving");
+          }
+        });
+        incompleteGoal.push(goal);
+          $scope.IncompleteGoals.push({name: goal.get("name"), dueDate: goal.get("dueDate").toDateString()});
+          $scope.$digest();
+       },
+       error: function(goal, error) {
+         console.log(error);
+       }
+     });
   }
   else {
     alert("Cannot read the name!");
@@ -265,9 +264,9 @@ function deleteGoal(index) {
 }
 
 function showMenu(index){
-	console.log("here");
-	var id = "#" + index;
-	$("#"+index).toggleClass('open');
+  console.log("here");
+  var id = "#" + index;
+  $("#"+index).toggleClass('open');
 }
 
 
@@ -292,4 +291,3 @@ function setDisplay() {
    document.getElementById('InProgress').style.display = "";
    document.getElementById('Complete').style.display = "none";
 }
-

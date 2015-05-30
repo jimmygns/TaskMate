@@ -155,8 +155,29 @@
 </div></div>
 <br/>
 <br/>
+<center>
+<div class = "newGoal">
+   <button type="button" id="newGoalBtn" class="btn btn-success btn-lg"> Create Goal</button>
+     <div style="display:none" id="goalCreator">
+     <p>Goal description: </p>
+     <input type="text" class="form-control" id="goalDesc">
+     <p>Goal deadline (Optional, /MONTH DAY, YEAR/): </p>
+     <input type="text" class="form-control" id="goalDate">
+     <br>
+     <button type="button" class="btn btn-success btn-lg" ng-click="addGoal()">Create!</button>
+     <button type="button" id="cancelCreateGoal" class="btn btn-danger btn-lg">Cancel</button>
+</center>
+</div>
+</div>
 
-<center><button type="button" id="newGoalBtn" ng-click="addGoal()" class="btn btn-lg"> <img src = "img/glyphicons-31-pencil.png"> Create Goal</button></center>
+<script>
+$("#newGoalBtn").click(function() {
+  $("#goalCreator").show("slow");
+});
+$("#cancelCreateGoal").click(function() {
+  $("#goalCreator").hide("slow");
+});
+</script>
 
 <br/><br/>
 </div>

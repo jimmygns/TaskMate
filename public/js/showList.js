@@ -129,60 +129,62 @@ function GoalController($scope) {
     }
   });
 
-
 $scope.addGoal = function() {
-    goalName = prompt("Enter the name: ");
-    var stringDate = prompt("Enter the due date in format MONTH DAY, YEAR: ");
+  	goalName = document.getElementById('goalDesc').value;
+  	var stringDate = document.getElementById('goalDate').value;
+        var dateString;
    
-    if (goalName.length > 0) {
+  	if (goalName.length > 0) {
 
         var goal = new Goal();
-  
+	
         var newsfeed = new Newsfeed();
 
         goal.set("name", goalName);
 
         goal.set("owner", ListId);
-      
-    if (stringDate.length > 0) {
+		if (stringDate.length > 0) {
            goal.set("dueDate", new Date(stringDate));
+           dateString = goal.get("dueDate").toDateString();
         } else {
            goal.set("dueDate", null);
-    }
+           dateString = "";
+		}
         goal.set("completed", false);
 
-    goal.save(null, {
-        success: function(goal) {
-          newsfeed.set('goal', goal.id);
-          console.log("Goal ID:");
-        console.log(goal.id);
-        newsfeed.set('list', ListId);
-        newsfeed.set('owner', owner);
-        newsfeed.set('message', ownerName + " has created goal " + goalName);
-        newsfeed.set('numLikes', 0);
-        newsfeed.set('numComments', 0);
-        newsfeed.save(null, {
-          success: function(newsfeed) {
-            console.log("Saved newsfeed");
-          },
-          error: function(newsfeed, error) {
-            console.log("error in saving");
-          }
-        });
-        incompleteGoal.push(goal);
-          $scope.IncompleteGoals.push({name: goal.get("name"), dueDate: goal.get("dueDate").toDateString()});
-          $scope.$digest();
-       },
-       error: function(goal, error) {
-         console.log(error);
-       }
-     });
+		goal.save(null, {
+		    success: function(goal) {
+			    newsfeed.set('goal', goal.id);
+			    console.log("Goal ID:");
+				console.log(goal.id);
+				newsfeed.set('list', ListId);
+				newsfeed.set('owner', owner);
+				newsfeed.set('message', ownerName + " has created goal \n \"" + goalName + "\"");
+				newsfeed.set('numLikes', 0);
+				newsfeed.set('numComments', 0);
+				newsfeed.save(null, {
+					success: function(newsfeed) {
+						console.log("Saved newsfeed");
+					},
+					error: function(newsfeed, error) {
+						console.log("error in saving");
+					}
+				});
+				incompleteGoal.push(goal);
+		   		$scope.IncompleteGoals.push({name: goal.get("name"), dueDate: dateString });
+		   		$scope.$digest();
+		   },
+		   error: function(goal, error) {
+			   console.log(error);
+		   }
+	   });
   }
   else {
     alert("Cannot read the name!");
   }
 
 }
+
 
 
 }
@@ -206,7 +208,7 @@ function completeGoal(index) {
         newsfeed.set('goal', goal.id);
         newsfeed.set('list', ListId);
         newsfeed.set('owner', owner);
-        newsfeed.set('message', ownerName + " has completed goal " + goalName);
+        newsfeed.set('message', ownerName + " has completed goal \n\"" + goalName +"\"");
         newsfeed.set('numLikes', 0);
         newsfeed.set('numComments', 0);
  

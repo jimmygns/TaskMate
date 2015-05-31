@@ -131,7 +131,7 @@ $scope.follow = function(Result){
         notif.set("outgoing",userId);
         notif.set("user", result);                   
         notif.set("type","follow");
-        var notif_content = currentUser.get('fullName') + " started following you.";
+        var notif_content = currentUser.get('firstName')+" "+currentUser.get('lastName') + " started following you.";
         notif.set("content",notif_content);
         notif.save();
     },

@@ -13,6 +13,10 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     var picURL;
     var currentUser = Parse.User.current();
 
+    $scope.picUrl = currentUser.get('profilePicture').url();
+    $scope.firstName1 = currentUser.get("firstName");
+    $scope.lastName1 = currentUser.get('lastName');
+
     
 
     query.find({

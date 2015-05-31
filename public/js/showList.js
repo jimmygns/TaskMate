@@ -15,6 +15,14 @@ var owner;
 var ownerName;
 var goalName;
 
+function infoCtrl($scope){
+  var currentUser = Parse.User.current();
+  $scope.picUrl = currentUser.get("profilePicture").url();
+  $scope.firstName = currentUser.get("firstName");
+  $scope.lastName = currentUser.get("lastName");
+
+}
+
 function GoalController($scope) {
      var lists = new Parse.Query(List);
 

@@ -116,28 +116,8 @@ $scope.follow = function(Result){
     //alert(followingArray.length);
     currentUser.set("following",followingArray);
     currentUser.save();
-    var User = Parse.Object.extend("User");
-    var query = new Parse.Query(User);
-    query.get(userId, {
-      success: function(user) {
-    // The object was retrieved successfully.
-    var newArray=user.get("followers");
-    newArray.push(Parse.User.current().id);
-    //alert(user.get('lastName'));
-    user.set("lastName","test");
-    user.set("followers",newArray);
-    user.save();
-    alert(user.get('followers'));
-    
     Result.follow="Following";
     $scope.$digest();
-    
-  },
-  error: function(object, error) {
-    // The object was not retrieved successfully.
-    // error is a Parse.Error with an error code and message.
-  }
-});
     
   }
   else{
@@ -160,35 +140,8 @@ $scope.follow = function(Result){
     followingArray.splice(position,1);
     currentUser.set("following",followingArray);
     currentUser.save();
-    
-    var User = Parse.Object.extend("User");
-    var query = new Parse.Query(User);
-    query.get(userId, {
-      success: function(user) {
-    // The object was retrieved successfully.
-    var newArray=user.get("followers");
-    var index=0;
-    //alert("there");
-    for(var i=0; i<newArray.length; i++){
-          
-          if(newArray[i]==Parse.User.current().id){
-            index=i;
-            break;
-          }
-    }
-    newArray.splice(index,1);
-    user.set("followers",newArray);
     Result.follow="Follow";
     $scope.$digest();
-    user.save();
-  },
-  error: function(object, error) {
-    // The object was not retrieved successfully.
-    // error is a Parse.Error with an error code and message.
-  }
-});
-
-
   }
 
 

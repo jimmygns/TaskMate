@@ -30,13 +30,13 @@ var NewsfeedController =function ($scope){
     	//var current_Id = Parse.User.current().id;
     	if(arrayOfUsers[i]==current_Id){
     		flag=false;
-    		$scope.Like = "Unlike"+likes;
+    		$scope.Like = likes+" Unlike";
     		break;
     	}
     }    
 }
 if(flag){
-	$scope.Like = "Like"+likes;
+	$scope.Like = likes+" Like";
 }
 $scope.$digest();
 
@@ -185,12 +185,12 @@ $scope.like = function(){
 			var temp=result.get('numLikes');
 			var arrayOfUsers=result.get('liked');
 
-			if(status.charAt(0)=="L"){
+			if(status.match("Unlike")==null){
 				
 				result.set('numLikes',temp+1);
 				//TODO: Parse.User.current().id
 				result.add('liked',current_Id);
-				$scope.Like="Unlike"+result.get('numLikes');
+				$scope.Like=result.get('numLikes')+" Unlike";
 
                 //creating a notification when pressing like button
                 var Notification = Parse.Object.extend("Notification");
@@ -220,15 +220,15 @@ $scope.like = function(){
 				result.set('numLikes',temp-1);
 				var index=0;
 				for(var i=0; i<arrayOfUsers.length; i++){
-					//Parse.User.current().id
-					if(arrayOfUsers[i]=="8EWpEXknMZ"){
+					
+					if(arrayOfUsers[i]==Parse.User.current().id){
 						index=i;
 						break;
 					}
 				}
 				arrayOfUsers.splice(index,1);
 				result.set('liked',arrayOfUsers);
-				$scope.Like="Like"+result.get('numLikes');
+				$scope.Like=result.get('numLikes')+" Like";
 				result.save();
 			}
 			$scope.$digest();
@@ -311,7 +311,14 @@ $scope.addComment=function(){
         $scope.profilePictureURL = picture.url();
     }*/
 
-    $scope.numberOfNotification = 7;
+    $scope.numberOfNotification = Parse.User.current().get('numNotif');
+
+    $scope.profilePictureURL = "img/glyphicons-4-user.png";
+
+    picture = Parse.User.current().get("profilePicture");
+    if (picture != undefined) {
+        $scope.profilePictureURL = picture.url();
+    }
 
     $scope.goHome = function() {
         window.location.href = "./newsfeed.html";

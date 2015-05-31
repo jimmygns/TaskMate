@@ -117,6 +117,27 @@ $scope.follow = function(Result){
     currentUser.set("following",followingArray);
     currentUser.save();
     Result.follow="Following";
+
+    //create notification when pressing Follow
+    var Notification = Parse.Object.extend("Notification");
+    var notif = new Notification();
+    var User = Parse.Object.extend("User");
+    var user_query = new Parse.Query(User);
+    user_query.include("owner");
+    user_query.get(userId, {
+        success: function(result) {
+        // The object was retrieved successfully.
+        notif.set("owner",userId);
+        notif.set("outgoing",userId);
+        notif.set("user", result);                   
+        notif.set("type","follow");
+        var notif_content = currentUser.get('fullName') + " started following you.";
+        notif.set("content",notif_content);
+        notif.save();
+    },
+    error: function(object, error) {
+    }
+});
     $scope.$digest();
     
   }

@@ -14,6 +14,39 @@ var owner;
 var ownerName;
 var goalName;
 
+function NavigationBarController($scope) {
+  $scope.numberOfNotification = Parse.User.current().get('numNotif');
+
+  $scope.profilePictureURL = "img/glyphicons-4-user.png";
+
+  picture = Parse.User.current().get("profilePicture");
+  if (picture != undefined) {
+    $scope.profilePictureURL = picture.url();
+  }
+
+  $scope.goHome = function() {
+      window.location.href = "./newsfeed.html";
+  }
+
+  $scope.goNotification = function() {
+    window.location.href = "./notifications.html";
+  }
+
+  $scope.search = function(){
+    window.location.href = "./search.html?" + $scope.searchInput;
+  };
+
+  $scope.goProfile = function(){
+    window.location.href = "./profile.html?" + Parse.User.current().id;
+  };
+
+  $scope.logOut = function(){
+    Parse.User.logOut();
+      window.location.href = "./index.html";
+  };
+
+}
+
 function infoCtrl($scope){
   var currentUser = Parse.User.current();
   $scope.picUrl = currentUser.get("profilePicture").url();
@@ -133,7 +166,8 @@ $scope.addGoal = function() {
   	goalName = document.getElementById('goalDesc').value;
   	var stringDate = document.getElementById('goalDate').value;
         var dateString;
-   
+    var deadline;
+    var currentDate = new Date();
   	if (goalName.length > 0) {
 
         var goal = new Goal();
@@ -144,7 +178,8 @@ $scope.addGoal = function() {
 
         goal.set("owner", ListId);
 		if (stringDate.length > 0) {
-           goal.set("dueDate", new Date(stringDate));
+           deadline = new Date(stringDate);
+           goal.set("dueDate", deadline);
            dateString = goal.get("dueDate").toDateString();
         } else {
            goal.set("dueDate", null);
@@ -152,6 +187,9 @@ $scope.addGoal = function() {
 		}
         goal.set("completed", false);
 
+    if (deadline < currentDate) {
+      alert("Invalid date!");
+    } else {
 		goal.save(null, {
 		    success: function(goal) {
 			    newsfeed.set('goal', goal.id);
@@ -178,6 +216,7 @@ $scope.addGoal = function() {
 			   console.log(error);
 		   }
 	   });
+    }
   }
   else {
     alert("Cannot read the name!");

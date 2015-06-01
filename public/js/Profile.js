@@ -1,4 +1,5 @@
 var profile_app = angular.module("profileApp", []);
+
 profile_app.controller('profileCtrl', function($scope, $http) {
     Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
@@ -25,7 +26,14 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     $scope.firstName1 = currentUser.get("firstName");
     $scope.lastName1 = currentUser.get('lastName');
 
-    
+    if(ID === currentUser.id)
+        document.getElementById("follow").style.visibility = "hidden";
+    else {
+        document.getElementById("createNewListButton").style.visibility = "hidden";
+        document.getElementById("profilePhotoFileUpload").style.display = "none";
+        document.getElementById("submitPic").style.display = "none";
+    }
+
 
     query.find({
         success: function(results) {
@@ -133,6 +141,14 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     };
 
     $scope.follow = function() {
+        //alert("into follow");
+        if(document.getElementById("follow").innerText === "Following")
+        {
+            //document.getElementById("follow").innerText = "Unfollow"
+            $scope.unfollow();
+            return;
+        }
+            
         currentUser.addUnique("following", ID);
         currentUser.save(null, {
             success: function(object) {
@@ -142,6 +158,9 @@ profile_app.controller('profileCtrl', function($scope, $http) {
                 alert('Failed to follow, with error code: ' + error.message);
             }
         });
+        if(document.getElementById("follow").innerText === "Follow")
+           document.getElementById("follow").innerText = "Following";
+
     };
 
     $scope.unfollow = function() {
@@ -154,5 +173,15 @@ profile_app.controller('profileCtrl', function($scope, $http) {
                 alert('Failed to follow, with error code: ' + error.message);
             }
         });
-    }
+        document.getElementById("follow").innerText = "Follow";
+    };
+
+    
+
+
+
+
+
+
+
 });

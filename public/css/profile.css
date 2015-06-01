@@ -43,6 +43,12 @@ body {
     top: -180px;
 }
 
+#follow {
+    position: relative;
+    left: 550px;
+    top: -235px;
+}
+
 .uploadPicture {
     position: relative;
     left: 290px;

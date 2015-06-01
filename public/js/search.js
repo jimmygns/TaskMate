@@ -128,7 +128,7 @@ $scope.follow = function(Result){
         success: function(result) {
         // The object was retrieved successfully.
         notif.set("owner",userId);
-        notif.set("outgoing",userId);
+        notif.set("outgoing",currentUser.id);
         notif.set("user", result);                   
         notif.set("type","follow");
         var notif_content = currentUser.get('firstName')+" "+currentUser.get('lastName') + " started following you.";

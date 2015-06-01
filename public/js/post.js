@@ -206,7 +206,7 @@ $scope.like = function(){
                     notif.set("outgoing",id);
                     notif.set("user", result);                   
                     notif.set("type","like");
-                    var notif_content=result.get('fullName')+" liked your post.";
+                    var notif_content=result.get('firstName')+" "+result.get('lastName')+" liked your post.";
                     notif.set("content",notif_content);
                     notif.save();
                 },
@@ -293,7 +293,7 @@ $scope.addComment=function(){
         notif.set("outgoing",id);
         notif.set("user", result);                   
         notif.set("type","comment");
-        var notif_content=result.get('fullName')+" commented on your post.";
+        var notif_content=result.get('firstName')+" "+result.get('lastName')+" commented on your post.";
         notif.set("content",notif_content);
         notif.save();
         location.reload();

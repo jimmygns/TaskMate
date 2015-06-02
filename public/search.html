@@ -89,16 +89,7 @@
 
           <!--my profile-->
           <li><a href="#" ng-click = "goProfile()">
-            <img ng-src = "{{profilePictureURL}}" class = "img-circle" height = "22" width = "23"> My Profile</a></li>
-
-            <!--write a goal-->
-            <li>
-              <button type="button" class="btn btn-default navbar-btn">
-                <span class="glyphicons glyphicons-pencil"></span>
-                <img src = "img/glyphicons-31-pencil.png">
-                Add a Goal
-              </button>
-            </li>
+            <img ng-src = "{{profilePictureURL}}" class = "img-circle" height = "30" width = "30">  My Profile</a></li>
 
           </ul>
         </div><!-- /.navbar-collapse -->
@@ -106,7 +97,7 @@
     </nav>
 
     <body>
-      
+
       <ul ng-repeat="Result in Results">
         <li class="userList">
           <a ng-href="{{Result.profilePage}}">

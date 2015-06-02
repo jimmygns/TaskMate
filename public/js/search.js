@@ -23,6 +23,10 @@ var SearchController=function ($scope){
     window.location.href = "./notifications.html";
   }
 
+  function goToAboutUs(){
+    window.location.href = "../aboutus.html";
+  };
+
   $scope.search = function(){
 
     var name=$scope.searchInput;

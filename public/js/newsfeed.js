@@ -61,7 +61,7 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
 
   $scope.logOut = function(){
     Parse.User.logOut();
-      window.location.href = "./index.html";
+    window.location.href = "./index.html";
   };
 
 
@@ -171,7 +171,12 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
     		  $scope.posts[postsCount].numLikes = newsfeed.get('numLikes');
     		  $scope.posts[postsCount].numComments = newsfeed.get('numComments');
           $scope.posts[postsCount].objectId = newsfeed.id;
-          $scope.posts[postsCount].btnText = 'Like';
+
+          if($.inArray(Parse.User.current().id, newsfeed.get('liked')) == -1)
+            $scope.posts[postsCount].btnText = 'Like';
+          else
+            $scope.posts[postsCount].btnText = 'Unlike';
+          
           $scope.posts[postsCount].firstName = newsfeed.get('owner').get('firstName');
           $scope.posts[postsCount].lastName = newsfeed.get('owner').get('lastName');
           $scope.posts[postsCount].picURL = newsfeed.get('owner').get('profilePicture').url();

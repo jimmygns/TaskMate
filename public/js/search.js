@@ -58,7 +58,9 @@ var SearchController=function ($scope){
     var array=[];
     if(results.length==0){
       //alert("no user found!");
-      return;
+      //alert("what");
+      $scope.warning="No Result Found";
+      //return;
     }
     var arrayOfFollowings=Parse.User.current().get('following');
     for (var i = 0; i < results.length; i++) { 

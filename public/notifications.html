@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-
+<script src="js/navBar.js"></script>
 <script src="js/notifications.js"></script>
 
 <style type="text/css">
@@ -33,78 +33,73 @@
 </head>
 
 <body>
+<div ng-app>
+<nav class="navbar navbar-default" ng-controller="NavigationBarController">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#" ng-click = "goHome()">HOME</a>
+    </div>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="newsfeed.html">HOME</a>
-        </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      
+      <ul class="nav navbar-nav navbar-right">
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <!--settings-->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <img src = "img/glyphicons-137-cogwheel.png">
+           <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">About Us</a></li>
+            <li class="divider"></li>
+            <li><a href="#" ng-click = "logOut()">Log Out</a></li>
+          </ul>
+        </li>
 
-            <ul class="nav navbar-nav navbar-right">
+        <!--notifications-->
 
-                <!--settings-->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <img src = "img/glyphicons-137-cogwheel.png">
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">About Us</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" onclick = "logOut()">Log Out</a></li>
-                    </ul>
-                </li>
+        <li>
+            <a href="#" ng-click = "goNotification()">
+            <img src = "img/glyphicons-11-envelope.png">
+            <span class="badge">                 
+                {{numberOfNotification}}
+            </span>
+          </a>
+            </li>
 
-                <!--notifications-->
-                <li>
-                    <a href="#">
-                        <img src = "img/glyphicons-11-envelope.png">
-                        <span class="badge">2</span></a>
-                </li>
-
-                <!--search-->
-                <li>
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <input id="searchInput"type="text" class="form-control" placeholder="Search for...">
-      				<span class="input-group-btn">
-        				<button onclick="redirect()" class="btn btn-default" type="button" id = "search">
+        <!--search-->
+        <li>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="row">
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <input id="searchInput" type="text" class="form-control" placeholder="Search for..." ng-model="searchInput">
+                    <span class="input-group-btn">
+                        <button ng-click="search()" class="btn btn-default" type="button" id = "search">
                             Go!
                         </button>
-      				</span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                    </form>
-                </li>
+                    </span>
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            </div><!-- /.row -->
+      </form>
+    </li>
 
-                <!--my profile-->
-                <li><a href="#" onclick = "goToProfile()">
-                    <img src = "img/glyphicons-4-user.png">My Profile</a></li>
+      <!--my profile-->
+       <li><a href="#" ng-click = "goProfile()">
+        <img ng-src = "{{profilePictureURL}}" class = "img-circle" height = "22" width = "23"> My Profile</a></li>
 
-                <!--write a goal-->
-                <li>
-                    <button type="button" class="btn btn-default navbar-btn">
-                        <span class="glyphicons glyphicons-pencil"></span>
-                        <img src = "img/glyphicons-31-pencil.png">
-                        Add a Goal
-                    </button>
-                </li>
-
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
 </nav>
 
 <br/><br/>
@@ -112,7 +107,7 @@
 <b>Your Notifications </b>
       
 <br/><br/> 
-	<div ng-app ng-controller="NotificationController">
+	<div  ng-controller="NotificationController">
 		<div ng-repeat="Notification in Notifications">
 			<button type="button" class="btn fsSubmitButton"  onclick="location.href='{{Notification.outgoing}}'">
    				<img ng-src= {{Notification.image}} style="width:30px;height:30px;"/>
@@ -122,6 +117,7 @@
 			<br/>
 		</div>
 	</div>
+</div>
 </div>
 </body>
 </html>

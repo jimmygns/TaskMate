@@ -7,14 +7,21 @@ var NotificationController=function($scope) {
 	var notifications = new Parse.Query(Notification);
 	notifications.include("user");
 
-  notifications.equalTo("owner", "3pbuNTZawL");//Parse.User.current().id);
+  notifications.equalTo("owner", Parse.User.current().id);
+
+  Parse.User.current().set("numNotif", 0);
+  Parse.User.current().save();
+
+  notifications.limit(15);
 
   var outgoing = [];
   var content = [];
 
   $scope.Notifications=[];
   var position = 0;
-     
+  
+
+
   notifications.find({
     success: function(results) {
       for (var i = 0; i < results.length; i++) {
@@ -35,7 +42,7 @@ var NotificationController=function($scope) {
        			outgoing.push("profile.html?" + object.get('outgoing'));
        			break;
         }
-              
+
 	
         var user=object.get('user');
         var image = user.get('profilePicture');
@@ -54,7 +61,7 @@ var NotificationController=function($scope) {
       }
     },
     error: function(error) {
-      alert("Error: " + error.code + " " + error.message);
+      alert("No unread notifications");
     }
   });
 }

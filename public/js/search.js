@@ -7,11 +7,13 @@ var SearchController=function ($scope){
   $scope.searchInput=name;
 
   if(name=="undefined"){
-    alert(name);
+    //alert(name);
     $scope.searchInput="";
   }
+  else{
 
-  $scope.searchInput=name; 
+    $scope.searchInput=name; 
+  }
 
   $scope.numberOfNotification = Parse.User.current().get('numNotif');
 

@@ -14,6 +14,16 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     var picURL;
     var currentUser = Parse.User.current();
 
+    //set the default text for follow button
+    var followingArray = currentUser.get("following");
+    if($.inArray(ID, followingArray) === -1)
+        $scope.followText = "Follow";
+    else
+        $scope.followText = "Unfollow";
+
+
+
+
     var picture = currentUser.get('profilePicture');
     if (picture != null)
     {
@@ -117,8 +127,15 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     };
 
     $scope.makeList = function() {
+
         var name = document.getElementById('listName').value;
         var description = document.getElementById('listDescription').value
+
+        //alert(name);
+        if(name.length === 0){
+            alert("List name must not be empty");
+            return;
+        }
 
         var List = Parse.Object.extend("List");
         var list = new List;
@@ -141,10 +158,10 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     };
 
     $scope.follow = function() {
-        //alert("into follow");
-        if(document.getElementById("follow").innerText === "Following")
+
+
+        if(document.getElementById("follow").innerText === "Unfollow")
         {
-            //document.getElementById("follow").innerText = "Unfollow"
             $scope.unfollow();
             return;
         }
@@ -159,7 +176,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
             }
         });
         if(document.getElementById("follow").innerText === "Follow")
-           document.getElementById("follow").innerText = "Following";
+           document.getElementById("follow").innerText = "Unfollow";
 
     };
 

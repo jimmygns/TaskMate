@@ -25,6 +25,12 @@
   list-style: none;
 }
 
+.warning{
+  list-style: none;
+  font-style: italic;
+  font-size: x-large;
+}
+
 
 </style>
 <div ng-controller="SearchController">
@@ -97,7 +103,11 @@
     </nav>
 
     <body>
-
+      <ul>
+        <li class="warning">
+          {{warning}}
+        </li>
+      </ul>
       <ul ng-repeat="Result in Results">
         <li class="userList">
           <a ng-href="{{Result.profilePage}}">

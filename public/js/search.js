@@ -4,6 +4,13 @@ var SearchController=function ($scope){
   Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
   var id=location.search;
   var name = id.substring(1,id.length);
+  $scope.searchInput=name;
+
+  if(name=="undefined"){
+    alert(name);
+    $scope.searchInput="";
+  }
+
   $scope.searchInput=name; 
 
   $scope.numberOfNotification = Parse.User.current().get('numNotif');
@@ -35,9 +42,10 @@ var SearchController=function ($scope){
     
     var query = new Parse.Query(Parse.User);
     name = name.toLowerCase().trim();
-
+    $scope.warning="";
     if(name===""){
       $scope.Results=[];
+      $scope.warning="No Result Found";
       //alert("username cannot be empty!");
       return;
     }

@@ -26,3 +26,63 @@ Parse.Cloud.define("test", function(request, response) {
         }
     });
 });
+
+Parse.Cloud.beforeSave("Newsfeed", function(request, response) {
+    var object = request.object;
+    var owner = object.get("owner");
+    var curUser = Parse.User.current();
+    if (owner.id == curUser.id)
+    {
+        response.success();
+    }
+    else
+    {
+        response.error("Can not modify other client's newsfeed event");
+    }
+});
+
+Parse.Cloud.beforeSave("Goal", function(request, response) {
+    var object = request.object;
+    var listID = object.get("owner");
+
+    var List = Parse.Object.extend("List");
+    var query = new Parse.Query(List);
+    query.equalTo("objectId",listID);
+    query.find({
+        success: function(results) {
+            for (var i = 0; i < results.length; i++)
+            {
+                var obj = results[i];
+                var owner = obj.get("owner");
+                var curUser = Parse.User.current();
+                if (owner == curUser.id)
+                {
+                    response.success();
+                }
+                else
+                {
+                    response.error("Can not modify other client's goal");
+                }
+            }
+        },
+        error: function(error) {
+            response.error();
+        }
+    });
+});
+
+Parse.Cloud.beforeSave("List", function(request, response) {
+    var object = request.object;
+    var owner = object.get("owner");
+    var curUser = Parse.User.current();
+    if (owner == curUser.id)
+    {
+        response.success();
+    }
+    else
+    {
+        response.error("Can not modify other client's list");
+    }
+});
+
+

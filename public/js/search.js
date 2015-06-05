@@ -5,7 +5,7 @@ var SearchController=function ($scope){
   var id=location.search;
   var name = id.substring(1,id.length);
   $scope.searchInput=name;
-
+  //console.log(name);
   if(name=="undefined"){
     //alert(name);
     $scope.searchInput="";
@@ -37,11 +37,34 @@ var SearchController=function ($scope){
   };
 
   $scope.search = function(){
+    //console.log(name);
 
     var name=$scope.searchInput;
+    name = name.toLowerCase().trim();
+    if(name==""){
+      $scope.Results=[];
+      $scope.warning="No Result Found";
+      return;
+    }
+    Parse.Cloud.run('searchUser',{searchInput: name},{
+      success: function(result) {
+        $scope.warning="";
+        if(result.length==0){
+          $scope.Results=[];
+          $scope.warning="No Result Found";
+          return;
+        }
+        $scope.Results=result;
+        $scope.$digest();
+      },
+      error: function(error) {
+        //alert("here");
+        alert("Error of " + error.code + error.message);
+      }
+    });
 
 
-    
+    /*
     var query = new Parse.Query(Parse.User);
     name = name.toLowerCase().trim();
     $scope.warning="";
@@ -109,7 +132,10 @@ var SearchController=function ($scope){
   error: function(error) {
     alert("Error: " + error.code + " " + error.message);
   }
-});
+});*/
+
+
+
 };
 
 $scope.goProfile = function(){

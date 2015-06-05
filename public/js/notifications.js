@@ -12,6 +12,7 @@ var NotificationController=function($scope) {
   Parse.User.current().set("numNotif", 0);
   Parse.User.current().save();
 
+  notifications.descending("createdAt");
   notifications.limit(15);
 
   var outgoing = [];
@@ -20,8 +21,6 @@ var NotificationController=function($scope) {
   $scope.Notifications=[];
   var position = 0;
   
-
-
   notifications.find({
     success: function(results) {
       for (var i = 0; i < results.length; i++) {

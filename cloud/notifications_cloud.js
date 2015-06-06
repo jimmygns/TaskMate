@@ -56,7 +56,7 @@ Parse.Cloud.define('getNotifications', function(request, response) {
       response.success(Notifications);
     },
     error: function(error) {
-      response.error("Error: " + error.code + " " + error.message);
+      response.error("Cannot find your notifications :D");
     }
   });
 });

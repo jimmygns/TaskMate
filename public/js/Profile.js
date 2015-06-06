@@ -165,24 +165,12 @@ profile_app.controller('profileCtrl', function($scope, $http) {
         var name = document.getElementById('listName').value;
         var description = document.getElementById('listDescription').value
 
-        //alert(name);
-        if(name.length === 0){
-            alert("List name must not be empty");
-            return;
-        }
-
-        var List = Parse.Object.extend("List");
-        var list = new List;
-        list.set("owner", currentUser.id);
-        list.set("name", name);
-        list.set("description", description);
-        list.save(null, {
-            success: function(list) {
-                window.location.href = "../listPage.html?" + list.id;
-
+        Parse.Cloud.run('makeList', {name: name, userId: currentUser.id, description: description}, {
+            success: function(result) {
+                 window.location.href = "../listPage.html?" + result[0];
             },
-            error: function(list, error) {
-                alert('Failed to create new object, with error code: ' + error.message);
+            error: function(error) {
+                alert("Error of " + error.code + error.message);
             }
         });
     };

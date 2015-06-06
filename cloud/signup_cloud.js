@@ -14,6 +14,7 @@ Parse.Cloud.define('signup', function(request, response) {
     fullNameStr = fullNameStr.toLowerCase();
 
     user.set("fullName", fullNameStr);
+    user.set("numNotif", 0);
 
     alert("Signing up now");
 

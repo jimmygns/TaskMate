@@ -15,6 +15,8 @@ Parse.Cloud.define('signup', function(request, response) {
 
     user.set("fullName", fullNameStr);
     user.set("numNotif", 0);
+    user.set("following", []);
+    user.set("followers", []);
 
     alert("Signing up now");
 

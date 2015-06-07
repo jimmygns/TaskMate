@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="css/newsfeed.css"/>
     <title>Task Mate</title>
 
-
+    <!--set the background image for the newsfeed page-->
     <style>
       html {
         background-image: url("../img/landingPageBG.png");
@@ -41,7 +41,7 @@
 
 <body ng-app = "newsfeedApp" ng-controller="newsfeedCtrl">
 
-
+<!--navbar for newsfeed page-->
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -77,9 +77,6 @@
         <li>
           <a href="#" ng-click = "goNotification()">
             <img src = "img/glyphicons-11-envelope.png">
-            <span class="badge">                 
-                {{numberOfNotification}}
-            </span>
           </a>
         </li>
 
@@ -111,29 +108,35 @@
 </nav>
 
 
-
+  <!--use angular ng-repeat to display all the newsfeed objects-->
   <div ng-repeat="post in posts">
     <div class="padding">
       <div class="well well-lg">
         
+        <!--display the profile image in circular style-->
         <div class="userInfo" ng-click="redirectToProfile($index)">
           <img ng-src={{post.picURL}} alt="Profile Picture" style="width:60px;height:60px;-webkit-border-radius: 30px;-moz-border-radius: 30px;">
 
           <p>{{post.firstName}} {{post.lastName}}</p>
         </div>
 
+
+        <!--set view details in each post-->
         <div class="view" ng-click="goToPost($index)">
           <p>View details</p>
         </div>
 
+        <!--set message in each post-->
         <div class="message">
           <p>{{post.message}}</p>
         </div>
 
+        <!--set numLikes in each post-->
         <div class="numCom-Likes">
           <p>{{post.numLikes}} Likes &nbsp; {{post.numComments}} Comments</p>
         </div>
 
+        <!--set the button-->
         <div class ="button" ng-click="plusOne($index)">
           <button type="button" class="btn btn-default">{{post.btnText}}</button>
         </div>

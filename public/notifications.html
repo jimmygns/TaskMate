@@ -75,9 +75,6 @@
         <li>
             <a href="#" ng-click = "goNotification()">
             <img src = "img/glyphicons-11-envelope.png">
-            <span class="badge">                 
-                {{numberOfNotification}}
-            </span>
           </a>
             </li>
 
@@ -113,6 +110,7 @@
 <b>Your Notifications </b>
       
 <br/><br/> 
+<!-- display notifications -->
 	<div  ng-controller="NotificationController">
 		<div ng-repeat="Notification in Notifications">
 			<button type="button" class="btn fsSubmitButton"  onclick="location.href='{{Notification.outgoing}}'">

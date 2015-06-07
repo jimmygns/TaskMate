@@ -10,10 +10,12 @@ require('cloud/notifications_cloud.js')
 
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
+//Testing function for learning purposes
 Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
 
+//Another function for learning purposes
 Parse.Cloud.define("test", function(request, response) {
     var list = Parse.Object.extend("List");
     var query = new Parse.Query(list);
@@ -30,6 +32,7 @@ Parse.Cloud.define("test", function(request, response) {
     });
 });
 
+//Guarantees that users cannot modify each others goals
 Parse.Cloud.beforeSave("Goal", function(request, response) {
     var object = request.object;
     var listID = object.get("owner");
@@ -44,6 +47,7 @@ Parse.Cloud.beforeSave("Goal", function(request, response) {
                 var obj = results[i];
                 var owner = obj.get("owner");
                 var curUser = Parse.User.current();
+                //Compare owner of the goal and the cur user
                 if (owner == curUser.id)
                 {
                     response.success();
@@ -60,10 +64,12 @@ Parse.Cloud.beforeSave("Goal", function(request, response) {
     });
 });
 
+//Guarantees that users cannot modify each others lists
 Parse.Cloud.beforeSave("List", function(request, response) {
     var object = request.object;
     var owner = object.get("owner");
     var curUser = Parse.User.current();
+    //Compare owner of the list and cur user
     if (owner == curUser.id)
     {
         response.success();

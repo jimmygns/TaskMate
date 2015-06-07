@@ -168,63 +168,17 @@ $scope.addGoal = function() {
         var dateString;
     var deadline;
     var currentDate = new Date();
-  	if (goalName.length > 0) {
-
-        var goal = new Goal();
-	
-        var newsfeed = new Newsfeed();
-
-        goal.set("name", goalName);
-
-        goal.set("owner", ListId);
-		if (stringDate.length > 0) {
-           deadline = new Date(stringDate);
-           goal.set("dueDate", deadline);
-           dateString = goal.get("dueDate").toDateString();
-        } else {
-           goal.set("dueDate", null);
-           dateString = "";
-		}
-        goal.set("completed", false);
-
-    if (deadline < currentDate) {
-      alert("Invalid date!");
-    } else {
-		goal.save(null, {
-		    success: function(goal) {
-			    newsfeed.set('goal', goal.id);
-			    console.log("Goal ID:");
-				console.log(goal.id);
-				newsfeed.set('list', ListId);
-				newsfeed.set('owner', owner);
-				newsfeed.set('message', ownerName + " has created goal \n \"" + goalName + "\"");
-				newsfeed.set('numLikes', 0);
-				newsfeed.set('numComments', 0);
-				newsfeed.save(null, {
-					success: function(newsfeed) {
-						console.log("Saved newsfeed");
-					},
-					error: function(newsfeed, error) {
-						console.log("error in saving");
-					}
-				});
-				incompleteGoal.push(goal);
-		   		$scope.IncompleteGoals.push({name: goal.get("name"), dueDate: dateString });
-		   		$scope.$digest();
-		   },
-		   error: function(goal, error) {
-			   console.log(error);
-		   }
-	   });
-    }
-  }
-  else {
-    alert("Cannot read the name!");
-  }
+    Parse.Cloud.run('makeGoal', {goalName: goalName, date: stringDate, curDate: currentDate, listId: ListId, ownerName: ownerName}, {
+        success: function(result) {
+            //alert(result);
+            location.reload();
+        },
+        error: function(error) {
+            alert("Error of " + error.code + error.message);
+        }
+    });
 
 }
-
-
 
 }
 
@@ -232,75 +186,30 @@ function completeGoal(index) {
 
   var goal = incompleteGoal[index];
   var listID = goal.get('owner');
-  var query = new Parse.Query('List');
-  query.get(listID, {
-    success: function(list){
-      var listOwner = list.get('owner');
-      if(Parse.User.current().id !== listOwner){
-        alert("You can only complete your own goals!");
-      } 
-      else {
-        goalName = goal.get("name");
-        goal.set('completed', true);
-        var newsfeed = new Newsfeed();
-  
-        newsfeed.set('goal', goal.id);
-        newsfeed.set('list', ListId);
-        newsfeed.set('owner', owner);
-        newsfeed.set('message', ownerName + " has completed goal \n\"" + goalName +"\"");
-        newsfeed.set('numLikes', 0);
-        newsfeed.set('numComments', 0);
- 
-        var array = [];
-        array.push(goal);
-        array.push(newsfeed); 
-        Parse.Object.saveAll(array, {
-          success: function(array){
-            console.log("success");
-          },
-          error: function(error) {
-
-          }
-        });
-
-        location.reload();
-      }
-    },
-
-    error: function(object, error) {
-        alert("Error: " + error.code + " " + error.message);
-    }
-  });
+    Parse.Cloud.run('completeGoal', {listId: listID, ownerName: ownerName, goalId: goal.id }, {
+        success: function(result) {
+            //alert(result);
+            location.reload();
+        },
+        error: function(error) {
+            alert("Error of " + error.code + error.message);
+        }
+    });
 
 }
 
 function deleteGoal(index) {
   var goal = incompleteGoal[index];
   var listID = goal.get('owner');
-  var query = new Parse.Query('List');
-  query.get(listID, {
-    success: function(list){
-      var listOwner = list.get('owner');
-      if(Parse.User.current().id !== listOwner){
-        alert("You can only delete your own goals!");
-      } 
-      else{
-        goal.destroy({
-          success: function(goal) {
-          },
-
-          error: function(goal, error) {
-          }
-        });
-
-        location.reload();
-      }
-    },
-
-    error: function(object, error) {
-        alert("Error: " + error.code + " " + error.message);
-    }
-  });
+    Parse.Cloud.run('deleteGoal', {listId: listID, goalId: goal.id }, {
+        success: function(result) {
+            //alert(result);
+            location.reload();
+        },
+        error: function(error) {
+            alert("Error of " + error.code + error.message);
+        }
+    });
 
 }
 

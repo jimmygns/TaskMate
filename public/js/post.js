@@ -1,14 +1,13 @@
-
-
 var NewsfeedController =function ($scope){
-	
-	Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
-	//var Newsfeed = Parse.Object.extend("Newsfeed");
-	//var query = new Parse.Query(Newsfeed);
+    
+    Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
+    var Newsfeed = Parse.Object.extend("Newsfeed");
+    var query = new Parse.Query(Newsfeed);
     var address=location.search;
     var id=address.substring(1,address.length);
     var current_Id = Parse.User.current().id;
     var ownerId;
+    var owner;
 
     Parse.Cloud.run('getPost', {objectId: id},{
         success: function(result){
@@ -54,9 +53,7 @@ var NewsfeedController =function ($scope){
     var likes = result.get('numLikes');
     var arrayOfUsers = result.get('liked');
     var flag=true;
-
     owner=result.get('owner').id;
-
     $scope.message = messageStr;
     if(arrayOfUsers!=null){
         for(var i=0; i<arrayOfUsers.length; i++){
@@ -100,38 +97,34 @@ $scope.$digest();*/
     });
     /*var User = Parse.Object.extend("User");
     var query1 = new Parse.Query(User);
-
     query1.get(owner, {
-    	success: function(result) {
-    		var name=result.get('firstName')+" "+result.get('lastName');
-    		var image=result.get('profilePicture');
+        success: function(result) {
+            var name=result.get('firstName')+" "+result.get('lastName');
+            var image=result.get('profilePicture');
             
-    		if (image == undefined)
-    		{
+            if (image == undefined)
+            {
                 
-    			var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
-    		}
-    		else
-    		{
+                var picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
+            }
+            else
+            {
                 
-    			var picURL = image.url();
-    		}
-    		$scope.username = name;
-    		$scope.profilePicture=picURL;
-    		$scope.profilePage="../profile.html?" + owner;
-    		$scope.$digest();
-
-    	},
-    	error: function(error) {
-    		alert("alert");
-    		alert("Error: " + error.code + " " + error.message);
-    	}
-
-
+                var picURL = image.url();
+            }
+            $scope.username = name;
+            $scope.profilePicture=picURL;
+            $scope.profilePage="../profile.html?" + owner;
+            $scope.$digest();
+        },
+        error: function(error) {
+            alert("alert");
+            alert("Error: " + error.code + " " + error.message);
+        }
     });*/
 
-	$scope.Comments=[];
-	Parse.Cloud.run('displayComment', {objectId: id}, {
+    $scope.Comments=[];
+    Parse.Cloud.run('displayComment', {objectId: id}, {
         success: function(results){
             //alert(results.length);
             for (var i = 0; i < results.length; i++) { 
@@ -164,21 +157,20 @@ $scope.$digest();*/
         }
     });
 
-	/*var Comment = Parse.Object.extend("Comment");
-	var query2 = new Parse.Query(Comment);
-	query2.equalTo('owner',id);
+    /*var Comment = Parse.Object.extend("Comment");
+    var query2 = new Parse.Query(Comment);
+    query2.equalTo('owner',id);
     query2.include('userPointer');
-	$scope.Comments=[];
-	var index=0;
-	//var array1=[];
-	//var array2=[];
-
-	query2.find({
-		success: function(results) {
-			//alert("Successfully retrieved " + results.length + " lists.");
+    $scope.Comments=[];
+    var index=0;
+    //var array1=[];
+    //var array2=[];
+    query2.find({
+        success: function(results) {
+            //alert("Successfully retrieved " + results.length + " lists.");
     // Do something with the returned Parse.Object values
-    for (var i = 0; i < results.length; i++) { 
-    	var object = results[i];
+    for (var i = 0; i < results.length; i++) {
+        var object = results[i];
         var person = object.get("userPointer");
         var profilePage="../profile.html?" + person.id;
         var image=person.get('profilePicture');
@@ -196,16 +188,12 @@ $scope.$digest();*/
           commenterProfilePage: profilePage,
           commenterProfilePicture: picURL, 
       });
-
-
         $scope.$digest();
     }
-
-
 },
 error: function(error) {
-	alert("comments alert");
-	alert("Error: " + error.code + " " + error.message);
+    alert("comments alert");
+    alert("Error: " + error.code + " " + error.message);
 }
 });*/
 
@@ -222,19 +210,18 @@ error: function(object, error) {
 
 
 $scope.like = function(){
-	
-	var status=document.getElementById('likeThePost').innerText;
-	query.get(id, {
-		success: function(result) {
-			var temp=result.get('numLikes');
-			var arrayOfUsers=result.get('liked');
+    var status=document.getElementById('likeThePost').innerText;
+    query.get(id, {
+        success: function(result) {
+            var temp=result.get('numLikes');
+            var arrayOfUsers=result.get('liked');
 
-			if(status.match("Unlike")==null){
-				
-				result.set('numLikes',temp+1);
-				//TODO: Parse.User.current().id
-				result.add('liked',current_Id);
-				$scope.Like=result.get('numLikes')+" Unlike";
+            if(status.match("Unlike")==null){
+                
+                result.set('numLikes',temp+1);
+                //TODO: Parse.User.current().id
+                result.add('liked',current_Id);
+                $scope.Like=result.get('numLikes')+" Unlike";
 
                 //creating a notification when pressing like button
                 var Notification = Parse.Object.extend("Notification");
@@ -258,40 +245,40 @@ $scope.like = function(){
                     }
                 });
 
-				result.save();
-			}
-			else{
-				result.set('numLikes',temp-1);
-				var index=0;
-				for(var i=0; i<arrayOfUsers.length; i++){
-					
-					if(arrayOfUsers[i]==Parse.User.current().id){
-						index=i;
-						break;
-					}
-				}
-				arrayOfUsers.splice(index,1);
-				result.set('liked',arrayOfUsers);
-				$scope.Like=result.get('numLikes')+" Like";
-				result.save();
-			}
-			$scope.$digest();
-		},
-		error: function(error) {
-			//alert("alert");
-			alert("Error: " + error.code + " " + error.message);
-		}
+                result.save();
+            }
+            else{
+                result.set('numLikes',temp-1);
+                var index=0;
+                for(var i=0; i<arrayOfUsers.length; i++){
+                    
+                    if(arrayOfUsers[i]==Parse.User.current().id){
+                        index=i;
+                        break;
+                    }
+                }
+                arrayOfUsers.splice(index,1);
+                result.set('liked',arrayOfUsers);
+                $scope.Like=result.get('numLikes')+" Like";
+                result.save();
+            }
+            $scope.$digest();
+        },
+        error: function(error) {
+            //alert("alert");
+            alert("Error: " + error.code + " " + error.message);
+        }
 
 
-	});
+    });
 
 
 }
 
 $scope.addComment=function(){
 
-	var Comment=Parse.Object.extend("Comment");
-	var comment=new Comment();
+    var Comment=Parse.Object.extend("Comment");
+    var comment=new Comment();
     var User = Parse.Object.extend("User");
     var user = new User();
     user.id = current_Id;
@@ -310,17 +297,17 @@ $scope.addComment=function(){
     });
 
 
-	//var current_Id=Parse.User.current().id;
-	//user.id="8EWpEXknMZ";
-	
-	comment.set('owner',id);
-	comment.set('user',current_Id);
+    //var current_Id=Parse.User.current().id;
+    //user.id="8EWpEXknMZ";
+    
+    comment.set('owner',id);
+    comment.set('user',current_Id);
     
     comment.set('userPointer',user);
     //alert("comment");
-	var input=document.getElementById("commentInput").value;
-	comment.set('content',input);
-	comment.save();
+    var input=document.getElementById("commentInput").value;
+    comment.set('content',input);
+    comment.save();
 
 
     //creating a notification when pressing like button
@@ -343,6 +330,7 @@ $scope.addComment=function(){
         location.reload();
     },
     error: function(object, error) {
+        alert("Error of " + error.message);
     }
 });
     
@@ -386,5 +374,3 @@ $scope.addComment=function(){
     };
 
 }
-
-

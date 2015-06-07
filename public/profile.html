@@ -93,6 +93,7 @@
 
         <script type="text/javascript" src="js/Profile.js"></script>
 
+    <!--Profile picture, name, and change profile picture buttons-->
     <div class = "profile_picture">
         <img id = "profilePic" ng-src= {{picURL}} style="width:250px;height:250px;background-size: cover;border-radius: 100em;-webkit-border-radius: 125px;-moz-border-radius: 125px;"/>
     </div>
@@ -109,7 +110,7 @@
     </div>
 
 
-    
+    <!--The users lists-->
     <center>
     <div class = "list_of_lists">
         <h3>{{firstName}} {{lastName}}'s Lists </h3><br/>
@@ -123,7 +124,8 @@
 
     <br/><br/>
 
-    <div class = "create_new_goal">
+        <!--Create a new list button-->
+        <div class = "create_new_goal">
         <button id="createNewListButton" type="button" class="btn btn-success btn-lg">Create New List</button>
             <div style="display:none" id="createListArea">
                 <p>List Name: </p>
@@ -136,7 +138,8 @@
             </div>
     </div>
 
-    <script>
+        <!--When the user clicks on the create a new list, it reveals the form information-->
+        <script>
         $("#createNewListButton").click(function() {
         $("#createListArea").show("slow");
         });

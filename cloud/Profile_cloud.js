@@ -1,7 +1,9 @@
+//Create a list in profile.html
 Parse.Cloud.define('makeList', function(request, response) {
 
         var List = Parse.Object.extend("List");
         var list = new List();
+        //If the user did not enter a name
         if(request.params.name.length === 0){
             response.error("List cannot be created without name.")
             return;

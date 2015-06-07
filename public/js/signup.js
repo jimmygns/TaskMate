@@ -11,7 +11,7 @@ signUpApp.controller("signUpCtrl", ["$scope", function signUpCtrl($scope){
                 window.location.replace("../index.html");
             },
             error: function(error) {
-                alert("Error of " + error.code + error.message);
+                alert(error);
             }
         });
 	}

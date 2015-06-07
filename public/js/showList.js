@@ -49,7 +49,15 @@ function NavigationBarController($scope) {
 
 function infoCtrl($scope){
   var currentUser = Parse.User.current();
-  $scope.picUrl = currentUser.get("profilePicture").url();
+    var picture = currentUser.get('profilePicture');
+    if (picture != undefined)
+    {
+        $scope.picUrl = picture.url();
+    }
+    else
+    {
+        $scope.picUrl = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
+    }
   $scope.firstName = currentUser.get("firstName");
   $scope.lastName = currentUser.get("lastName");
 

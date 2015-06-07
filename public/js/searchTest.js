@@ -1,9 +1,5 @@
 Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
-QUnit.test( "hello test", function( assert ) {
-    assert.ok( 1 == "1", "Passed!" );
-});
-
 QUnit.test( "search test1", function( assert ) {
     Parse.Cloud.run('searchUser', {searchInput: ""}, {
         success: function(result) {

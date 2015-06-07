@@ -71,16 +71,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     }
     $scope.firstName1 = currentUser.get("firstName");
     $scope.lastName1 = currentUser.get('lastName');
-
-    // If we are on our own profile, don't show the follow button
-    if(ID === currentUser.id)
-        document.getElementById("follow").style.visibility = "hidden";
-    else {
-        document.getElementById("createNewListButton").style.visibility = "hidden";
-        document.getElementById("profilePhotoFileUpload").style.display = "none";
-        document.getElementById("submitPic").style.display = "none";
-    }
-
+    
     query.find({
         success: function(results) {
             // Do something with the returned Parse.Object values
@@ -183,7 +174,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     $scope.follow = function() {
 
 
-        // If already following the user, call unfollow instead
+
         if ($scope.followText == "Following")
         {
             $scope.unfollow();
@@ -210,7 +201,6 @@ profile_app.controller('profileCtrl', function($scope, $http) {
 
     };
 
-    //Gets called if followText === "Following"
     $scope.unfollow = function() {
         Parse.Cloud.run('unfollow',{followingId: ID},{
           success: function(result) {

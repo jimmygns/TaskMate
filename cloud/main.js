@@ -4,12 +4,9 @@ require('cloud/Profile_cloud.js');
 require('cloud/search_cloud.js');
 require('cloud/showList_cloud.js');
 require('cloud/signup_cloud.js');
-<<<<<<< HEAD
 require('cloud/newsfeed_cloud.js');
-=======
 require('cloud/post_cloud.js');
 require('cloud/notifications_cloud.js')
->>>>>>> edbc7b2f8c4be902272a66395520590adec1ab3a
 
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:

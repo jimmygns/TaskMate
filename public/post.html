@@ -101,6 +101,7 @@
 			<div>
 
 				<h4 id="user">
+					<!-- display image and username -->
 					<a ng-href="{{profilePage}}">
 						<img class="img-circle" width="100px" height="100px" src="{{profilePicture}}">
 						{{username}}
@@ -108,12 +109,14 @@
 				</h4>
 			</div>
 			
+			<!-- display message field -->
 			<div>
 				<p class="messageBox">
 					{{message}}
 				</p>
 			</div>	
 
+			<!-- display likes -->
 			<div align="right">
 				<button id="likeThePost" type="button" class="btn btn-info" ng-click="like()">
 					{{Like}}
@@ -134,7 +137,7 @@
 
 			</div>
 
-
+			<!-- format for add comment -->
 			<div align="justify">
 				<form class="form-inline" role="form" >
 					<div class="form-group">

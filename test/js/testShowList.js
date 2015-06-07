@@ -1,17 +1,5 @@
 Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
-QUnit.test( "example test", function( assert ) {
-    Parse.Cloud.run('test', {}, {
-        success: function(result) {
-            assert.ok("Found 1 lists" == result, "Found the proper # of lists");
-        },
-        error: function(error) {
-        }
-    });
-
-    assert.ok(1 == "1", "This is just to remove Qunit's complaints about no asserts");
-});
-
 //Tests for cloud functions in showList.js corresponding to listPage.html
 QUnit.test( "Listpage Tests", function( assert ) {
     Parse.User.logIn("test@list.com", "123456", {
@@ -112,4 +100,5 @@ QUnit.test( "Listpage Tests", function( assert ) {
     });
 
     assert.ok(1 == "1", "This is just to remove Qunit's complaints about no asserts");
+    Parse.User.logOut();
 });

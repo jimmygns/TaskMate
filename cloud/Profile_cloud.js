@@ -4,6 +4,7 @@ Parse.Cloud.define('makeList', function(request, response) {
         var list = new List();
         if(request.params.name.length === 0){
             response.error("List cannot be created without name.")
+            return;
         }
         list.set("owner", request.params.userId);
         list.set("name", request.params.name);
@@ -17,6 +18,7 @@ Parse.Cloud.define('makeList', function(request, response) {
             },
             error: function(list, error) {
                 response.error("Error " + error.code + ": " + error.message);
+                return;
             }
         });
 });

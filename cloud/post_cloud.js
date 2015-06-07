@@ -21,6 +21,7 @@ Parse.Cloud.define("getPost", function(request, response){
     	},
   		error: function(object, error) {
     		response.error("Error1: " + error.code + " " + error.message);
+            return;
   		}
 	});
 });
@@ -50,6 +51,7 @@ Parse.Cloud.define("getUserInfo", function(request, response){
     	},
     	error: function(error) {
     		response.error("Error2: " + " " + error.message);
+            return;
     		//alert("Error: " + error.code + " " + error.message);
     	}
     });

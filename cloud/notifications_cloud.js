@@ -57,6 +57,7 @@ Parse.Cloud.define('getNotifications', function(request, response) {
     },
     error: function(error) {
       response.error("Cannot find your notifications :D");
+        return;
     }
   });
 });

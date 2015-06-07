@@ -25,6 +25,7 @@ Parse.Cloud.define("makeGoal", function(request, response) {
             deadline = new Date(stringDate);
             if (deadline < currentDate) {
                 response.error("Invalid date");
+                return;
             }
             goal.set("dueDate", deadline);
             dateString = goal.get("dueDate").toDateString();
@@ -45,16 +46,19 @@ Parse.Cloud.define("makeGoal", function(request, response) {
                         },
                         error: function(newsfeed, error) {
                             response.error("error in saving");
+                            return;
                         }
                     });
                 },
                 error: function(goal, error) {
                     response.error(error);
+                    return;
                 }
             });
 
     } else {
         response.error("Cannot read the name!");
+        return;
     }
 });
 
@@ -69,6 +73,7 @@ Parse.Cloud.define('completeGoal', function(request, response) {
             var listOwner = list.get('owner');
             if(Parse.User.current().id !== listOwner){
                 response.error("You can only complete your own goals!");
+                return;
             }
             else {
                 var Goal = Parse.Object.extend("Goal");
@@ -99,6 +104,7 @@ Parse.Cloud.define('completeGoal', function(request, response) {
                                 },
                                 error: function(error) {
                                     response.error(error);
+                                    return;
                                 }
                             });
                         }
@@ -106,6 +112,7 @@ Parse.Cloud.define('completeGoal', function(request, response) {
                     error: function(error) {
                         alert("Error: " + error.code + " " + error.message);
                         response.error(error);
+                        return;
                     }
                 });
 
@@ -114,6 +121,7 @@ Parse.Cloud.define('completeGoal', function(request, response) {
         error: function(object, error) {
             alert("Error: " + error.code + " " + error.message);
             response.error(error);
+            return;
         }
     });
 });
@@ -128,6 +136,7 @@ Parse.Cloud.define('deleteGoal', function(request, response) {
             var listOwner = list.get('owner');
             if(Parse.User.current().id !== listOwner){
                 response.error("You can only delete your own goals!");
+                return;
             }
             else{
                 var Goal = Parse.Object.extend("Goal");
@@ -144,6 +153,7 @@ Parse.Cloud.define('deleteGoal', function(request, response) {
                                 },
                                 error: function(goal, error) {
                                     response.error(error);
+                                    return;
                                 }
                             });
                         }
@@ -151,6 +161,7 @@ Parse.Cloud.define('deleteGoal', function(request, response) {
                     error: function(error) {
                         alert("Error: " + error.code + " " + error.message);
                         response.error(error);
+                        return;
                     }
                 });
             }
@@ -158,6 +169,7 @@ Parse.Cloud.define('deleteGoal', function(request, response) {
         error: function(object, error) {
             alert("Error: " + error.code + " " + error.message);
             response.error(error);
+            return;
         }
     });
 });

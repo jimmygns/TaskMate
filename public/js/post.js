@@ -3,12 +3,13 @@
 var NewsfeedController =function ($scope){
 	
 	Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
-	//var Newsfeed = Parse.Object.extend("Newsfeed");
-	//var query = new Parse.Query(Newsfeed);
+	var Newsfeed = Parse.Object.extend("Newsfeed");
+	var query = new Parse.Query(Newsfeed);
     var address=location.search;
     var id=address.substring(1,address.length);
     var current_Id = Parse.User.current().id;
     var ownerId;
+    var owner;
 
     Parse.Cloud.run('getPost', {objectId: id},{
         success: function(result){
@@ -177,7 +178,7 @@ $scope.$digest();*/
 		success: function(results) {
 			//alert("Successfully retrieved " + results.length + " lists.");
     // Do something with the returned Parse.Object values
-    for (var i = 0; i < results.length; i++) { 
+    for (var i = 0; i < results.length; i++) {
     	var object = results[i];
         var person = object.get("userPointer");
         var profilePage="../profile.html?" + person.id;
@@ -222,7 +223,6 @@ error: function(object, error) {
 
 
 $scope.like = function(){
-	
 	var status=document.getElementById('likeThePost').innerText;
 	query.get(id, {
 		success: function(result) {
@@ -343,6 +343,7 @@ $scope.addComment=function(){
         location.reload();
     },
     error: function(object, error) {
+        alert("Error of " + error.message);
     }
 });
     

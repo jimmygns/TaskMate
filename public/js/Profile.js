@@ -50,13 +50,12 @@ profile_app.controller('profileCtrl', function($scope, $http) {
 
     //set the default text for follow button
     var followingArray = currentUser.get("following");
-    if($.inArray(ID, followingArray) === -1)
+    if($.inArray(ID, followingArray) === -1) {
         $scope.followText = "Follow";
-    else
-        $scope.followText = "Unfollow";
-
-
-
+    }
+    else {
+        $scope.followText = "Following";
+    }
 
     var picture = currentUser.get('profilePicture');
     if (picture != null)
@@ -140,10 +139,6 @@ profile_app.controller('profileCtrl', function($scope, $http) {
 
             parseFile.save().then(function() {
                 // The file has been saved to Parse.
-
-                //associate the profile photo with the user, need to get the current user
-                //var User = Parse.Object.extend("User");
-                //var pic1 = new Pic();
                 currentUser.set("profilePicture", parseFile);
                 currentUser.save();
 
@@ -182,37 +177,44 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     $scope.follow = function() {
 
 
-        if(document.getElementById("follow").innerText === "Unfollow")
+        //if(document.getElementById("follow").innerText == "Unfollow")
+        if ($scope.followText == "Following")
         {
             $scope.unfollow();
             return;
         }
-            
-        currentUser.addUnique("following", ID);
-        currentUser.save(null, {
-            success: function(object) {
+
+        Parse.Cloud.run('follow',{followingId: ID},{
+          success: function(result) {
+            $scope.followText = "Following";
+            $scope.$digest();
+            Parse.Cloud.run('createNotification',{followingId: ID},{
+              success: function(output) {
                 alert("Now following this user!");
-            },
-            error: function(object, error) {
+              },
+              error: function(error){
                 alert('Failed to follow, with error code: ' + error.message);
-            }
+              }
+            });
+          },
+          error: function(error) {
+            alert("Error of " + error.code + error.message);
+          }
         });
-        if(document.getElementById("follow").innerText === "Follow")
-           document.getElementById("follow").innerText = "Unfollow";
 
     };
 
     $scope.unfollow = function() {
-        currentUser.remove("following", ID);
-        currentUser.save(null, {
-            success: function(object) {
-                alert("No longer following this user!");
-            },
-            error: function(object, error) {
-                alert('Failed to follow, with error code: ' + error.message);
-            }
+        Parse.Cloud.run('unfollow',{followingId: ID},{
+          success: function(result) {
+            $scope.followText = "Follow";
+            $scope.$digest();
+            alert("No longer following this user!");
+          },
+          error: function(error) {
+            alert('Failed to unfollow, with error code: ' + error.message);
+          }
         });
-        document.getElementById("follow").innerText = "Follow";
     };
 
 

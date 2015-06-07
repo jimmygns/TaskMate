@@ -208,7 +208,10 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
           
           $scope.posts[postsCount].firstName = newsfeed.get('owner').get('firstName');
           $scope.posts[postsCount].lastName = newsfeed.get('owner').get('lastName');
-          $scope.posts[postsCount].picURL = newsfeed.get('owner').get('profilePicture').url();
+          if(newsfeed.get('owner').get('profilePicture') != undefined)
+            $scope.posts[postsCount].picURL = newsfeed.get('owner').get('profilePicture').url();
+          else
+            $scope.posts[postsCount].picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
       
           postsCount++;
 

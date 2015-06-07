@@ -1,31 +1,22 @@
-//create a new user
+/* Create a new user */
 var signUpApp = angular.module("signUpApp", []);
 
 signUpApp.controller("signUpCtrl", ["$scope", function signUpCtrl($scope){
+    /* Get Parse database */
     Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
     $scope.submit1 = function(){
 
-	var user = new Parse.User();
-	user.set("username", $scope.newemail);
-	user.set("password", $scope.newpassword);
-	user.set("email", $scope.newemail);
-  
-	// other fields can be set just like with Parse.Object
-	user.set("firstName", $scope.firstName);
-	user.set("lastName", $scope.lastName);
-  
-	user.signUp(null, {
-  		success: function(user) {
-    	// Hooray! Let them use the app now.
-    	window.location.replace("../index.html");
-  		},
-  		error: function(user, error) {
-    	// Show the error message somewhere and let the user try again.
-    	alert("Error: " + error.code + " " + error.message);
-  		}
-	});  	
-
+        /* Run signup cloud code */
+        Parse.Cloud.run('signup', {email: $scope.newemail, password: $scope.newpassword, firstName: $scope.firstName, lastName: $scope.lastName}, {
+            success: function(result) {
+                /* Redirect to landing page */
+                window.location.replace("../index.html");
+            },
+            error: function(error) {
+                alert(error);
+            }
+        });
 	}
 }]);
 	

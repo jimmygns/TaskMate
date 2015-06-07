@@ -8,178 +8,150 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/profile.css">
     <script src = "js/newsfeed.js"></script>
+    <title>Task Mate</title>
+
 </head>
 
 <body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="newsfeed.html">HOME</a>
-        </div>
+<nav class="navbar navbar-default" ng-app ng-controller="NavigationBarController">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#" ng-click = "goHome()">HOME</a>
+    </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      
+      <ul class="nav navbar-nav navbar-right">
 
-            <ul class="nav navbar-nav navbar-right">
+        <!--settings-->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <img src = "img/glyphicons-137-cogwheel.png">
+           <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="./aboutus.html">About Us</a></li>
+            <li class="divider"></li>
+            <li><a href="#" ng-click = "logOut()">Log Out</a></li>
+          </ul>
+        </li>
 
-                <!--settings-->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <img src = "img/glyphicons-137-cogwheel.png">
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">About Us</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" onclick = "logOut()">Log Out</a></li>
-                    </ul>
-                </li>
+        <!--notifications-->
 
-                <!--notifications-->
-                <li>
-                    <a href="#">
-                        <img src = "img/glyphicons-11-envelope.png">
-                        <span class="badge">2</span></a>
-                </li>
+        <li>
+            <a href="#" ng-click = "goNotification()">
+            <img src = "img/glyphicons-11-envelope.png">
+          </a>
+            </li>
 
-                <!--search-->
-                <li>
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <input id="searchInput"type="text" class="form-control" placeholder="Search for...">
-      				<span class="input-group-btn">
-        				<button onclick="redirect()" class="btn btn-default" type="button" id = "search">
+        <!--search-->
+        <li>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="row">
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <input id="searchInput" type="text" class="form-control" placeholder="Search for..." ng-model="searchInput">
+                    <span class="input-group-btn">
+                        <button ng-click="search()" class="btn btn-default" type="button" id = "search">
                             Go!
                         </button>
-      				</span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                    </form>
-                </li>
+                    </span>
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            </div><!-- /.row -->
+      </form>
+    </li>
 
-                <!--my profile-->
-                <li><a href="#" onclick = "goToProfile()">
-                    <img src = "img/glyphicons-4-user.png">My Profile</a></li>
+      <!--my profile-->
+       <li><a href="#" ng-click = "goProfile()">
+        <img ng-src = "{{profilePictureURL}}" class = "img-circle" height = "30" width = "30">  My Profile</a></li>
 
-                <!--write a goal-->
-                <li>
-                    <button type="button" class="btn btn-default navbar-btn">
-                        <span class="glyphicons glyphicons-pencil"></span>
-                        <img src = "img/glyphicons-31-pencil.png">
-                        Add a Goal
-                    </button>
-                </li>
-
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
 </nav>
 
-<div class = "threecol">
-    <div class = "colmask">
-        <div class = "colmid">
-            <div class = "colleft">
-                <div class = "colright">
+<div id="container" ng-controller="profileCtrl">
 
-                    <div class ="col1">
-                        <div class="container">
-                            <div class = "scrolling_new_list">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
+    <div class="leftContent">
+        <br/>
+        <img ng-src={{picUrl}} style="width:120px;height:120px;-webkit-border-radius: 60px;-moz-border-radius: 60px;"/>
 
-                    <div ng-controller="profileCtrl">
+        <h4>Hi, {{firstName1}} {{lastName1}}</h4>
+        <br/><br/><br/>
+    </div>
 
-                    <div class = "col2">
-                        <h1> {{firstName}} {{lastName}} </h1>
-                        <script type="text/javascript" src="js/Profile.js"></script>
+<div class = "centerContent">
+<div>
 
+        <script type="text/javascript" src="js/Profile.js"></script>
 
-                        <div class = "about_me">
-                            <textarea rows="7" cols="40" placeholder="Tell us about yourself!"></textarea>
-                            <br><br>
-                            <input type="file" id="profilePhotoFileUpload">
-                            <br>
-                            <button ng-click="upload()">Change Profile Picture</button>
-                            <br>
-                        </div>
+    <div class = "profile_picture">
+        <img id = "profilePic" ng-src= {{picURL}} style="width:250px;height:250px;background-size: cover;border-radius: 100em;-webkit-border-radius: 125px;-moz-border-radius: 125px;"/>
+    </div>
 
-                        <div class = "profile_picture">
-                            <img ng-src= {{picURL}} style="width:250px;height:250px;background-size: cover;border-radius: 100em;-webkit-border-radius: 125px;-moz-border-radius: 125px;"/>
-                        </div>
+    <h1 id = "name"> {{firstName}} {{lastName}} </h1>
+
+    <button id = "follow" type="button" class="btn btn-success btn-lg" ng-click = "follow()">{{followText}}</button>
+
+    <div class = "uploadPicture">
+            <input type="file" id="profilePhotoFileUpload">
+            <br>
+            <button id = "submitPic" class="btn btn-default" type="submit" ng-click="upload()">Submit Profile Picture</button>
+            <br>
+    </div>
 
 
-                        <div class = "create_new_goal">
-
-                            <button id="createNewListButton" type="button" class="btn btn-success btn-lg">Create New List</button>
-                            <div style="display:none" id="createListArea">
-                                <p>List Name: </p>
-                                <input type="text" class="form-control" id="listName">
-                                <p>List Description (Optional): </p>
-                                <textarea class="form-control" rows="5" id="listDescription"></textarea>
-                                <br>
-                                <button type="button" class="btn btn-success btn-lg" ng-click="makeList()">Create!</button>
-                                <button type="button" id="cancelCreateList" class="btn btn-danger btn-lg">Cancel</button>
-                            </div>
-
-                        </div>
-
-                        <script>
-                        $("#createNewListButton").click(function() {
-                        $("#createListArea").show("slow");
-                        });
-                        $("#cancelCreateList").click(function() {
-                        $("#createListArea").hide("slow");
-                        });
-                        </script>
-
-                        <div class = "list_of_lists">
-                            <ul ng-repeat="toDoList in toDoLists">
-                                <li><button type="button" class="btn btn-success btn-lg" ng-click="goToList()">{{toDoList.name}}</button></li>
-                            </ul>
-                        </div>
-
-
-                    </div>
-                    </div>
-
-
-                    <div class = "col3">
-                        <div class = "friends_tabs">
-
-                            <ul class="nav nav-tabs">
-                                <li role="presentation" class="active"><a href="#">Top</a></li>
-                                <li role="presentation"><a href="#">Following</a></li>
-                                <li role="presentation"><a href="#">Followers</a></li>
-                            </ul>
-
-                            <div class="container">
-                                <button class="btn followButton" rel="6">Follow</button>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="container">
-                        <button class="btn followButton" rel="6">Follow</button>
-                    </div>
-
-
-
-                </div>
-            </div>
+    
+    <center>
+    <div class = "list_of_lists">
+        <h3>{{firstName}} {{lastName}}'s Lists </h3><br/>
+        <div ng-repeat="toDoList in toDoLists">
+                <a href = {{toDoList.link}}>
+                    <button type="button" class="btn btn-default btn-lg btn-block">{{toDoList.name}}</button>
+                    
+                </a>
         </div>
     </div>
+
+    <br/><br/>
+
+    <div class = "create_new_goal">
+        <button id="createNewListButton" type="button" class="btn btn-success btn-lg">Create New List</button>
+            <div style="display:none" id="createListArea">
+                <p>List Name: </p>
+                <input type="text" class="form-control" id="listName">
+                <p>List Description (Optional): </p>
+                <textarea class="form-control" rows="5" id="listDescription"></textarea>
+                <br>
+                <button type="button" class="btn btn-success btn-lg" ng-click="makeList()">Create!</button>
+                <button type="button" id="cancelCreateList" class="btn btn-danger btn-lg">Cancel</button>
+            </div>
+    </div>
+
+    <script>
+        $("#createNewListButton").click(function() {
+        $("#createListArea").show("slow");
+        });
+        $("#cancelCreateList").click(function() {
+        $("#createListArea").hide("slow");
+        });
+    </script>
+    <br/><br/><br/>
+</center>
+
 </div>
+</div><!end of center block>
+
+</div><!end of container class>
+
+                
 </body>
 </html>

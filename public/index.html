@@ -7,12 +7,12 @@
 
       <script src="//www.parsecdn.com/js/parse-1.3.5.min.js"></script>
 
-      <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.js"></script>
 
       <link href = "css/index.css" rel = "stylesheet" type = "text/css"/>
 
       <script src="js/index.js"></script>
-      <title>Landing page</title>
+      <title>Task Mate</title>
 
     <style>
 		#custom-bootstrap-menu.navbar-default .navbar-brand {
@@ -159,6 +159,7 @@
 
   <body>
 
+    <!-- Taskmate objectives -->
     <div class = "info">
         <div class="col-sm-offset-2 col-sm-10">
           <label>
@@ -184,6 +185,7 @@
         </div>
       </div>
 
+      <!-- sign in form -->
     <form class="form-horizontal">
     <div class = "login-info">
       <div class="form-group">
@@ -195,31 +197,35 @@
         </div>
       </div>
 
+      <!-- email field -->
      <div ng-controller="loginCtrl">
       <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label"></label>
           <div class="col-md-10">
-            <input type="email" class="form-control" id="inputEmail3" placeholder="Enter Email" ng-model = "email">
+            <input type="email" class="form-control" id="email" placeholder="Enter Email" ng-model = "email">
           </div>
       </div>
 
+      <!-- password field -->
       <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label"></label>
           <div class="col-md-10" ng>
-            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" ng-model = "password">
+            <input type="password" class="form-control" id="password" placeholder="Password" ng-model = "password">
           </div>
       </div>
 
+      <!-- remember me button -->
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <div class="checkbox">
             <label>
-              <input type="checkbox"> Remember me
+              <input id="checkbox" type="checkbox"> Remember me
             </label>
           </div>
         </div>
       </div>
 
+      <!-- sign in button -->
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="submit" class="btn btn-default" ng-click = "submit()">Sign in</button>
@@ -227,6 +233,7 @@
       </div>
      </div>
 
+     <!-- redirect to account create -->
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <label>Don't have an account yet?</label>

@@ -12,16 +12,35 @@
 	
     <script src="http://www.parsecdn.com/js/parse-1.3.5.min.js"></script>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.js"></script>
+
     <script src = "js/newsfeed.js"></script>
-    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/newsfeed.css"/>
+    <title>Task Mate</title>
+
+
+    <style>
+      html {
+        background-image: url("../img/landingPageBG.png");
+        background-repeat: no-repeat;
+        background-position: top;
+        background-size: cover;
+        height: 100%;
+      }
+
+      body {
+        background-image: url("../img/landingPageBG.png");
+        background-repeat: no-repeat;
+        background-position: top;
+        background-size: cover;
+      }
+    </style>
 </head>
 
 
 
-<body>
+<body ng-app = "newsfeedApp" ng-controller="newsfeedCtrl">
 
-<script>var currentEmail = Parse.User.current().email();
-alert("currentEmail");</script>
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -33,7 +52,7 @@ alert("currentEmail");</script>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="newsfeed.html">HOME</a>
+      <a class="navbar-brand" href="#" ng-click = "goHome()">HOME</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -47,54 +66,82 @@ alert("currentEmail");</script>
             <img src = "img/glyphicons-137-cogwheel.png">
            <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">About Us</a></li>
+            <li><a href="./aboutus.html">About Us</a></li>
             <li class="divider"></li>
-            <li><a href="#" onclick = "logOut()">Log Out</a></li>
+            <li><a href="#" ng-click = "logOut()">Log Out</a></li>
           </ul>
         </li>
 
         <!--notifications-->
+
         <li>
-        	<a href="#">
+          <a href="#" ng-click = "goNotification()">
             <img src = "img/glyphicons-11-envelope.png">
-           <span class="badge">2</span></a>
-		    </li>
-       
+          </a>
+        </li>
+
         <!--search-->
-      	<li>
-      		<form class="navbar-form navbar-left" role="search">
-  				<div class="row">
-  				<div class="col-lg-12">
-    				<div class="input-group">
-      					<input id="searchInput"type="text" class="form-control" placeholder="Search for...">
-      				<span class="input-group-btn">
-        				<button onclick="redirect()" class="btn btn-default" type="button" id = "search">
-        					Go!
-        				</button>
-      				</span>
-    				</div><!-- /input-group -->
-  				</div><!-- /.col-lg-6 -->
-			</div><!-- /.row -->
+        <li>
+          <form class="navbar-form navbar-left" role="search">
+          <div class="row">
+          <div class="col-lg-12">
+            <div class="input-group">
+                <input id="searchInput" type="text" class="form-control" placeholder="Search for..." ng-model="searchInput">
+              <span class="input-group-btn">
+                <button ng-click="search()" class="btn btn-default" type="button" id = "search">
+                  Go!
+                </button>
+              </span>
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+      </div><!-- /.row -->
       </form>
     </li>
 
       <!--my profile-->
-       <li><a href="#" onclick = "goToProfile()">
-       	<img src = "img/glyphicons-4-user.png">My Profile</a></li>
-
-      <!--write a goal-->
-       <li>
-       		<button type="button" class="btn btn-default navbar-btn">
-       			<span class="glyphicons glyphicons-pencil"></span>
-       			<img src = "img/glyphicons-31-pencil.png">
-       			Add a Goal
-       		</button>
-       </li>
+       <li><a href="#" ng-click = "goProfile()">
+        <img ng-src = "{{profilePictureURL}}" class = "img-circle" height = "30" width = "30">  My Profile</a></li>
 
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+
+
+  <div ng-repeat="post in posts">
+    <div class="padding">
+      <div class="well well-lg">
+        
+        <div class="userInfo" ng-click="redirectToProfile($index)">
+          <img ng-src={{post.picURL}} alt="Profile Picture" style="width:60px;height:60px;-webkit-border-radius: 30px;-moz-border-radius: 30px;">
+
+          <p>{{post.firstName}} {{post.lastName}}</p>
+        </div>
+
+        <div class="view" ng-click="goToPost($index)">
+          <p>View details</p>
+        </div>
+
+        <div class="message">
+          <p>{{post.message}}</p>
+        </div>
+
+        <div class="numCom-Likes">
+          <p>{{post.numLikes}} Likes &nbsp; {{post.numComments}} Comments</p>
+        </div>
+
+        <div class ="button" ng-click="plusOne($index)">
+          <button type="button" class="btn btn-default">{{post.btnText}}</button>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
 
 
 </body>	

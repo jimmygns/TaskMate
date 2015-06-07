@@ -29,10 +29,10 @@ Parse.Cloud.define("changeNumLike", function(request, response){
           var Notification = Parse.Object.extend("Notification");
           var notif = new Notification();
           var owner = newsfeed.get('owner').id;
-          /*var ownerPtr = newsfeed.get('owner');
-          console.log("numNotif is " + ownerPtr.get("numNotif"));
-          ownerPtr.set("numNotif", 100);
-          console.log("numNotif is " + ownerPtr.get("numNotif")); */
+
+          Parse.Cloud.useMasterKey();
+          var ownerPtr = newsfeed.get('owner');
+          ownerPtr.increment('numNotif');
 
           notif.set("owner", owner);
           var content = Parse.User.current().get('firstName') + " " + Parse.User.current().get('lastName') + " liked your post.";

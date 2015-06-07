@@ -75,7 +75,29 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
   $scope.plusOne = function(index) {
 
 
-    var query = new Parse.Query('Newsfeed');
+    var id = $scope.posts[index].objectId;
+    Parse.Cloud.run('changeNumLike', {newsfeedID: id}, {
+      success: function(result){
+        if(result[0] === -1){
+          $scope.posts[index].numLikes = result[1];
+          $scope.posts[index].btnText = 'Unlike';
+          $scope.$digest();
+        }
+        else {
+          $scope.posts[index].numLikes = result[1];
+          $scope.posts[index].btnText = 'Like';
+          $scope.$digest();
+        }
+      },
+
+      error: function(error){
+        alert("Error: " + error.code + " " + error.message);
+      }
+    });
+
+
+    /*var query = new Parse.Query('Newsfeed');
+    query.include("owner");
     query.get($scope.posts[index].objectId, {
       success: function(newsfeed){
 
@@ -88,6 +110,13 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
           var Notification = Parse.Object.extend("Notification");
           var notif = new Notification();
           var owner = newsfeed.get('owner').id;
+
+
+          //var ownerPtr = newsfeed.get('owner');
+          //console.log("numNotif is " + ownerPtr.get("numNotif"));
+          //ownerPtr.set("numNotif", 100);
+          //console.log("numNotif is " + ownerPtr.get("numNotif"));
+
           notif.set("owner", owner);
           var content = Parse.User.current().get('firstName') + " " + Parse.User.current().get('lastName') + " liked your post.";
           notif.set("content", content);
@@ -118,7 +147,7 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
       error: function(object, error) {
         alert("Error: " + error.code + " " + error.message);
       }
-    });
+    }); */
 
  
   };
@@ -141,11 +170,11 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
 
   }
 
-
-
+ 
 
 
 	var query = new Parse.Query("Newsfeed");
+  query.limit(1000);
   query.ascending("createdAt");
   query.include("owner");
 
@@ -179,7 +208,10 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
           
           $scope.posts[postsCount].firstName = newsfeed.get('owner').get('firstName');
           $scope.posts[postsCount].lastName = newsfeed.get('owner').get('lastName');
-          $scope.posts[postsCount].picURL = newsfeed.get('owner').get('profilePicture').url();
+          if(newsfeed.get('owner').get('profilePicture') != undefined)
+            $scope.posts[postsCount].picURL = newsfeed.get('owner').get('profilePicture').url();
+          else
+            $scope.posts[postsCount].picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
       
           postsCount++;
 

@@ -4,6 +4,7 @@ require('cloud/Profile_cloud.js');
 require('cloud/search_cloud.js');
 require('cloud/showList_cloud.js');
 require('cloud/signup_cloud.js');
+require('cloud/newsfeed_cloud.js');
 require('cloud/post_cloud.js');
 require('cloud/notifications_cloud.js')
 
@@ -27,20 +28,6 @@ Parse.Cloud.define("test", function(request, response) {
             alert("Error: " + error.code + " " + error.message);
         }
     });
-});
-
-Parse.Cloud.beforeSave("Newsfeed", function(request, response) {
-    var object = request.object;
-    var owner = object.get("owner");
-    var curUser = Parse.User.current();
-    if (owner.id == curUser.id)
-    {
-        response.success();
-    }
-    else
-    {
-        response.error("Can not modify other client's newsfeed event");
-    }
 });
 
 Parse.Cloud.beforeSave("Goal", function(request, response) {

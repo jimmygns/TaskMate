@@ -132,12 +132,14 @@ Parse.Cloud.define("createNotification", function(request, response) {
   var currentUser = request.user;
   var Notification = Parse.Object.extend("Notification");
   var notif = new Notification();
+  Parse.Cloud.useMasterKey();
   var User = Parse.Object.extend("User");
   var user_query = new Parse.Query(User);
   user_query.include("owner");
   user_query.get(userId, {
     success: function(result) {
         // The object was retrieved successfully.
+        var anotherUser=result;
         notif.set("owner",userId);
         notif.set("outgoing",currentUser.id);
         notif.set("user", currentUser);                   
@@ -146,6 +148,19 @@ Parse.Cloud.define("createNotification", function(request, response) {
         notif.set("content",notif_content);
         notif.save(null, {
           success: function(notif) {
+            var numNotif = anotherUser.get('numNotif');
+            anotherUser.set('numNotif',numNotif+1);
+            anotherUser.save(null, {
+              success: function(anotherUser) {
+                
+                response.success("Successfully updated user.");
+              },
+              error: function(gameScore, error) {
+                
+                response.error("Could not save changes to user.");
+              }
+            });
+
             response.success("Notification object created.");
             return;
           },

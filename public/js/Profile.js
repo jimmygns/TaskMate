@@ -1,3 +1,4 @@
+//Functions for nav bar
 function NavigationBarController($scope) {
     $scope.numberOfNotification = Parse.User.current().get('numNotif');
 
@@ -37,6 +38,7 @@ var profile_app = angular.module("profileApp", []);
 profile_app.controller('profileCtrl', function($scope, $http) {
     Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
+    //Initialize the fields for the profile page using the user objectId
     var fullString = location.search;
     var ID = fullString.slice(1);
 
@@ -58,6 +60,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     }
 
     var picture = currentUser.get('profilePicture');
+    //If the user has selected a profile picture
     if (picture != null)
     {
         $scope.picUrl = picture.url();
@@ -69,6 +72,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
     $scope.firstName1 = currentUser.get("firstName");
     $scope.lastName1 = currentUser.get('lastName');
 
+    // If we are on our own profile, don't show the follow button
     if(ID === currentUser.id)
         document.getElementById("follow").style.visibility = "hidden";
     else {
@@ -76,7 +80,6 @@ profile_app.controller('profileCtrl', function($scope, $http) {
         document.getElementById("profilePhotoFileUpload").style.display = "none";
         document.getElementById("submitPic").style.display = "none";
     }
-
 
     query.find({
         success: function(results) {
@@ -126,6 +129,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
         }
     });
 
+    //Upload new profile picture
     $scope.upload = function(){
 
         var fileUploadControl = document.getElementById("profilePhotoFileUpload");
@@ -135,7 +139,6 @@ profile_app.controller('profileCtrl', function($scope, $http) {
             var name = "profilePic.jpg";
 
             var parseFile = new Parse.File(name, file);
-
 
             parseFile.save().then(function() {
                 // The file has been saved to Parse.
@@ -155,6 +158,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
         }
     };
 
+    //Make a new list by calling cloud function
     $scope.makeList = function() {
 
         var name = document.getElementById('listName').value;
@@ -170,14 +174,16 @@ profile_app.controller('profileCtrl', function($scope, $http) {
         });
     };
 
+    //Go to a list on the profile
     $scope.goToList = function() {
         window.location.href = "../listPage.html?" + list.id;
     };
 
+    //Follow or unfollow the user
     $scope.follow = function() {
 
 
-        //if(document.getElementById("follow").innerText == "Unfollow")
+        // If already following the user, call unfollow instead
         if ($scope.followText == "Following")
         {
             $scope.unfollow();
@@ -204,6 +210,7 @@ profile_app.controller('profileCtrl', function($scope, $http) {
 
     };
 
+    //Gets called if followText === "Following"
     $scope.unfollow = function() {
         Parse.Cloud.run('unfollow',{followingId: ID},{
           success: function(result) {

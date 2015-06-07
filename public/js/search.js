@@ -52,6 +52,7 @@ var SearchController=function ($scope){
         if(result.length==0){
           $scope.Results=[];
           $scope.warning="No Result Found";
+          $scope.$digest();
           return;
         }
         $scope.Results=result;

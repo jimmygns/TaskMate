@@ -1,4 +1,8 @@
 //search cloud code
+/*
+Cloud function searchUser takes one paramenter, the input string and then 
+finds a list of users whose name starts with that string and return the array accordingly
+*/
 Parse.Cloud.define("searchUser", function(request, response) {
     var name=request.params.searchInput;
     var query = new Parse.Query(Parse.User);
@@ -10,10 +14,7 @@ Parse.Cloud.define("searchUser", function(request, response) {
     }
     query.find({
       success: function(results) {
-    //alert("Successfully retrieved " + results.length + " scores.");
-    // Do something with the returned Parse.Object values
-    //var array=[];
-    
+    // Do something with the returned Parse.Object values 
     var arrayOfFollowings=Parse.User.current().get('following');
     for (var i = 0; i < results.length; i++) { 
       var object = results[i];
@@ -67,6 +68,8 @@ Parse.Cloud.define("searchUser", function(request, response) {
 
 
 //follow cloud code
+/*
+*/
 Parse.Cloud.define("follow", function(request, response) {
   var currentUser = request.user;
   var followingArray=currentUser.get('following');

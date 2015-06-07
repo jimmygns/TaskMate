@@ -6,6 +6,7 @@ Parse.Cloud.define("searchUser", function(request, response) {
     var array=[];
     if(name==""){
       response.success(array);
+      return;
     }
     query.find({
       success: function(results) {
@@ -50,10 +51,12 @@ Parse.Cloud.define("searchUser", function(request, response) {
     }
     
     response.success(array);
+    return;
   },
   error: function(error) {
   	//alert("error here");
     response.error("Error: " + error.code + " " + error.message);
+    return;
   }
 });
 });
@@ -74,12 +77,14 @@ Parse.Cloud.define("follow", function(request, response) {
   currentUser.save(null, {
     success: function(currentUser) {
     // Execute any logic that should take place after the object is saved.
-    response.success();
+    response.success("Now following user #" + request.params.followingId);
+    return;
   },
   error: function(currentUser, error) {
     // Execute any logic that should take place if the save fails.
     // error is a Parse.Error with an error code and message.
     response.error("Error: " + error.code + " " + error.message);
+    return;
   }
 });
 });
@@ -88,6 +93,7 @@ Parse.Cloud.define("follow", function(request, response) {
 //unfollow cloud code
 Parse.Cloud.define("unfollow", function(request, response) {
   var currentUser = request.user;
+  console.log(currentUser);
   var followingArray=currentUser.get('following');
   var userId=request.params.followingId;
   var position=0;
@@ -106,12 +112,14 @@ Parse.Cloud.define("unfollow", function(request, response) {
   currentUser.save(null, {
     success: function(currentUser) {
     // Execute any logic that should take place after the object is saved.
-    response.success();
+    response.success("No longer following user #" + request.params.followingId);
+    return;
   },
   error: function(currentUser, error) {
     // Execute any logic that should take place if the save fails.
     // error is a Parse.Error with an error code and message.
     response.error("Error: " + error.code + " " + error.message);
+    return;
   }
 });
 });
@@ -136,11 +144,20 @@ Parse.Cloud.define("createNotification", function(request, response) {
         notif.set("type","follow");
         var notif_content = currentUser.get('firstName')+" "+currentUser.get('lastName') + " started following you.";
         notif.set("content",notif_content);
-        notif.save();
-        response.success();
+        notif.save(null, {
+          success: function(notif) {
+            response.success("Notification object created.");
+            return;
+          },
+          error: function(currentUser, error) {
+            response.error("Error: " + error.code + " " + error.message);
+            return;
+          }
+        });
       },
       error: function(object, error) {
         response.error("Error: " + error.code + " " + error.message);
+        return;
       }
     }); 
 });

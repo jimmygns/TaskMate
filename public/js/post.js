@@ -246,7 +246,7 @@ $scope.like = function(){
                 user_query.get(current_Id, {
                     success: function(result) {
                     // The object was retrieved successfully.
-                    notif.set("owner",owner);
+                    notif.set("owner",ownerId);
                     notif.set("outgoing",id);
                     notif.set("user", result);                   
                     notif.set("type","like");
@@ -333,7 +333,7 @@ $scope.addComment=function(){
     user_query.get(current_Id, {
         success: function(result) {
         // The object was retrieved successfully.
-        notif.set("owner",owner);
+        notif.set("owner",ownerId);
         notif.set("outgoing",id);
         notif.set("user", result);                   
         notif.set("type","comment");

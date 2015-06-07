@@ -54,8 +54,9 @@ Our cloud codes are in the "cloud" folder;
 We are using QUnit to test our code.
 You can view our test by clicking any files in "test"
 (When you run the test, the network must be connected)
-1. Test case included:
-2. listPageTest.html
+Test case included:
+1. listPageTest.html
+2. newsfeedTest.html
 3. notificationsTest.html
 4. postTest.html
 5. profileTest.html

@@ -29,20 +29,6 @@ Parse.Cloud.define("test", function(request, response) {
     });
 });
 
-Parse.Cloud.beforeSave("Newsfeed", function(request, response) {
-    var object = request.object;
-    var owner = object.get("owner");
-    var curUser = Parse.User.current();
-    if (owner.id == curUser.id)
-    {
-        response.success();
-    }
-    else
-    {
-        response.error("Can not modify other client's newsfeed event");
-    }
-});
-
 Parse.Cloud.beforeSave("Goal", function(request, response) {
     var object = request.object;
     var listID = object.get("owner");

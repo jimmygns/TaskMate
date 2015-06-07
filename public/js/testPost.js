@@ -30,6 +30,22 @@ QUnit.test("test the query results for post", function(assert){
 
 			});
 
+		},
+
+		error: function(user, error){
+			alert("Login test1@newsfeed.com problem");	
+		}
+
+	});
+
+	assert.ok(1 == "1", "This is just to remove Qunit's complaints about no asserts");
+    Parse.User.logOut();
+});
+
+
+QUnit.test("test the display results for post", function(assert){
+	Parse.User.logIn("test1@newsfeed.com", "123456", {
+		success: function(user){
 			Parse.Cloud.run('displayComment', {objectId: "z5n9lKtnyC"}, {
 				success: function(results){
 					//alert(results[0].get('content'));
@@ -45,12 +61,19 @@ QUnit.test("test the query results for post", function(assert){
 
 		},
 
-		error: function(user, error){
-			alert("Login test1@newsfeed.com problem");	
+		error: function(error){
+			alert("wrong result for query comment info");
 		}
-
 	});
 
 	assert.ok(1 == "1", "This is just to remove Qunit's complaints about no asserts");
     Parse.User.logOut();
 });
+
+
+
+
+
+
+
+

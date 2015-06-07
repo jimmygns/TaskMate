@@ -151,7 +151,28 @@ $scope.follow = function(Result){
   if(Result.follow=="Follow"){
     var page = Result.profilePage;
     var userId = page.substring(14,page.length);
-    
+
+    Parse.Cloud.run('follow',{followingId: userId},{
+      success: function(result) {
+        Result.follow="Following";
+        Parse.Cloud.run('createNotification',{followingId: userId},{
+          success: function(output) {
+            $scope.$digest();
+          },
+          error: function(error){
+            alert("Error of " + error.code + error.message);
+          }
+        });
+      },
+      error: function(error) {
+        //alert("here");
+        alert("Error of " + error.code + error.message);
+      }
+    });
+
+    /*
+    var page = Result.profilePage;
+    var userId = page.substring(14,page.length);
     var currentUser=Parse.User.current();
     var followingArray=currentUser.get('following');
     followingArray.push(userId);
@@ -159,7 +180,7 @@ $scope.follow = function(Result){
     currentUser.set("following",followingArray);
     currentUser.save();
     Result.follow="Following";
-
+    
     //create notification when pressing Follow
     var Notification = Parse.Object.extend("Notification");
     var notif = new Notification();
@@ -181,10 +202,26 @@ $scope.follow = function(Result){
     }
 });
     $scope.$digest();
-    
+    */
   }
   else{
-    
+    var page = Result.profilePage;
+    var userId = page.substring(14,page.length);
+
+    Parse.Cloud.run('unfollow',{followingId: userId},{
+      success: function(result) {
+        Result.follow="Follow";
+        $scope.$digest();
+      },
+      error: function(error) {
+        //alert("here");
+        alert("Error of " + error.code + error.message);
+      }
+    });
+
+  }
+
+    /*
     var page = Result.profilePage;
     var userId = page.substring(14,page.length);
     
@@ -206,7 +243,7 @@ $scope.follow = function(Result){
     Result.follow="Follow";
     $scope.$digest();
   }
-
+  */
 
 };
 //alert("call search when page is loaded");

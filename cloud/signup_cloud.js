@@ -14,6 +14,9 @@ Parse.Cloud.define('signup', function(request, response) {
     fullNameStr = fullNameStr.toLowerCase();
 
     user.set("fullName", fullNameStr);
+    user.set("numNotif", 0);
+    user.set("following", []);
+    user.set("followers", []);
 
     alert("Signing up now");
 
@@ -25,6 +28,7 @@ Parse.Cloud.define('signup', function(request, response) {
         error: function(user, error) {
             // Show the error message somewhere and let the user try again.
             response.error("Error: " + error.code + " " + error.message);
+            return;
         }
     });
 });

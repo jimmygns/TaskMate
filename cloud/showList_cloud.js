@@ -1,7 +1,7 @@
 Parse.Cloud.define("makeGoal", function(request, response) {
     var goalName = request.params.goalName;
     var ListId = request.params.listId;
-    var deadline = request.params.date;
+    var deadline;
     var dateString;
     var ownerName = request.params.ownerName;
     var currentDate = request.params.curDate;
@@ -17,19 +17,19 @@ Parse.Cloud.define("makeGoal", function(request, response) {
         goal.set("name", goalName);
 
         goal.set("owner", ListId);
-        if (stringDate.length > 0) {
-            deadline = new Date(stringDate);
-            goal.set("dueDate", deadline);
-            dateString = goal.get("dueDate").toDateString();
-        } else {
+        if (stringDate == null || stringDate == "")
+        {
             goal.set("dueDate", null);
             dateString = "";
+        } else if (stringDate.length > 0 || stringDate != null) {
+            deadline = new Date(stringDate);
+            if (deadline < currentDate) {
+                response.error("Invalid date");
+            }
+            goal.set("dueDate", deadline);
+            dateString = goal.get("dueDate").toDateString();
         }
         goal.set("completed", false);
-
-        if (deadline < currentDate) {
-            response.error("Invalid date");
-        } else {
             goal.save(null, {
                 success: function(goal) {
                     newsfeed.set('goal', goal.id);
@@ -52,7 +52,7 @@ Parse.Cloud.define("makeGoal", function(request, response) {
                     response.error(error);
                 }
             });
-        }
+
     } else {
         response.error("Cannot read the name!");
     }

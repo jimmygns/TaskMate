@@ -65,9 +65,9 @@ Test case included:
 
 Customer Service:
 Jerry Yue Zhao       (925) 997-6337   yuz217@ucsd.edu
-Simon Zhixing Meng   (858) 699-9679	  z3meng@ucsd.edu
-Julie Kexun Xu       (858) 281-3679	  k2xu@ucsd.edu
-Jimmy Jinye Xu       (858) 260-9719	  jix029@ucsd.edu
-Andrew Van           (408) 406-8330	  anvan@ucsd.edu
-Amelia Vu            (408) 802-6993	  adv002@ucsd.edu
-Chi Hon Law (John)   (650) 450-1887	  chlaw@ucsd.edu
+Simon Zhixing Meng   (858) 699-9679   z3meng@ucsd.edu
+Julie Kexun Xu       (858) 281-3679   k2xu@ucsd.edu
+Jimmy Jinye Xu       (858) 260-9719   jix029@ucsd.edu
+Andrew Van           (408) 406-8330   anvan@ucsd.edu
+Amelia Vu            (408) 802-6993   adv002@ucsd.edu
+Chi Hon Law (John)   (650) 450-1887   chlaw@ucsd.edu

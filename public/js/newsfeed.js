@@ -34,6 +34,74 @@ var newsfeedApp = angular.module("newsfeedApp", []);
 newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
     Parse.initialize("eVEt0plCyNLg5DkNtgBidbruVFhqUBnsMGiiXp63", "KPiNXDn9LMX17tLlMmSbI4NvTKgWPk36qBLMTqco");
 
+    var query = new Parse.Query("Newsfeed");
+    query.limit(1000);
+    query.ascending("createdAt");
+    query.include("owner");
+    var id = Parse.User.current().id;
+    idQuery = new Parse.Query(Parse.User);
+    idQuery.equalTo("objectId", id);
+    idQuery.find({
+        success: function(results) {
+            for (var i = 0; i < results.length; i++) {
+                var object = results[i];
+                var following = object.get("following");
+                query.find({
+                    success: function(newsfeeds) {
+                        // newsfeeds now contains an array of newsfeed object retrieved from Parse
+                        //alert("Successfully retrieved " + newsfeeds.length + " Newsfeed objects.");
+                        $scope.posts = []; //array for Newsfeed
+
+                        var postsCount = 0; //count for $scope.posts array
+
+                        for (var i = 0; i < newsfeeds.length; i++){
+                            var newsfeed = newsfeeds[newsfeeds.length - i - 1];
+
+
+                            if($.inArray(newsfeed.get('owner').id, following) !== -1 || newsfeed.get('owner').id === Parse.User.current().id){
+
+                                $scope.posts[postsCount] = {};
+                                $scope.posts[postsCount].message = newsfeed.get('message');
+                                $scope.posts[postsCount].numLikes = newsfeed.get('numLikes');
+                                $scope.posts[postsCount].numComments = newsfeed.get('numComments');
+                                $scope.posts[postsCount].objectId = newsfeed.id;
+
+                                if($.inArray(Parse.User.current().id, newsfeed.get('liked')) == -1)
+                                    $scope.posts[postsCount].btnText = 'Like';
+                                else
+                                    $scope.posts[postsCount].btnText = 'Unlike';
+
+                                $scope.posts[postsCount].firstName = newsfeed.get('owner').get('firstName');
+                                $scope.posts[postsCount].lastName = newsfeed.get('owner').get('lastName');
+                                if(newsfeed.get('owner').get('profilePicture') != undefined)
+                                    $scope.posts[postsCount].picURL = newsfeed.get('owner').get('profilePicture').url();
+                                else
+                                    $scope.posts[postsCount].picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
+
+                                postsCount++;
+
+                                $scope.$digest();
+                            }
+
+
+
+                        }
+
+
+
+                    },
+
+                    error: function(error) {
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+        }
+    });
+
   $scope.numberOfNotification = Parse.User.current().get('numNotif');
 
   $scope.profilePictureURL = "img/glyphicons-4-user.png";
@@ -154,7 +222,7 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
 
   //when click on name or profilepic, redirect to the corresponding profile page
   $scope.redirectToProfile = function(index)  {
-    var query = new Parse.Query("Newsfeed");
+      var query = new Parse.Query("Newsfeed");
     query.include("owner");
     query.get($scope.posts[index].objectId, {
       success: function(newsfeed){
@@ -169,66 +237,5 @@ newsfeedApp.controller("newsfeedCtrl", ["$scope", function newsfeedCtrl($scope){
     });
 
   }
-
- 
-
-
-	var query = new Parse.Query("Newsfeed");
-  query.limit(1000);
-  query.ascending("createdAt");
-  query.include("owner");
-
-	query.find({ 
-  	success: function(newsfeeds) {
-    	// newsfeeds now contains an array of newsfeed object retrieved from Parse
-    	//alert("Successfully retrieved " + newsfeeds.length + " Newsfeed objects.");
-
-      $scope.posts = []; //array for Newsfeed
-
-      var postsCount = 0; //count for $scope.posts array
-
-
-    	for (var i = 0; i < newsfeeds.length; i++){
-    		var newsfeed = newsfeeds[newsfeeds.length - i - 1];
-
-
-        var following = Parse.User.current().get('following');
-        if($.inArray(newsfeed.get('owner').id, following) !== -1 || newsfeed.get('owner').id === Parse.User.current().id){
-  				    				
-          $scope.posts[postsCount] = {};
-    		  $scope.posts[postsCount].message = newsfeed.get('message');
-    		  $scope.posts[postsCount].numLikes = newsfeed.get('numLikes');
-    		  $scope.posts[postsCount].numComments = newsfeed.get('numComments');
-          $scope.posts[postsCount].objectId = newsfeed.id;
-
-          if($.inArray(Parse.User.current().id, newsfeed.get('liked')) == -1)
-            $scope.posts[postsCount].btnText = 'Like';
-          else
-            $scope.posts[postsCount].btnText = 'Unlike';
-          
-          $scope.posts[postsCount].firstName = newsfeed.get('owner').get('firstName');
-          $scope.posts[postsCount].lastName = newsfeed.get('owner').get('lastName');
-          if(newsfeed.get('owner').get('profilePicture') != undefined)
-            $scope.posts[postsCount].picURL = newsfeed.get('owner').get('profilePicture').url();
-          else
-            $scope.posts[postsCount].picURL = 'http://cdn.cutestpaw.com/wp-content/uploads/2012/06/l-Bread-Cat-FTW.png';
-      
-          postsCount++;
-
-          $scope.$digest();
-        }
-
-
-
-    	}
-
-
-
-  	},
-
-  	error: function(error) {
-    	alert("Error: " + error.code + " " + error.message);
-  	}
-	});
 
 }]);

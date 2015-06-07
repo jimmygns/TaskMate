@@ -41,10 +41,6 @@ Parse.Cloud.define("changeNumLike", function(request, response){
           var notif = new Notification();
           var owner = newsfeed.get('owner').id;
 
-          Parse.Cloud.useMasterKey();
-          var ownerPtr = newsfeed.get('owner');
-          ownerPtr.increment('numNotif');
-
           notif.set("owner", owner);
           var content = Parse.User.current().get('firstName') + " " + Parse.User.current().get('lastName') + " liked your post.";
           notif.set("content", content);
